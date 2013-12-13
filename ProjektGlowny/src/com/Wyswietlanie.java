@@ -25,6 +25,10 @@ public class Wyswietlanie extends QWidget {
     
     }
 
+    public void on_pushButton_2_clicked()
+    {
+    	ui.lineEdit_2.setText("Siemanko");
+    }
 
     public Wyswietlanie(QWidget parent) {
         super(parent);
