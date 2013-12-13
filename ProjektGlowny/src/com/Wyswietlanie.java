@@ -21,13 +21,13 @@ public class Wyswietlanie extends QWidget {
     
     public void on_pushButton_clicked()
     {
-    	ui.lineEdit.setText("Siemanko1");
+    	ui.lineEdit.setText("Siemanko33");
     
     }
 
     public void on_pushButton_2_clicked()
     {
-    	ui.lineEdit_2.setText("Siemanko22222");
+    	ui.lineEdit_2.setText("Siemanko22");
     }
 
     public Wyswietlanie(QWidget parent) {
