@@ -27,7 +27,7 @@ public class Wyswietlanie extends QWidget {
 
     public void on_pushButton_2_clicked()
     {
-    	ui.lineEdit_2.setText("Siemanko");
+    	ui.lineEdit_2.setText("Siemanko22222");
     }
 
     public Wyswietlanie(QWidget parent) {
