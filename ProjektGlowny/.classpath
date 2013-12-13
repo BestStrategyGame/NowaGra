@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="C:/Users/Paweł/Desktop/eclipse2/eclipse/qtjambi-win32-lgpl-4.5.2_01/qtjambi-4.5.2_01.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:C:/Users/Paweł/Desktop/eclipse2/eclipse/qtjambi-win32-lgpl-4.5.2_01/doc/html"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Paweł/Desktop/eclipse2/eclipse/qtjambi-win32-lgpl-4.5.2_01/qtjambi-win32-msvc2005-4.5.2_01.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:C:/Users/Paweł/Desktop/eclipse2/eclipse/qtjambi-win32-lgpl-4.5.2_01/doc/html"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Generated JUIC files"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
