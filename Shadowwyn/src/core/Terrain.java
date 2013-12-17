@@ -2,10 +2,13 @@ package core;
 import java.util.*;
 
 public enum Terrain {
-	GRASS("Trawa", 0, 255, 0, 1.5f, "image/terrain/grass.png"),
+	GRASS("Trawa", 6,118,0, 1.5f, "image/terrain/grass.png"),
 	LAVA("Lawa", 164, 164, 164, 2f, "image/terrain/lava.png"),
 	SWAMP("Bagna", 7, 255, 71, 2.5f, "image/terrain/swamp.png"),
-	PATH("≈öcie≈ºka", 95, 95, 44, 1f, "image/terrain/path.png");
+	PATH("åcieøka", 103, 103, 78, 1f, "image/terrain/path.png"),
+	MOUNTAINS("GÛry", 255, 255, 255, 5000000f, "image/objects/mountains.png"),
+	TREE("Drzewo", 255, 0, 236, 5000000f, "image/objects/tree.png"),
+	OTHER("", 66, 66, 66, 5000000f, "");
 	
 	
 	public final String name;
@@ -35,6 +38,7 @@ public enum Terrain {
 	public static Terrain fromRGB(int r, int g, int b)
 	{
 		int rgb = 256*256*r + 256*g + b;
-		return mapId.get(rgb);
+		Terrain t = mapId.get(rgb);
+		return t == null ? Terrain.OTHER : t;
 	}
 }

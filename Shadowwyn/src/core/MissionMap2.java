@@ -8,7 +8,8 @@ public class MissionMap2 extends Mission
 	public MissionMap2()
 	{
 		super();
-		loadMap("maps/map2bg.png", "maps/map2bg.pnm", "maps/map2fg.pnm");
+		//loadMap("maps/map2bg.png", "maps/map2bg.pnm", "maps/map2fg.pnm");
+		loadMap("maps/c1/background.jpg", "maps/c1/mask.pnm", "maps/map2fg.pnm");
 		System.out.println(wmap);
 		Player p1 = new PlayerHuman("gracz 1", Color.RED);
 		Player p2 = new PlayerHuman("gracz 2", Color.BLUE);

@@ -92,6 +92,8 @@ public class WorldMap
 				//mapWidget.getImageStack(row, col).setLayer(0, new gui.WidgetImage("maps/map2bg.png", row, col));
 			}
 		}*/
+		System.out.println(getHeight());
+		System.out.println(getWidth());
 		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size);
 		mapWidget.setBackground(background);
 	}
@@ -224,11 +226,13 @@ public class WorldMap
 	{
 		//System.out.println(this+ "  "+tox+" - "+toy+" - "+p2o.get(tox, toy));
 		
-			if (forbiddenNeighbourhood(hero, tox, toy)) {
+			WorldMapObject obj = p2o.get(tox, toy);
+			/*if (forbiddenNeighbourhood(hero, tox, toy)) {
 				return 1000000;
-			} else if (p2o.get(tox, toy) != null && !p2o.get(tox, toy).isVisitable()) {
+			} else*/
+			/*if (obj != null && !obj.isVisitable()) {
 				return 1000000;
-			}
+			}*/
 			
 			float times = 1.0f;
 			if ((fromx-tox)*(fromy-toy) != 0) {
@@ -271,6 +275,7 @@ public class WorldMap
 				}
 			}
 		}
+		System.out.println("end calculate route");
 	}
 	
 	public float getDistance(int x, int y)

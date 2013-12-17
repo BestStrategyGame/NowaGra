@@ -21,9 +21,11 @@ public class WindowMap extends QWidget
 	private QLabel statusGold = new QLabel("0");
 	private QLabel statusOre = new QLabel("0");
 	private QLabel statusWood = new QLabel("0");
+	private QLabel statusDay = new QLabel("1");
+	private QLabel statusPlayer = new QLabel("");
 	private QGridLayout layoutButtons = new QGridLayout();
-	private QPushButton buttonMove = new QPushButton("IdÅº\nbohaterem");
-	private QPushButton buttonTurn = new QPushButton("ZakoÅ„cz\nturÄ™");
+	private QPushButton buttonMove = new QPushButton("IdŸ\nbohaterem");
+	private QPushButton buttonTurn = new QPushButton("Zakoñcz\nturê");
 	private QScrollArea heroesScroll = new QScrollArea();
 	private QScrollArea castlesScroll = new QScrollArea();
 	private QWidget right = new QWidget();
@@ -47,6 +49,8 @@ public class WindowMap extends QWidget
 	public WindowMap()
 	{
 		super();
+		
+		setStyleSheet("background-color: #333; color: white;");
 		
 		setLayout(layout);
 		//layout.addWidget(new WidgetHolder(this, 100, new WidgetChooser(true)));
@@ -86,9 +90,12 @@ public class WindowMap extends QWidget
 		layoutRight.addWidget(heroesScroll);
 		
 		layoutRight.addLayout(layoutResources);
-		layoutResources.addRow("ZÅ‚oto:", statusGold);
-		layoutResources.addRow("KamieÅ„:", statusOre);
+		layoutResources.addRow("Dzieñ:", statusDay);
+		layoutResources.addRow("Gracz:", statusPlayer);
+		layoutResources.addRow("Z³oto:", statusGold);
+		layoutResources.addRow("Kamieñ:", statusOre);
 		layoutResources.addRow("Drewno:", statusWood);
+		
 		layoutRight.addLayout(layoutButtons);
 		layoutButtons.addWidget(buttonMove, 0, 0);
 		layoutButtons.addWidget(buttonTurn, 0, 1);		
@@ -176,6 +183,8 @@ public class WindowMap extends QWidget
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
 		statusOre.setText(""+player.getResource(core.ResourceType.ORE));
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));
+		statusDay.setText(""+((day-1)%7+1)+" / "+((day-1)/7+1)+" tydzieñ");
+		statusPlayer.setText(player.getName());
 		
 		cleanHeroes();
 		for (Hero hero: player.getHeroes()) {
@@ -210,6 +219,7 @@ public class WindowMap extends QWidget
 			map.dispose();
 		}
 		map = m;
+		map.setStyleSheet("background-color: none; color: none;");
 		QScrollArea scroll = new QScrollArea();
 		scroll.setSizePolicy(Policy.MinimumExpanding, Policy.Preferred);
 		scroll.setWidget(m);

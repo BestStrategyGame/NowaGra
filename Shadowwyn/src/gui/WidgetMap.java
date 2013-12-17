@@ -10,7 +10,7 @@ public class WidgetMap extends WidgetStack
 	
 	public WidgetMap(int rows, int cols, int size)
 	{
-		super(rows*cols, 2, 1, 1);
+		super(rows*size, 2, 1, 1);
 		grid = new WidgetStackGrid(rows, cols, size);
 		setLayer(1, grid);
 		grid.pressed.connect(pressed);

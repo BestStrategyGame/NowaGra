@@ -49,7 +49,7 @@ public abstract class Mission extends QObject
 	protected void loadMap(String bg, String tr, String fg)
 	{
 		wmap = new WorldMap(loadTerrain(tr), bg);
-		loadForeground(fg);
+		//loadForeground(fg);
 	}
 	
 	private Terrain[][] loadTerrain(String file)
@@ -74,6 +74,9 @@ public abstract class Mission extends QObject
 					g = sc.nextInt();
 					b = sc.nextInt();
 					tmap[i][j] = Terrain.fromRGB(r, g, b);
+					System.out.println("("+r+","+g+","+b+") ");
+					if (tmap[i][j] != null)
+						System.out.println(tmap[i][j].name);
 				}
 			}
 			sc.close();
