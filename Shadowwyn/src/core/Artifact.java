@@ -1,8 +1,8 @@
 package core;
- import java.util.*;
+import java.util.*;
  
- public enum Artifact implements WorldMapObject
- {
+public enum Artifact implements WorldMapObject
+{
 	DUMMY(0, "Brak", null, 0, 0, 0, "image/dummy.png"),
 	MIECZ_PRZEZNACZENIA(1, "Miecz przeznaczenia", ArtifactType.SWORD, 4, 5, 3, "image/dummy.png");
 	
