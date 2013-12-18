@@ -19,6 +19,7 @@ public class WidgetStackGrid extends QWidget
 		
 		setMaximumSize(width*size, height*size);
 		layout.setSpacing(0);
+		layout.setMargin(0);
 		setLayout(layout);
 		
 		stack = new WidgetStack[height][];

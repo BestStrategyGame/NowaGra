@@ -10,6 +10,7 @@ public abstract class Player
 	private List<Hero> heroes = new LinkedList<Hero>();
 	private List<Castle> castles = new LinkedList<Castle>();
 	private Hero activeHero;
+	protected Set<Point> visible = new HashSet<Point>();
 	
 	public Player(String n, Color c)
 	{
@@ -120,5 +121,7 @@ public abstract class Player
 	{
 	}
 	
-	
+	public void prepareToMission()
+	{
+	}
 }

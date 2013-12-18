@@ -19,6 +19,12 @@ public class PlayerHuman extends Player
 		}
 		//Mission.getLastInstance().finnishTurn(this);
 		
+		
+		Mission.getLastInstance().getWorldMap().getMapWidget().resetShadow();
+		for (Point p: visible) {
+			Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(p.y, p.x);
+		}
+		
 		return true;
 
 	}
@@ -26,6 +32,10 @@ public class PlayerHuman extends Player
 	public void clickedOnMap(int x, int y)
 	{
 		if (getActiveHero() == null) {
+			return;
+		}
+		if (!visible.contains(new Point(y, x))) {
+			System.out.println("clicked on not visible");
 			return;
 		}
 		float d = Mission.getLastInstance().getWorldMap().getDistance(y, x);
@@ -79,13 +89,54 @@ public class PlayerHuman extends Player
 		}
 	}
 	
+	@Override
+	public void prepareToMission()
+	{
+		for (Hero h: getHeroes()) {
+			removeShadowRadius(h.getX(), h.getY(), 3);
+		}
+		
+		/*try {
+			for (Castle c: getCastles()) {
+				Point p = WorldMap.getLastInstance().getPositionOfObject(c);
+				removeShadowRadius(p.x, p.y, 3);
+			}
+		} catch (Exception e) {}*/
+	}
+	
 	public void moveClicked()
 	{
 		if (target != null) {
+			WorldMap.Point point = target;
+			for (int i=0; i<1000 && (point.x != getActiveHero().getX() || point.y != getActiveHero().getY()); ++i) {
+				//Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(point.y, point.x);
+				//visible.add(new Point(point.x, point.y));
+				removeShadowRadius(point.x, point.y, 2);
+				point = point.getParent();
+				
+			}
+			
+			
 			WorldMap wmap = Mission.getLastInstance().getWorldMap();
 			float distance = target.getDistance() > 500000f ? target.getDistance()-500000f : target.getDistance();
 			getActiveHero().takeMovePoints((int)java.lang.Math.ceil(distance));
 			wmap.moveTo(getActiveHero(), this, target.x, target.y, target.getParent().x, target.getParent().y);
+		}
+	}
+	
+	private void removeShadowRadius(int x, int y, int r)
+	{
+		for (int i=x-r; i<=x+r; ++i) {
+			for (int j=y-r; j<=y+r; ++j) {
+				double hypot = java.lang.Math.hypot(i-x, j-y);
+				//System.out.println("hypot: "+hypot);
+				if (hypot <= (r+0.01)) {
+					try {
+						Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(j, i);
+						visible.add(new Point(i, j));
+					} catch (java.lang.ArrayIndexOutOfBoundsException e) {}
+				}
+			}
 		}
 	}
 	

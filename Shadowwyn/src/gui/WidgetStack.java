@@ -25,6 +25,11 @@ public class WidgetStack extends QWidget
 			layer[i].show();
 		}
 	}
+	
+	public QWidget widgetAtLayer(int no)
+	{
+		return layer[no].currentWidget();
+	}
 		
 	public WidgetStack setLayer(int no, QWidget widget)
 	{

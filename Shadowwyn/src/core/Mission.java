@@ -115,6 +115,7 @@ public abstract class Mission extends QObject
 	{
 		if (playersNo < maxPlayers) {
 			players[playersNo] = player;
+			player.prepareToMission();
 			++playersNo;
 		}
 	}

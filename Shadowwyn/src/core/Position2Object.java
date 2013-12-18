@@ -3,13 +3,13 @@ import java.util.*;
 
 public class Position2Object
 {
-	Map<Integer, WorldMapObject> mapP2O = new HashMap<Integer, WorldMapObject>();
-	Map<WorldMapObject, Integer> mapO2P = new HashMap<WorldMapObject, Integer>();
+	Map<Point, WorldMapObject> mapP2O = new HashMap<Point, WorldMapObject>();
+	Map<WorldMapObject, Point> mapO2P = new HashMap<WorldMapObject, Point>();
 	
 	public void put(int x, int y, WorldMapObject o)
 	{
-		mapP2O.put(10000*x+y, o);
-		mapO2P.put(o, 10000*x+y);
+		mapP2O.put(new Point(x, y), o);
+		mapO2P.put(o, new Point(x, y));
 		//System.out.println("put: "+x+", "+y+", "+o.getName());
 		//System.out.println("get: "+x+", "+y+", "+get(x, y));
 	}
@@ -19,7 +19,7 @@ public class Position2Object
 		if (mapP2O == null) {
 			return null;
 		}
-		return mapP2O.get(10000*x+y);
+		return mapP2O.get(new Point(x, y));
 	}
 	
 	public WorldMapObject get(Point p)
@@ -27,7 +27,7 @@ public class Position2Object
 		if (mapP2O == null) {
 			return null;
 		}
-		return mapP2O.get(10000*p.x+p.y);
+		return mapP2O.get(p);
 	}
 	
 	public Point get(WorldMapObject o)
@@ -35,19 +35,14 @@ public class Position2Object
 		if (mapO2P == null) {
 			return null;
 		}
-		Integer point = mapO2P.get(o);
-		if (point != null) {
-			return new Point(point/10000, point%10000);
-		} else {
-			return null;
-		}
+		return mapO2P.get(o);
 	}
 	
 	public void remove(int x, int y)
 	{
 		System.out.println("remove");
 		WorldMapObject o = get(x, y);
-		mapP2O.remove(10000*x+y);
+		mapP2O.remove(new Point(x, y));
 		mapO2P.remove(o);
 	}
 	
@@ -64,7 +59,7 @@ public class Position2Object
 		return mapP2O.values();
 	}
 	
-	public Set<Integer> points()
+	public Set<Point> points()
 	{
 		return mapP2O.keySet();
 	}

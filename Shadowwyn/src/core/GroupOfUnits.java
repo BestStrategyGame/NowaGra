@@ -33,7 +33,8 @@ public class GroupOfUnits
 	*/
 	public int getNumber()
 	{
-		return java.lang.Math.max(0, totalHP/type.defense);
+		//return java.lang.Math.max(0, totalHP/type.defense);
+		return number;
 	}
 	
 	public int getAttack()

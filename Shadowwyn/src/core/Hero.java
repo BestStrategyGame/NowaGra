@@ -1,7 +1,8 @@
 package core;
- import java.util.*;
- 
- public class Hero implements WorldMapObject
+
+import java.util.*;
+
+public class Hero implements WorldMapObject
 {
 	private String name;
 	private Color color = null;
@@ -23,7 +24,7 @@ package core;
 	
 	private Set<Artifact> artifacts = new HashSet<Artifact>();
 	private Map<ArtifactType, Artifact> active = new HashMap<ArtifactType, Artifact>();
-	private GroupOfUnits[] units = new GroupOfUnits[6];
+	private List<GroupOfUnits> units = new ArrayList<GroupOfUnits>();
 	
 	public Hero(String n)
 	{
@@ -124,13 +125,23 @@ package core;
 	
 	public void removeUnits(int pos)
 	{
-		units[pos] = null;
+		units.set(pos, null);
+	}
+	
+	public List<GroupOfUnits> getUnits()
+	{
+		return units;
+	}
+	
+	public void setUnits(List<GroupOfUnits> u)
+	{
+		units = u;
 	}
 	
 	public void moveUnits(Hero dst, int dstPos, int srcPos)
 	{
-		dst.units[dstPos] = units[srcPos];
-		dst.units[dstPos].setOwner(dst);
+		dst.units.set(dstPos, units.get(srcPos));
+		dst.units.get(dstPos).setOwner(dst);
 		removeUnits(srcPos);
 	}
 	

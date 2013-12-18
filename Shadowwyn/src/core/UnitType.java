@@ -3,7 +3,9 @@ package core;
  
  public enum UnitType
  {
-	WOJAK(1, "Wojak", CastleType.ZAMEK_LUDZI, 1, 4, 5, 3, "image/dummy.png");
+	WOJAK(1, "Wojak", CastleType.ZAMEK_LUDZI, 1, 4, 5, 3, "image/dummy.png"),
+	RYCERZ(2, "Rycerz", CastleType.ZAMEK_LUDZI, 1, 4, 5, 3, "image/dummy.png"),
+	ANIOL(3, "Aniol", CastleType.ZAMEK_LUDZI, 1, 4, 5, 3, "image/dummy.png");
 	
 	public final int id;
 	public final String name;

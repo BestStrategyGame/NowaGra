@@ -181,13 +181,13 @@ public class WorldMap
 		System.out.println(getWidth());
 		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size);
 		mapWidget.setBackground(background);
+		mapWidget.addShadow();
 	}
 	
 	public void populateMapWidget()
 	{
 		WorldMapObject o;
-		for (int p: p2o.points()) {
-			core.Point pos = new core.Point(p);
+		for (core.Point pos: p2o.points()) {
 			o = p2o.get(pos);
 			if (o.getImageFile() != null) {
 				System.out.println(o.getImageFile());
@@ -195,8 +195,7 @@ public class WorldMap
 				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
 			}
 		}
-		for (int p: p2h.points()) {
-			core.Point pos = new core.Point(p);
+		for (core.Point pos: p2h.points()) {
 			o = p2h.get(pos);
 			if (o.getImageFile() != null) {
 				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
@@ -232,6 +231,11 @@ public class WorldMap
 		System.out.println("add hero");
 		p2h.put(x, y, hero);
 		hero.setPosition(x, y);
+	}
+	
+	public core.Point getPositionOfObject(WorldMapObject obj)
+	{
+		return p2o.get(obj);
 	}
 	
 	public void dailyBonus(Player player)
