@@ -46,46 +46,17 @@ public abstract class Mission extends QObject
 		return wmap.getMapWidget();
 	}
 	
-	protected void loadMap(String bg, String tr, String fg)
+	protected void loadMap(String bg, String tr, String rs)
 	{
-		wmap = new WorldMap(loadTerrain(tr), bg);
+		wmap = new WorldMap(bg);
 		//loadForeground(fg);
+		wmap.loadTerrain(tr);
+		wmap.loadResources(rs);
+		wmap.initRoute();
+		wmap.createMapWidget();
 	}
 	
-	private Terrain[][] loadTerrain(String file)
-	{
-		Terrain[][] tmap; 
-		int r, g, b;
-		int width, height;
-		Scanner sc;
-		
-		try {
-			sc = new Scanner(new File(file));
-			sc.nextLine();
-			sc.nextLine();
-			width = sc.nextInt();
-			height = sc.nextInt();
-			sc.nextInt();
-			tmap = new Terrain[height][];
-			for (int i=0; i<height; ++i) {
-				tmap[i] = new Terrain[width];
-				for (int j=0; j<width; ++j) {
-					r = sc.nextInt();
-					g = sc.nextInt();
-					b = sc.nextInt();
-					tmap[i][j] = Terrain.fromRGB(r, g, b);
-					System.out.println("("+r+","+g+","+b+") ");
-					if (tmap[i][j] != null)
-						System.out.println(tmap[i][j].name);
-				}
-			}
-			sc.close();
-			return tmap;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 	
 	private void loadForeground(String file)
 	{
@@ -125,11 +96,11 @@ public abstract class Mission extends QObject
 						continue;
 					}
 					
-					MapObject mo = MapObject.fromRGB(r, g, b);
+					/*MapObject mo = MapObject.fromRGB(r, g, b);
 					if (mo != null) {
 						wmap.addObject(j, i, mo);
 						continue;
-					}
+					}*/
 					
 					//System.out.println("("+r+","+g+","+b+") ");
 				}

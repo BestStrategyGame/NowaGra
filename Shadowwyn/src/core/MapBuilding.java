@@ -17,7 +17,13 @@ public class MapBuilding implements WorldMapObject
 	
 	public boolean stand(Hero hero, Player player)
 	{
+		if (color != hero.getColor()) {
+			if (WorldMap.getLastInstance() != null) {
+				WorldMap.getLastInstance().colorChanged(this, hero.getColor());
+			}
+		}
 		color = hero.getColor();
+		
 		return false;
 	}
 	

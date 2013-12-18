@@ -8,7 +8,8 @@ public enum Terrain {
 	PATH("Œcie¿ka", 103, 103, 78, 1f, "image/terrain/path.png"),
 	MOUNTAINS("Góry", 255, 255, 255, 5000000f, "image/objects/mountains.png"),
 	TREE("Drzewo", 255, 0, 236, 5000000f, "image/objects/tree.png"),
-	OTHER("", 66, 66, 66, 5000000f, "");
+	CASTLE("Castle", 0, 0, 0, 5000000f, "image/objects/tree.png"),
+	OTHER("", 66, 66, 66, 1f, "");
 	
 	
 	public final String name;

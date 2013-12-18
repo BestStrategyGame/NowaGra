@@ -4,7 +4,8 @@ package core;
  public enum MapObject implements WorldMapObject
  {
 	MOUNTAINS("Góry", 205, 205, 205, "image/objects/mountains.png"),
-	TREE("Drzewo", 255, 0, 236, "image/objects/tree.png");
+	TREE("Drzewo", 255, 0, 236, "image/objects/tree.png"),
+	DUMMY("Dummy", 0, 0, 0, "");
 	
 	public final String name;
 	public final int rgb;

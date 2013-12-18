@@ -3,9 +3,9 @@ import java.util.*;
 
 public enum MapBuildingType
 {
-	GOLD_MINE("Kopolania z≈Çota", 255, 254, 0, "image/building/gold.png"),
-	ORE_MINE("Kopolania kamienia", 255, 0, 25, "image/building/ore.png"),
-	WOOD_MINE("Kopolania drewna", 0, 55, 255, "image/building/wood.png");
+	GOLD_MINE("Kopolania z≥ota", 255, 255, 0, "image/building/gold.png"),
+	ORE_MINE("Kopolania kamienia", 255, 0, 0, "image/building/ore.png"),
+	WOOD_MINE("Tartak", 0, 72, 255, "image/building/wood.png");
 	
 	public final String name;
 	public final int rgb;
@@ -21,6 +21,15 @@ public enum MapBuildingType
 	public void dailyBonus(Player player)
 	{
 		switch (this) {
+		case GOLD_MINE:
+			player.addResource(ResourceType.GOLD, 1000);
+			break;
+		case ORE_MINE:
+			player.addResource(ResourceType.ORE, 1);
+			break;
+		case WOOD_MINE:
+			player.addResource(ResourceType.WOOD, 2);
+			break;
 		default:
 		}
 	}

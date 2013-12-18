@@ -17,6 +17,7 @@ public class Resource implements WorldMapObject
 	
 	public boolean stand(Hero hero, Player player)
 	{
+		System.out.println("resource stand");
 		player.addResource(type, amount);
 		return true;
 	}

@@ -3,9 +3,9 @@ import java.util.*;
 
 public enum ResourceType
 {
-	GOLD("ZÅ‚oto", 0, 0, 0, "image/resource/gold.png"),
-	ORE("Ruda", 0, 0, 0, "image/resource/ore.png"),
-	WOOD("Drewno", 0, 0, 0, "image/resource/wood.png");
+	GOLD("Z³oto", 255, 255, 200, "image/resource/gold.png"),
+	ORE("Ruda", 200, 255, 255, "image/resource/ore.png"),
+	WOOD("Drewno", 255, 200, 200, "image/resource/wood.png");
 	
 	public final String name;
 	public final int rgb;

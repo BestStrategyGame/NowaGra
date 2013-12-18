@@ -49,7 +49,16 @@ public class PlayerHuman extends Player
 				//System.out.println(point.x +", "+point.y+", "+getActiveHero().getX()+", "+getActiveHero().getY());
 				if (i == 0) {
 					if (point.getDistance() > getActiveHero().getMovePoints()) {
-						mapWidget.objectAt(point.y, point.x).setLayer(3, new gui.WidgetImage("image/markers/red2.png", 64));
+						System.out.println(point.getDistance());
+						if (point.getDistance() > 500000f && point.getDistance()-500000f < getActiveHero().getMovePoints()) {
+							mapWidget.objectAt(point.y, point.x).setLayer(3, new gui.WidgetImage("image/markers/orange2.png", 64));
+							if (target == null) {
+								target = point;
+							}
+						} else {
+							mapWidget.objectAt(point.y, point.x).setLayer(3, new gui.WidgetImage("image/markers/red2.png", 64));
+						}
+						
 					} else {
 						mapWidget.objectAt(point.y, point.x).setLayer(3, new gui.WidgetImage("image/markers/green2.png", 64));
 						if (target == null) {
@@ -74,7 +83,8 @@ public class PlayerHuman extends Player
 	{
 		if (target != null) {
 			WorldMap wmap = Mission.getLastInstance().getWorldMap();
-			getActiveHero().takeMovePoints((int)java.lang.Math.ceil(target.getDistance()));
+			float distance = target.getDistance() > 500000f ? target.getDistance()-500000f : target.getDistance();
+			getActiveHero().takeMovePoints((int)java.lang.Math.ceil(distance));
 			wmap.moveTo(getActiveHero(), this, target.x, target.y, target.getParent().x, target.getParent().y);
 		}
 	}

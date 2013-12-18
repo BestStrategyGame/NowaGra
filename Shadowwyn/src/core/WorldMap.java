@@ -1,4 +1,6 @@
 package core;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class WorldMap
@@ -58,27 +60,110 @@ public class WorldMap
 	}
 	
 	private Position2Object p2o = new Position2Object();
+	private Position2Object p2h = new Position2Object();
 	private Terrain[][] tmap;
 	private Point[][] route; 
 	//private gui.WidgetStackGrid mapWidget;
 	private gui.WidgetMap mapWidget;
-	String background;
+	private String background;
+	private boolean ready = false;
 
-	public WorldMap(Terrain[][] t, String b)
+	public WorldMap(String b)
 	{
-		tmap = t;
 		background = b;
-		createMapWidget();
-		
+		LAST_INSTANCE = this;
+	}
+	
+	public void initRoute()
+	{
 		route = new Point[getHeight()][];
 		for (int i=0; i<getHeight(); ++i) {
 			route[i] = new Point[getWidth()];
 		}
-		
-		LAST_INSTANCE = this;
 	}
 	
-	private void createMapWidget()
+	public void loadTerrain(String file)
+	{
+		int r, g, b;
+		int width, height;
+		Scanner sc;
+		
+		try {
+			sc = new Scanner(new File(file));
+			sc.nextLine();
+			sc.nextLine();
+			width = sc.nextInt();
+			height = sc.nextInt();
+			sc.nextInt();
+			tmap = new Terrain[height][];
+			for (int i=0; i<height; ++i) {
+				tmap[i] = new Terrain[width];
+				for (int j=0; j<width; ++j) {
+					r = sc.nextInt();
+					g = sc.nextInt();
+					b = sc.nextInt();
+					tmap[i][j] = Terrain.fromRGB(r, g, b);
+					
+					
+					ResourceType rt = ResourceType.fromRGB(r, g, b);
+					if (rt != null) {
+						addObject(j, i, new Resource(rt, 2));
+						continue;
+					}
+					
+					MapBuildingType mbt = MapBuildingType.fromRGB(r, g, b);
+					if (mbt != null) {
+						System.out.println("("+r+","+g+","+b+") ("+i+","+j+","+mbt.name+") ");
+						addObject(j, i, new MapBuilding(mbt, null));
+						continue;
+					}
+					
+					CastleType ct = CastleType.fromRGB(r, g, b);
+					if (ct != null) {
+						addObject(j, i, new Castle(ct, null));
+						continue;
+					}
+				}
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadResources(String file)
+	{
+		int r, g, b;
+		int width, height;
+		Scanner sc;
+		
+		try {
+			sc = new Scanner(new File(file));
+			sc.nextLine();
+			sc.nextLine();
+			width = sc.nextInt();
+			height = sc.nextInt();
+			sc.nextInt();
+			for (int i=0; i<height; ++i) {
+				for (int j=0; j<width; ++j) {
+					r = sc.nextInt();
+					g = sc.nextInt();
+					b = sc.nextInt();				
+					
+					ResourceType rt = ResourceType.fromRGB(r, g, b);
+					if (rt != null) {
+						addObject(j, i, new Resource(rt, 2));
+						continue;
+					}
+				}
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void createMapWidget()
 	{
 		int size = 64;
 		
@@ -110,6 +195,15 @@ public class WorldMap
 				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
 			}
 		}
+		for (int p: p2h.points()) {
+			core.Point pos = new core.Point(p);
+			o = p2h.get(pos);
+			if (o.getImageFile() != null) {
+				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
+				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
+			}
+		}
+		ready = true;
 	}
 	
 	public gui.WidgetMap getMapWidget()
@@ -136,39 +230,58 @@ public class WorldMap
 	public void addObject(int x, int y, Hero hero)
 	{
 		System.out.println("add hero");
-		p2o.put(x, y, hero);
+		p2h.put(x, y, hero);
 		hero.setPosition(x, y);
 	}
 	
 	public void dailyBonus(Player player)
 	{
-		for (WorldMapObject o: p2o.objects()) {
-			o.dailyBonus(player);
-		}
+		//for (List<WorldMapObject> s: p2o.objects()) {
+			for (WorldMapObject o: p2o.objects()) {
+				o.dailyBonus(player);
+			}
+			for (WorldMapObject o: p2h.objects()) {
+				o.dailyBonus(player);
+			}
+		//}
 	}
 	
 	public void weeklyBonus(Player player)
 	{
-		for (WorldMapObject o: p2o.objects()) {
-			o.weeklyBonus(player);
-		}
+		//for (List<WorldMapObject> s: p2o.objects()) {
+			for (WorldMapObject o: p2o.objects()) {
+				o.weeklyBonus(player);
+			}
+			for (WorldMapObject o: p2h.objects()) {
+				o.weeklyBonus(player);
+			}
+		//}
 	}
 	
 	public void colorChanged(WorldMapObject o, Color c)
 	{
+		core.Point pos = p2o.get(o);
+		System.out.println("color changed: "+o+", "+c.name+", "+pos);
+		
+		if (ready) {
+			
+			mapWidget.objectAt(pos.y, pos.x).setLayer(0, new gui.WidgetImage(c.mfFile));
+		}
 	}
 	
 	public void moveTo(Hero hero, Player player, int x, int y, int px, int py)
 	{
 		WorldMapObject object = p2o.get(x, y);
-		p2o.remove(hero.getX(), hero.getY());
+		System.out.println("move to: "+x+", "+y+", "+object);
+		
+		p2h.remove(hero.getX(), hero.getY());
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
 		mapWidget.clearLevel(3);
 		
-		if (object != null && object.isVisitable() && !object.isCollectable()) {
+		/*if (object != null && object.isVisitable() && !object.isCollectable()) {
 			x = px;
 			y = py;
-		}
+		}*/
 		mapWidget.objectAt(y, x).setLayer(hero.stackLevel(), new gui.WidgetImage(hero.getImageFile(), 64));
 		addObject(x, y, hero);
 		
@@ -177,7 +290,7 @@ public class WorldMap
 			mapWidget.objectAt(y, x).setLayer(object.stackLevel(), null);
 		}
 
-		object = p2o.get(x-1, y-1);
+		/*object = p2o.get(x-1, y-1);
 		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x-1, y-1);
 		
 		object = p2o.get(x-1, y);
@@ -199,23 +312,19 @@ public class WorldMap
 		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x, y-1);
 		
 		object = p2o.get(x, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x, y+1);
+		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x, y+1);*/
 		
 		calculateRoute(hero);
 	}
 	
 	private boolean forbiddenNeighbourhood(Hero hero, int x, int y)
 	{
-		WorldMapObject obj;
 		Hero other;
 		for (int i=-1; i<=1; ++i) {
 			for (int j=-1; j<=1; ++j) {
-				obj = p2o.get(x+i, y+j);
-				if (obj instanceof Hero) {
-					other = (Hero)obj;
-					if (other.getColor() != hero.getColor()) {
-						return true;
-					}
+				other = (Hero)p2h.get(x+i, y+j);
+				if (other != null && other.getColor() != hero.getColor()) {
+					return true;
 				}
 			}
 		}
@@ -227,19 +336,35 @@ public class WorldMap
 		//System.out.println(this+ "  "+tox+" - "+toy+" - "+p2o.get(tox, toy));
 		
 			WorldMapObject obj = p2o.get(tox, toy);
-			/*if (forbiddenNeighbourhood(hero, tox, toy)) {
-				return 1000000;
-			} else*/
-			/*if (obj != null && !obj.isVisitable()) {
-				return 1000000;
-			}*/
+			WorldMapObject obj2 = p2o.get(fromx, fromy);
+			WorldMapObject h2 = p2h.get(tox, toy);
+			float plus = 0;
+			if (h2 != null) {
+				plus = 1000000f;
+			}
+			if (forbiddenNeighbourhood(hero, tox, toy)) {
+				plus = 500000f;
+			} /*else*/
 			
 			float times = 1.0f;
+			if (obj != null) {
+				if (obj.isVisitable() && !obj.isCollectable() && (toy-fromy) != -1) {
+					plus = 1000000f;
+				}
+			} 
+			if (obj2 != null) {
+				if (obj2.isVisitable() && !obj2.isCollectable() && (toy-fromy) != 1) {
+					//System.out.println("can't leave from top:  "+tox+" - "+toy+"");
+					plus = 1000000f;
+				}
+			}
+			
+			
 			if ((fromx-tox)*(fromy-toy) != 0) {
 				times = 1.42f;
 			}
 		//}
-		return (tmap[fromy][fromx].cost + tmap[toy][tox].cost)*0.45f*times;
+		return (tmap[fromy][fromx].cost + tmap[toy][tox].cost)*0.45f*times + plus;
 	}
 	
 	public void calculateRoute(Hero hero)

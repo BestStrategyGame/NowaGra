@@ -9,7 +9,7 @@ public class MissionMap2 extends Mission
 	{
 		super();
 		//loadMap("maps/map2bg.png", "maps/map2bg.pnm", "maps/map2fg.pnm");
-		loadMap("maps/c1/background.jpg", "maps/c1/mask.pnm", "maps/map2fg.pnm");
+		loadMap("maps/c1/background.jpg", "maps/c1/mask.pnm", "maps/c1/resources.pnm");
 		System.out.println(wmap);
 		Player p1 = new PlayerHuman("gracz 1", Color.RED);
 		Player p2 = new PlayerHuman("gracz 2", Color.BLUE);
@@ -19,9 +19,10 @@ public class MissionMap2 extends Mission
 		Hero h3 = new Hero("Bohater 3");
 		p1.addHero(h1);
 		p1.addHero(h2);	
-		p1.addHero(h3);
+		p2.addHero(h3);
 		wmap.addObject(10, 10, h1);
 		wmap.addObject(7, 7, h2);
+		wmap.addObject(3, 3, h3);
 		
 		Castle c1 = new Castle(CastleType.ZAMEK_LUDZI, null);
 		Castle c2 = new Castle(CastleType.ZAMEK_LUDZI, null);
