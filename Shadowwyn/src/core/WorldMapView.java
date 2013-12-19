@@ -47,7 +47,7 @@ public class WorldMapView
 		mission = new MissionMap2();
 		window = new gui.WindowMap();
 		gui.WidgetMap map = mission.getMapWidget();
-		mission.startTurn.connect(this, "startTurn(int,Player)");
+		mission.startTurn.connect(window, "startTurn(int,Player)");
 		mission.updateWindow.connect(window, "updateData(Player)");
 		window.heroChanged.connect(mission, "activeHeroChanged(Hero)");
 		window.moveClicked.connect(mission, "moveClicked()");
@@ -58,12 +58,14 @@ public class WorldMapView
 		mission.start();
 		window.show();
 	}
+	
+	//public QWidget getWidget()
 
-	private void startTurn(int day, Player player)
+	/*private void startTurn(int day, Player player)
 	{
 		System.out.println("st");
 		window.startTurn(day, player);
-	}
+	}*/
 	
 	public static void main(String[] args)
 	{

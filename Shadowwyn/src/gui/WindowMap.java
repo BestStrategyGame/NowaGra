@@ -12,6 +12,8 @@ import core.Hero;
 
 public class WindowMap extends QWidget
 {
+	private core.Player player;
+	
 	private QWidget map;
 	private QWidget minimap = new MiniMap(this);
 	private QGridLayout layout = new QGridLayout();
@@ -24,8 +26,11 @@ public class WindowMap extends QWidget
 	private QLabel statusDay = new QLabel("1");
 	private QLabel statusPlayer = new QLabel("");
 	private QGridLayout layoutButtons = new QGridLayout();
-	private QPushButton buttonMove = new QPushButton("IdŸ\nbohaterem");
-	private QPushButton buttonTurn = new QPushButton("Zakoñcz\nturê");
+	private QPushButton buttonMove = new QPushButton("IdÅº\nbohaterem");
+	private QPushButton buttonTurn = new QPushButton("ZakoÅ„cz\nturÄ™");
+	private QPushButton buttonCastle = new QPushButton("Interakcja\nz zamkiem");
+	private QPushButton buttonHero = new QPushButton("Interakcja\nz innym\nbohaterem");
+	
 	private QScrollArea heroesScroll = new QScrollArea();
 	private QScrollArea castlesScroll = new QScrollArea();
 	private QWidget right = new QWidget();
@@ -42,15 +47,16 @@ public class WindowMap extends QWidget
 	private int heroesSelected = -1;
 	
 	public Signal1<core.Hero> heroChanged = new Signal1<core.Hero>();
+	public Signal1<core.Castle> castleSelected = new Signal1<core.Castle>();
 	public Signal0 moveClicked = new Signal0();
 	public Signal0 turnClicked = new Signal0();
+	public Signal0 interactWithCastle = new Signal0();
+	public Signal0 interactWithHero = new Signal0();
 	
 	
 	public WindowMap()
 	{
 		super();
-		
-		setStyleSheet("background-color: #333; color: white;");
 		
 		setLayout(layout);
 		//layout.addWidget(new WidgetHolder(this, 100, new WidgetChooser(true)));
@@ -90,18 +96,22 @@ public class WindowMap extends QWidget
 		layoutRight.addWidget(heroesScroll);
 		
 		layoutRight.addLayout(layoutResources);
-		layoutResources.addRow("Dzieñ:", statusDay);
+		layoutResources.addRow("DzieÅ„:", statusDay);
 		layoutResources.addRow("Gracz:", statusPlayer);
-		layoutResources.addRow("Z³oto:", statusGold);
-		layoutResources.addRow("Kamieñ:", statusOre);
+		layoutResources.addRow("ZÅ‚oto:", statusGold);
+		layoutResources.addRow("KamieÅ„:", statusOre);
 		layoutResources.addRow("Drewno:", statusWood);
 		
 		layoutRight.addLayout(layoutButtons);
 		layoutButtons.addWidget(buttonMove, 0, 0);
-		layoutButtons.addWidget(buttonTurn, 0, 1);		
+		layoutButtons.addWidget(buttonTurn, 0, 1);
+		layoutButtons.addWidget(buttonCastle, 1, 0);
+		layoutButtons.addWidget(buttonHero, 1, 1);
 		
 		buttonMove.clicked.connect(moveClicked);
 		buttonTurn.clicked.connect(turnClicked);
+		buttonCastle.clicked.connect(interactWithCastle);
+		buttonHero.clicked.connect(interactWithHero);
 		
 	}
 	
@@ -147,8 +157,15 @@ public class WindowMap extends QWidget
 		heroChanged.emit((Hero)hero);
 	}
 	
-	public void selectCastle(Object castle)
+	public void selectCastle(Object object)
 	{
+		//castleSelected.emit((Castle)castle);
+		
+		WindowStack ws = WindowStack.getLastInstance();
+		if (ws != null) {
+			Castle castle = (Castle)object;
+			ws.push(new WindowCastle(player, castle, castle.getHero()));
+		}
 	}
 	
 	public void cleanHeroes()
@@ -179,11 +196,13 @@ public class WindowMap extends QWidget
 	
 	public void startTurn(int day, core.Player player)
 	{
+		this.player = player;
+		
 		System.out.println("startTurn");
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
 		statusOre.setText(""+player.getResource(core.ResourceType.ORE));
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));
-		statusDay.setText(""+((day-1)%7+1)+" / "+((day-1)/7+1)+" tydzieñ");
+		statusDay.setText(""+((day-1)%7+1)+" / "+((day-1)/7+1)+" tydzieÅ„");
 		statusPlayer.setText(player.getName());
 		
 		cleanHeroes();

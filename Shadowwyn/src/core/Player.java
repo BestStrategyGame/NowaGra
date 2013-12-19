@@ -124,4 +124,8 @@ public abstract class Player
 	public void prepareToMission()
 	{
 	}
+
+	public void removeShadowRadius(int x, int y, int r)
+	{
+	}
 }

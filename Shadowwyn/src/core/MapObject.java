@@ -84,4 +84,9 @@ package core;
 	public boolean isCollectable() {
 		return false;
 	}
+	
+	@Override
+	public Color getColor() {
+		return null;
+	}
  } 

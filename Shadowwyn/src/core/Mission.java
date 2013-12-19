@@ -117,6 +117,7 @@ public abstract class Mission extends QObject
 			players[playersNo] = player;
 			player.prepareToMission();
 			++playersNo;
+			wmap.removeShadow(player);
 		}
 	}
 	
@@ -187,5 +188,21 @@ public abstract class Mission extends QObject
 	public void activeHeroChanged(Hero hero)
 	{
 		getActivePlayer().activeHeroChanged(hero);
+	}
+	
+	public void interactWithCastle()
+	{
+		
+		Hero hero = getActivePlayer().getActiveHero();
+		System.out.println("interact with castle "+hero+", "+hero.isInCastle());
+		if (hero.isInCastle()) {
+			WorldMapObject castle = wmap.getObjectAt(hero.getX(), hero.getY());
+			castle.stand(hero, getActivePlayer());
+		}
+	}
+	
+	public void interactWithHero()
+	{
+		
 	}
 }

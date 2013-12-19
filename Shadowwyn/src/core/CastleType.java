@@ -3,9 +3,9 @@ package core;
  
  public enum CastleType
  {
-	ZAMEK_LUDZI(1, "Zamek Ludzi", 0, 0, 0),
-	DEMONICZNA_NEKROPOLIA(2, "Demoniczna Nekropolia", 119, 0, 0),
-	LESNA_TWIERDZA(3, "Leśna Twierdza", 172, 113, 0);
+	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0),
+	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0),
+	FORREST_ROOK(3, "Leśna Twierdza", 172, 113, 0);
 	
 	public final int id;
 	public final String name;

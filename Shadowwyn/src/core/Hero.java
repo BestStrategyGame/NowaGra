@@ -96,6 +96,8 @@ public class Hero implements WorldMapObject
 		cityAttack = 0;
 		cityDefense = 0;
 		citySpeed = 0;
+		
+		System.out.println("Set out castle");
 	
 		this.x = x;
 		this.y = y;
@@ -113,9 +115,15 @@ public class Hero implements WorldMapObject
 	
 	public void setInCastle()
 	{
+		System.out.println("Set in castle");
 		cityAttack = 1;
 		cityDefense = 1;
 		citySpeed = 1;
+	}
+	
+	public boolean isInCastle()
+	{
+		return cityAttack != 0;
 	}
 	
 	public void setColor(Color c)

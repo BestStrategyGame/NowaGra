@@ -71,4 +71,9 @@ public class Resource implements WorldMapObject
 	public boolean isCollectable() {
 		return true;
 	}
+	
+	@Override
+	public Color getColor() {
+		return null;
+	}
 }

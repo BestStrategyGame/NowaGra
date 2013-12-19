@@ -4,7 +4,7 @@ public class PlayerHuman extends Player
 {
 	private WorldMap.Point target = null;
 	
-	PlayerHuman(String n, Color c)
+	public PlayerHuman(String n, Color c)
 	{
 		super(n, c);
 	}
@@ -124,7 +124,7 @@ public class PlayerHuman extends Player
 		}
 	}
 	
-	private void removeShadowRadius(int x, int y, int r)
+	public void removeShadowRadius(int x, int y, int r)
 	{
 		for (int i=x-r; i<=x+r; ++i) {
 			for (int j=y-r; j<=y+r; ++j) {

@@ -99,4 +99,9 @@ public enum Artifact implements WorldMapObject
 	public boolean isCollectable() {
 		return true;
 	}
+	
+	@Override
+	public Color getColor() {
+		return null;
+	}
  } 

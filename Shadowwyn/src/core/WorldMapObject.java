@@ -11,4 +11,5 @@ public interface WorldMapObject
 	void weeklyBonus(Player player);
 	String getImageFile();
 	String getName();
+	Color getColor();
 }

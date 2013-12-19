@@ -189,10 +189,16 @@ public class WorldMap
 		WorldMapObject o;
 		for (core.Point pos: p2o.points()) {
 			o = p2o.get(pos);
-			if (o.getImageFile() != null) {
-				System.out.println(o.getImageFile());
-				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
-				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
+			if (o != null) {
+				if (o.getImageFile() != null) {
+					System.out.println(o.getImageFile());
+					mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
+					//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
+				}
+				System.out.println("populate "+pos.x+", "+pos.y+" - "+o+"  ~~~"+o.getColor());
+				if (o.getColor() != null) {
+					colorChanged(o, o.getColor());
+				}
 			}
 		}
 		for (core.Point pos: p2h.points()) {
@@ -238,6 +244,11 @@ public class WorldMap
 		return p2o.get(obj);
 	}
 	
+	public WorldMapObject getObjectAt(int x, int y)
+	{
+		return p2o.get(x, y);
+	}
+	
 	public void dailyBonus(Player player)
 	{
 		//for (List<WorldMapObject> s: p2o.objects()) {
@@ -262,15 +273,24 @@ public class WorldMap
 		//}
 	}
 	
+	public void removeShadow(Player player)
+	{
+		for (Castle c: player.getCastles()) {
+			core.Point p = p2o.get(c);
+			player.removeShadowRadius(p.x, p.y, 3);
+		}
+	}
+	
 	public void colorChanged(WorldMapObject o, Color c)
 	{
 		core.Point pos = p2o.get(o);
 		System.out.println("color changed: "+o+", "+c.name+", "+pos);
 		
-		if (ready) {
-			
-			mapWidget.objectAt(pos.y, pos.x).setLayer(0, new gui.WidgetImage(c.mfFile));
-		}
+		//if (ready) {
+			try {
+				mapWidget.objectAt(pos.y, pos.x).setLayer(0, new gui.WidgetImage(c.mfFile));
+			} catch (java.lang.NullPointerException e) {}
+		//}
 	}
 	
 	public void moveTo(Hero hero, Player player, int x, int y, int px, int py)
