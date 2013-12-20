@@ -89,4 +89,10 @@ public class MapBuilding implements WorldMapObject
 	public boolean isCollectable() {
 		return false;
 	}
+
+	@Override
+	public String getTooltip() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

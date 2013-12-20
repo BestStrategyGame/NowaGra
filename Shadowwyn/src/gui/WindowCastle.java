@@ -231,6 +231,16 @@ public class WindowCastle extends QWidget
 	
 	public void exit()
 	{
+		core.WorldMap wmap = core.WorldMap.getLastInstance();
+		if (wmap != null) {
+			if (hero != null) {
+				wmap.getMapWidget().objectAt(hero.getY(), hero.getX()).setToolTip(castle.getTooltip() +"\n\n"+ hero.getTooltip());
+			} else {
+				core.Point pos = wmap.getPositionOfObject(castle);
+				wmap.getMapWidget().objectAt(pos.y, pos.x).setToolTip(castle.getTooltip());
+			}
+		}
+		
 		WindowStack ws = WindowStack.getLastInstance();
 		if (ws != null) {
 			ws.pop();

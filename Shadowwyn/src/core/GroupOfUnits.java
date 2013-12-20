@@ -37,6 +37,21 @@ public class GroupOfUnits
 		return number;
 	}
 	
+	public String getNumberDesc()
+	{
+		int n = getNumber();
+		if (n < 5) return "mało";
+		if (n < 10) return "kilka";
+		if (n < 20) return "watacha";
+		if (n < 50) return "dużo";
+		if (n < 100) return "horda";
+		if (n < 250) return "masa";
+		if (n < 500) return "mrowie";
+		if (n < 1000) return "rzesza";
+		if (n < 50000) return "legion";
+		return "wow such power much numbers"; // ;)
+	}
+	
 	public int getAttack()
 	{
 		return type.attack +

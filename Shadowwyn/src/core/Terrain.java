@@ -7,9 +7,9 @@ public enum Terrain {
 	SWAMP("Bagna", 7, 255, 71, 2.5f, "image/terrain/swamp.png"),
 	PATH("Ścieżka", 103, 103, 78, 1f, "image/terrain/path.png"),
 	MOUNTAINS("Góry", 255, 255, 255, 5000000f, "image/objects/mountains.png"),
-	TREE("Drzewo", 255, 0, 236, 5000000f, "image/objects/tree.png"),
-	CASTLE("Castle", 0, 0, 0, 5000000f, "image/objects/tree.png"),
-	ENTRANCE("Castle entrance", 0, 255, 255, 1f, "image/objects/tree.png"),
+	TREE("Drzewo", 150, 200, 150, 5000000f, "image/objects/tree.png"),
+	CASTLE("Castle", 70, 70, 70, 5000000f, "image/objects/tree.png"),
+	ENTRANCE("Castle entrance", 65, 65, 65, 1f, "image/objects/tree.png"),
 	OTHER("", 66, 66, 66, 1f, "");
 	
 	

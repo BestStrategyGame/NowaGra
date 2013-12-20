@@ -84,6 +84,15 @@ public class Hero implements WorldMapObject
 		return color;
 	}
 	
+	public String getTooltip()
+	{
+		String tooltip = name;
+		for (GroupOfUnits u: units) {
+			tooltip += "\n"+ u.type.name +" ("+u.getNumberDesc()+")";
+		}
+		return tooltip;
+	}
+	
 	public int getMovePoints()
 	{
 		return movePoints;

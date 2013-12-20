@@ -12,4 +12,5 @@ public interface WorldMapObject
 	String getImageFile();
 	String getName();
 	Color getColor();
+	String getTooltip();
 }

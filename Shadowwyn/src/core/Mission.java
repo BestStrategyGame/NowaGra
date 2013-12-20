@@ -206,20 +206,28 @@ public abstract class Mission extends QObject
 	
 	public void interactWithHero()
 	{
-		
 		Hero hero = getActivePlayer().getActiveHero();
 		int x = hero.getX();
 		int y = hero.getY();
-		Hero hero2;
-		for (int i=x-1; i<=x+1; ++i) {
-			for (int j=y-1; j<=y+1; ++j) {
-				hero2 = wmap.getHeroAt(i, j);
-				if (hero2 != null && hero != hero2 && hero.getColor() == hero2.getColor()) {
-					new gui.DialogHero(hero, hero2).exec();
-					return;
+		do {
+			Hero hero2;
+			for (int i=x-1; i<=x+1; ++i) {
+				for (int j=y-1; j<=y+1; ++j) {
+					hero2 = wmap.getHeroAt(i, j);
+					if (hero2 != null && hero != hero2 && hero.getColor() == hero2.getColor()) {
+						new gui.DialogHero(hero, hero2).exec();
+						break;
+					}
 				}
 			}
+			new gui.DialogHero(hero, null).exec();
+		} while(false);
+		
+		WorldMapObject object = wmap.getObjectAt(x, y);
+		if (object != null && object.getTooltip() != null) {
+			wmap.getMapWidget().objectAt(y, x).setToolTip(object.getTooltip() +"\n\n"+ hero.getTooltip());
+		} else {
+			wmap.getMapWidget().objectAt(y, x).setToolTip(hero.getTooltip());
 		}
-		new gui.DialogHero(hero, null).exec();
 	}
 }

@@ -16,7 +16,7 @@ public class WindowMap extends QWidget
 	private core.Hero hero;
 	
 	private QWidget map;
-	private QWidget minimap = new MiniMap(this);
+	private MiniMap minimap = new MiniMap(this);
 	private QGridLayout layout = new QGridLayout();
 	private QVBoxLayout layoutRight = new QVBoxLayout();
 	private QFormLayout layoutResources = new QFormLayout();
@@ -110,7 +110,7 @@ public class WindowMap extends QWidget
 		layoutButtons.addWidget(buttonTurn, 0, 1);
 		layoutButtons.addWidget(buttonCastle, 1, 0);
 		layoutButtons.addWidget(buttonHero, 1, 1);
-		layoutButtons.addWidget(buttonGC, 3, 0);
+		layoutButtons.addWidget(buttonGC, 3, 0, 1, 2);
 		
 		buttonGC.clicked.connect(this, "runGC()");
 		buttonMove.clicked.connect(moveClicked);
@@ -118,7 +118,13 @@ public class WindowMap extends QWidget
 		buttonTurn.clicked.connect(turnClicked);
 		buttonCastle.clicked.connect(interactWithCastle);
 		buttonHero.clicked.connect(interactWithHero);
+		minimap.pressed.connect(this, "minimapClicked(int, int)");
 		
+	}
+	
+	public void minimapClicked(int x, int y)
+	{
+		scroll.ensureVisible(y*64, x*64, 64*4, 64*4);
 	}
 	
 	public void runGC()
@@ -132,6 +138,7 @@ public class WindowMap extends QWidget
 		if (hero != null) {
 			scroll.ensureVisible(this.hero.getX()*64, this.hero.getY()*64, 64*4, 64*4);
 		}
+		minimap.repaint();
 	}
 	
 	public void addHero(core.Hero hero)
@@ -152,6 +159,7 @@ public class WindowMap extends QWidget
 		
 		
 		heroes.add(hero);
+		minimap.repaint();
 	}
 	
 	public void addCastle(core.Castle castle)
@@ -220,6 +228,8 @@ public class WindowMap extends QWidget
 		heroesSelected = 0;
 		((WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget())).setChecked(true);
 		selectHero(heroes.get(heroesSelected));
+		
+		minimap.repaint();
 	}
 	
 	public void startTurn(int day, core.Player player)
@@ -250,6 +260,7 @@ public class WindowMap extends QWidget
 		}
 		
 		//buttonTurn.setStyleSheet("background-color: #ff0000");
+		minimap.repaint();
 	}
 	
 	public void updateData(core.Player player)
@@ -263,6 +274,8 @@ public class WindowMap extends QWidget
 		for (Castle castle: player.getCastles()) {
 			addCastle(castle);
 		}
+		
+		minimap.repaint();
 	}
 	
 	public void setMap(QWidget m)

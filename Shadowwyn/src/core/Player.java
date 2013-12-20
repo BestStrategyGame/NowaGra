@@ -30,6 +30,11 @@ public abstract class Player
 		}
 	}
 	
+	public Set<Point> getVisible()
+	{
+		return visible;
+	}
+	
 	public Color getColor()
 	{
 		return color;

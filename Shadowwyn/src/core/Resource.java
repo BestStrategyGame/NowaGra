@@ -76,4 +76,10 @@ public class Resource implements WorldMapObject
 	public Color getColor() {
 		return null;
 	}
+
+	@Override
+	public String getTooltip() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

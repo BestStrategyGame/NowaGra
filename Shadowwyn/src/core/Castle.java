@@ -204,4 +204,14 @@ public class Castle implements WorldMapObject
 	public boolean isCollectable() {
 		return false;
 	}
+
+	@Override
+	public String getTooltip()
+	{
+		String tooltip = name;
+		for (GroupOfUnits u: garisson.getUnits()) {
+			tooltip += "\n"+ u.type.name +" ("+u.getNumberDesc()+")";
+		}
+		return tooltip;
+	}
 }

@@ -28,7 +28,7 @@ public class MissionMap2 extends Mission
 		
 		wmap.addObject(10, 10, h1);
 		wmap.addObject(5, 27, h2);
-		wmap.addObject(3, 3, h3);
+		wmap.addObject(3, 3, h4);
 		
 		Castle c1 = new Castle(CastleType.HUMAN_CASTLE, "Zamek NW");
 		Castle c2 = new Castle(CastleType.HUMAN_CASTLE, "Zamek SW");

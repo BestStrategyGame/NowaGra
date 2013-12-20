@@ -77,6 +77,11 @@ public class WorldMap
 		LAST_INSTANCE = this;
 	}
 	
+	public Terrain[][] getTerrain()
+	{
+		return tmap;
+	}
+	
 	public void initRoute()
 	{
 		route = new Point[getHeight()][];
@@ -196,8 +201,10 @@ public class WorldMap
 				if (o.getImageFile() != null) {
 					System.out.println(o.getImageFile());
 					mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
-					//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
+					
+					System.out.println(o.getTooltip());
 				}
+				mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getTooltip());
 				System.out.println("populate "+pos.x+", "+pos.y+" - "+o+"  ~~~"+o.getColor());
 				if (o.getColor() != null) {
 					colorChanged(o, o.getColor());
@@ -208,6 +215,7 @@ public class WorldMap
 			o = p2h.get(pos);
 			if (o.getImageFile() != null) {
 				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
+				mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getTooltip());
 				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
 			}
 		}
@@ -303,11 +311,15 @@ public class WorldMap
 	
 	public void moveTo(Hero hero, Player player, int x, int y, int px, int py)
 	{
+		WorldMapObject standing = p2o.get(hero.getX(), hero.getY());
 		WorldMapObject object = p2o.get(x, y);
 		System.out.println("move to: "+x+", "+y+", "+object);
 		
 		p2h.remove(hero.getX(), hero.getY());
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
+		if (standing != null) {
+			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip(standing.getTooltip());
+		}
 		mapWidget.clearLevel(3);
 		
 		/*if (object != null && object.isVisitable() && !object.isCollectable()) {
@@ -315,6 +327,11 @@ public class WorldMap
 			y = py;
 		}*/
 		mapWidget.objectAt(y, x).setLayer(hero.stackLevel(), new gui.WidgetImage(hero.getImageFile(), 64));
+		if (object != null && object.getTooltip() != null) {
+			mapWidget.objectAt(y, x).setToolTip(object.getTooltip() +"\n\n"+ hero.getTooltip());
+		} else {
+			mapWidget.objectAt(y, x).setToolTip(hero.getTooltip());
+		}
 		addObject(x, y, hero);
 		
 		if (object != null) if (object.stand(hero, player)) {

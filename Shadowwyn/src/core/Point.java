@@ -4,13 +4,13 @@ public class Point
 	public final int x;
 	public final int y;
 	
-	Point (int x, int y)
+	public Point (int x, int y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	Point (int xy)
+	public Point (int xy)
 	{
 		this.x = xy/10000;
 		this.y = xy%10000;
@@ -22,6 +22,7 @@ public class Point
 		return x*10000+y;
 	}
 	
+	@Override
 	public boolean equals(Object o)
 	{
 		Point other = (Point)o;
