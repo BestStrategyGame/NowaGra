@@ -6,6 +6,8 @@ public class Hero implements WorldMapObject
 {
 	private String name;
 	private Color color = null;
+	private Castle castle;
+	private CastleType type;
 	
 	private int attack = 0;
 	private int defense = 0;
@@ -26,13 +28,14 @@ public class Hero implements WorldMapObject
 	private Map<ArtifactType, Artifact> active = new HashMap<ArtifactType, Artifact>();
 	private List<GroupOfUnits> units = new ArrayList<GroupOfUnits>();
 	
-	public Hero(String n)
+	public Hero(String n, CastleType t)
 	{
 		active.put(ArtifactType.SWORD, Artifact.DUMMY);
 		active.put(ArtifactType.HELMET, Artifact.DUMMY);
 		active.put(ArtifactType.ARMOR, Artifact.DUMMY);
 		active.put(ArtifactType.SHIELD, Artifact.DUMMY);
 		name = n;
+		type = t;
 		//color = c;
 	}
 	
@@ -96,8 +99,9 @@ public class Hero implements WorldMapObject
 		cityAttack = 0;
 		cityDefense = 0;
 		citySpeed = 0;
+		castle = null;
 		
-		System.out.println("Set out castle");
+		System.out.println("Set out castle "+x+", "+y);
 	
 		this.x = x;
 		this.y = y;
@@ -113,17 +117,23 @@ public class Hero implements WorldMapObject
 		return y;
 	}
 	
-	public void setInCastle()
+	public void setInCastle(Castle c)
 	{
 		System.out.println("Set in castle");
+		castle = c;
 		cityAttack = 1;
 		cityDefense = 1;
 		citySpeed = 1;
 	}
 	
+	public boolean isInCastle(Castle c)
+	{
+		return castle == c;
+	}
+	
 	public boolean isInCastle()
 	{
-		return cityAttack != 0;
+		return castle != null;
 	}
 	
 	public void setColor(Color c)
@@ -194,6 +204,21 @@ public class Hero implements WorldMapObject
 		experience += n;
 	}
 	
+	public int getExp()
+	{
+		return experience;
+	}
+	
+	public int getLevel()
+	{
+		return experience/1000 + 1;
+	}
+	
+	public int getBaseAttack()
+	{
+		return attack;
+	}
+	
 	public int getAttack()
 	{
 		int result = attack + cityAttack;
@@ -203,6 +228,11 @@ public class Hero implements WorldMapObject
 		return result;
 	}
 	
+	public int getBaseDefense()
+	{
+		return defense;
+	}
+	
 	public int getDefense()
 	{
 		int result = defense + cityDefense;
@@ -210,6 +240,11 @@ public class Hero implements WorldMapObject
 			result += a.defense;
 		}
 		return result;
+	}
+	
+	public int getBaseSpeed()
+	{
+		return speed;
 	}
 	
 	public int getSpeed()
@@ -243,7 +278,7 @@ public class Hero implements WorldMapObject
 
 	@Override
 	public String getImageFile() {
-		return "image/dummy.png";
+		return type.file;
 	}
 
 	@Override

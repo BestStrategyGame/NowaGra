@@ -17,8 +17,10 @@ public class WidgetHolder extends QStackedWidget
 	public void setWidget(QWidget widget)
 	{
 		QWidget w = currentWidget();
-		removeWidget(w);
-		//w.dispose();
+		if (w != null) {
+			removeWidget(w);
+			w.dispose();
+		}
 		if (widget != null) {
 			addWidget(widget);
 		}

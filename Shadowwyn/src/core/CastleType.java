@@ -3,20 +3,21 @@ package core;
  
  public enum CastleType
  {
-	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0),
-	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0),
-	FORREST_ROOK(3, "Leśna Twierdza", 172, 113, 0);
+	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0, "image/heroes/human.png"),
+	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0, "image/heroes/demon.png"),
+	FOREST_ROOK(3, "Leśna Twierdza", 172, 113, 0, "image/heroes/forest.png");
 	
 	public final int id;
 	public final String name;
 	public final int rgb;
-	public final String file = "image/dummy.png";
+	public final String file;
 	
-	private CastleType(int i, String n, int r, int g, int b)
+	private CastleType(int i, String n, int r, int g, int b, String f)
 	{
 		id = i;
 		name = n;
 		rgb = 256*256*r + 256*g + b;
+		file = f;
 	}
 	
 	private static final Map<Integer, CastleType> mapId = new HashMap<Integer, CastleType>();

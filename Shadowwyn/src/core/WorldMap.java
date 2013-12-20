@@ -1,7 +1,10 @@
 package core;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+
+import com.trolltech.qt.core.*;
 
 public class WorldMap
 {
@@ -52,9 +55,9 @@ public class WorldMap
 	}
 	
 	
-	static WorldMap LAST_INSTANCE;
+	private static WorldMap LAST_INSTANCE;
 	
-	static WorldMap getLastInstance()
+	public static WorldMap getLastInstance()
 	{
 		return LAST_INSTANCE;
 	}
@@ -247,6 +250,11 @@ public class WorldMap
 	public WorldMapObject getObjectAt(int x, int y)
 	{
 		return p2o.get(x, y);
+	}
+	
+	public Hero getHeroAt(int x, int y)
+	{
+		return (Hero)p2h.get(x, y);
 	}
 	
 	public void dailyBonus(Player player)

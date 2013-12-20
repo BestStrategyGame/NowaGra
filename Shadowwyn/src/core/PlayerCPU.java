@@ -9,6 +9,8 @@ public class PlayerCPU extends Player
 	@Override
 	public boolean startTurn(int day)
 	{
+		super.startTurn(day);
+		
 		GuiInteraction gui = GuiInteraction.INSTANCE;
 		gui.progressStart();
 		

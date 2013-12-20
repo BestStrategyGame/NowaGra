@@ -3,18 +3,20 @@ import java.util.*;
 
 public enum ResourceType
 {
-	GOLD("Z�oto", 255, 255, 200, "image/resource/gold.png"),
-	ORE("Ruda", 200, 255, 255, "image/resource/ore.png"),
-	WOOD("Drewno", 255, 200, 200, "image/resource/wood.png");
+	GOLD("Złoto", 0.01f, 255, 255, 200, "image/resource/gold.png"),
+	ORE("Kamień", 1f, 200, 255, 255, "image/resource/ore.png"),
+	WOOD("Drewno", 2f, 255, 200, 200, "image/resource/wood.png");
 	
 	public final String name;
 	public final int rgb;
 	public final String file;
+	public final float exchange;
 	
-	private ResourceType(String n, int r, int g, int b, String f)
+	private ResourceType(String n, float e, int r, int g, int b,  String f)
 	{
 		name = n;
 		rgb = 256*256*r + 256*g + b;
+		exchange = e;
 		file = f;
 	}
 	

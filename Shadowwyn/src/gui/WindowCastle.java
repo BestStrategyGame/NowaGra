@@ -6,9 +6,12 @@ import com.trolltech.qt.core.Qt.Alignment;
 import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.gui.QLayout.SizeConstraint;
+import com.trolltech.qt.gui.QMessageBox.StandardButton;
+import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
 
 import core.Hero;
+import core.WorldMap;
 
 public class WindowCastle extends QWidget
 {
@@ -27,6 +30,8 @@ public class WindowCastle extends QWidget
 	
 	private QPushButton exit = new QPushButton("Wyjdź z zamku");
 	private QPushButton newHero = new QPushButton("Wynajmij bohatera");
+	private QPushButton oldHero = new QPushButton("Wskrześ bohatera");
+	private QPushButton market = new QPushButton("Targowisko");
 	//private QPushButton
 	
 	private WidgetBuy[] buys = new WidgetBuy[10];
@@ -104,7 +109,7 @@ public class WindowCastle extends QWidget
 		statusLayout.addRow("Kamień:", statusOre);
 		statusLayout.addRow("Drewno:", statusWood);
 		
-		bottomLayout.addLayout(statusLayout);
+		
 		
 		for (int i=0; i<buys.length; ++i) {
 			buys[i].buyed.connect(this,"buyed()");
@@ -119,17 +124,109 @@ public class WindowCastle extends QWidget
 
 		buttonsLayout.addWidget(exit);
 		buttonsLayout.addWidget(newHero);
-		buttonsLayout.addWidget(new QLabel());
+		buttonsLayout.addWidget(oldHero);
+		buttonsLayout.addWidget(market);
+		//buttonsLayout.addWidget(new QLabel());
 		//buttonsLayout.addStretch();
 		
-		newHero.setEnabled(false);
+		
 		//statusLayout.addRow(exit);
 		
-		bottomLayout.addStretch();
+		
 		bottomLayout.addLayout(buttonsLayout);
+		bottomLayout.addLayout(statusLayout);
+		bottomLayout.addStretch();
 		
 		exit.clicked.connect(this, "exit()");
+		market.clicked.connect(this, "market()");
+		newHero.clicked.connect(this, "recruitHero()");
+		oldHero.clicked.connect(this, "resurectHero()");
+		
+		oldHero.setMinimumSize(150, 20);
+		newHero.setMinimumSize(150, 20);
+		exit.setMinimumSize(150, 20);
+		market.setMinimumSize(150, 20);
 		updateResources();
+	}
+	
+	public void resurectHero()
+	{
+		if (player.getDeadHeroes().size() == 0) {
+			QMessageBox.warning(this, "Nie można wskrzesić bohatera", "Nie posiadasz martwego bohatera którego można wskrzesić");
+		} else if (castle.getHero() != null) {
+			QMessageBox.warning(this, "Nie można wskrzesić bohatera", "W tym zamku znajduje się już inny bohater");
+		} else {
+			Map<String, core.Hero> list = new HashMap<String, core.Hero>();
+			for (core.Hero hero: player.getDeadHeroes()) {
+				int cost = 500+hero.getLevel()*500;
+				list.put(hero.getName()+" (poziom "+hero.getLevel()+") za "+cost+" złota", hero);
+			}
+			
+			String select = QInputDialog.getItem(this, "Wskrześ bohatera", "Wybierz bohatera którego chcesz wskrzesić", new ArrayList(list.keySet()), 0, false);
+			if (select != null) {
+				core.Hero hero = list.get(select);
+				int cost = 500+hero.getLevel()*500;
+				System.out.println(hero.getName());
+				
+				if (player.getResource(core.ResourceType.GOLD) < cost) {
+					QMessageBox.warning(this, "Nie można wynająć bohatera", "Nie posiadasz wystarczającej ilości złota");
+				} else {
+					player.resurectHero(hero);
+					addNewHero(hero);
+					player.addResource(core.ResourceType.GOLD, -cost);
+					updateResources();
+				}
+			}
+		}
+	}
+	
+	
+	
+	public void recruitHero()
+	{
+		if (castle.getHero() != null) {
+			QMessageBox.warning(this, "Nie można wynająć bohatera", "W tym zamku znajduje się już inny bohater");
+		} else if (player.getResource(core.ResourceType.GOLD) < 2500) {
+			QMessageBox.warning(this, "Nie można wynająć bohatera", "Wynajęcie bohatera kosztuje 2500 złota");
+		} else {
+			if (QMessageBox.question(this, "Wynajęcie bohatera", "Czy chcesz wynająć bohatera za 2500 złota?",
+					new StandardButtons(StandardButton.Yes, StandardButton.No)) != StandardButton.Yes) {
+				return;
+			}
+			Hero hero = new Hero("Nowy bohater", castle.getType());
+			addNewHero(hero);
+			player.addResource(core.ResourceType.GOLD, -2500);
+			updateResources();
+			//QMessageBox.warning(this, "Wynajęto bohatera", "Wynajęto bohatera");
+			
+		}
+	}
+	
+	public void addNewHero(core.Hero hero)
+	{
+		core.WorldMap wmap = core.WorldMap.getLastInstance();
+		if (wmap != null) {
+			player.addHero(hero);
+			castle.setHero(hero);
+			castle.lockStanding();
+			units.setRight(hero);
+			core.Point pos = wmap.getPositionOfObject(castle);
+			wmap.addObject(pos.x, pos.y, hero);
+			//wmap.getMapWidget().objectAt(pos.y, pos.x).setLayer(hero.getLevel(), new WidgetImage(hero.getImageFile(), 64));
+			wmap.moveTo(hero, player, pos.x, pos.y, -1, -1);
+			core.Mission m = core.Mission.getLastInstance();
+			if (m != null) {
+				m.addHero.emit(hero);
+			}
+			player.setActiveHero(hero);
+		}
+	}
+	
+	public void market()
+	{
+		DialogMarket dialog = new DialogMarket(player);
+		dialog.exec();
+		buyed();
 	}
 	
 	public void exit()

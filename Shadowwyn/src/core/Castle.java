@@ -11,16 +11,22 @@ public class Castle implements WorldMapObject
 	private Set<CastleBuilding> buildings = new HashSet<CastleBuilding>();
 	private boolean buyed = false;
 	private int[] availableToRecruit = new int[4]; 
-	private Hero garisson = new Hero("Garnizon stacjonujący");
+	private Hero garisson = new Hero("Garnizon stacjonujący", null);
 	private Hero hero;
+	private boolean lock = false;
 	
 	public Hero getHero()
 	{
-		if (hero != null && hero.isInCastle()) {
+		if (hero != null && hero.isInCastle(this)) {
 			return hero;
 		} else {
 			return null;
 		}
+	}
+	
+	public void lockStanding()
+	{
+		lock = true;
 	}
 
 	public void setHero(Hero hero)
@@ -84,14 +90,36 @@ public class Castle implements WorldMapObject
 	
 	public boolean stand(Hero hero, Player player)
 	{
+		if (lock) {
+			return false;
+		}
 		if (hero.getColor() == color) {
-			hero.setInCastle();
+			hero.setInCastle(this);
 			setHero(hero);
 			gui.WindowStack ws = gui.WindowStack.getLastInstance();
 			if (ws != null) {
 				gui.WindowCastle wc = new gui.WindowCastle(player, this, hero);
 				ws.push(wc);
 			}
+		} else {
+			if (garisson.getUnits().size() == 0) {
+				setColor(player.getColor());
+				player.addCastle(this);
+				hero.setInCastle(this);
+				setHero(hero);
+				
+				Mission m = Mission.getLastInstance();
+				if (m != null) {
+					System.out.println("update window "+m.getActivePlayer());
+					m.updateWindow.emit(m.getActivePlayer());
+				}
+				
+			} else {
+				// TODO fight
+				
+				System.out.println("fight in castle");
+			}
+			
 		}
 		return false;
 	}

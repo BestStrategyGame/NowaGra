@@ -22,7 +22,7 @@ public class WindowStack extends QWidget
 		super();
 		
 		//setStyleSheet("background-color: #ccc; color: black;");
-		setStyleSheet("* {background-color: #ddd; color: #333;} QPushButton[enabled=\"false\"] { color: #888 }");
+		setStyleSheet(core.Const.style);
 		
 		setLayout(layout);
 		
@@ -37,7 +37,9 @@ public class WindowStack extends QWidget
 	
 	public void pop()
 	{
-		layout.removeWidget(layout.currentWidget());
+		QWidget w = layout.currentWidget();
+		layout.removeWidget(w);
+		w.dispose();
 	}
 	
 	public static void main(String[] args)
@@ -59,6 +61,7 @@ public class WindowStack extends QWidget
 		window.turnClicked.connect(mission, "turnClicked()");
 		window.interactWithCastle.connect(mission, "interactWithCastle()");
 		window.interactWithHero.connect(mission, "interactWithHero()");
+		mission.addHero.connect(window, "addHero(Hero)");
 		map.pressed.connect(mission, "clickedOnMap(int,int)");
 		window.setMap(map);
 		
@@ -88,7 +91,7 @@ public class WindowStack extends QWidget
 		//WindowCastle wc =  new WindowCastle(p1, c1, null);
 		w.push(window);
 		//w.push(wc);
-		w.setMinimumSize(1024, 768);
+		w.setMinimumSize(1000, 700);
 		w.show();
 		
 		QApplication.exec();

@@ -7,6 +7,7 @@ public abstract class Player
 	private Color color;
 	
 	private Map<ResourceType, Integer> resources = new HashMap<ResourceType, Integer>();
+	private List<Hero> deadHeroes = new LinkedList<Hero>();
 	private List<Hero> heroes = new LinkedList<Hero>();
 	private List<Castle> castles = new LinkedList<Castle>();
 	private Hero activeHero;
@@ -32,6 +33,25 @@ public abstract class Player
 	public Color getColor()
 	{
 		return color;
+	}
+	
+	public void dieHero(Hero hero)
+	{
+		if (heroes.remove(hero)) {
+			deadHeroes.add(hero);
+		}
+	}
+	
+	public void resurectHero(Hero hero)
+	{
+		if (deadHeroes.remove(hero)) {
+			heroes.add(hero);
+		}
+	}
+	
+	public List<Hero> getDeadHeroes()
+	{
+		return deadHeroes;
 	}
 	
 	public void addHero(Hero hero)
@@ -77,7 +97,17 @@ public abstract class Player
 		updateWindow();
 	}
 	
-	abstract public boolean startTurn(int day);
+	public boolean startTurn(int day)
+	{
+		Iterator<Castle> i = castles.iterator();
+		while (i.hasNext()) {
+			Castle c = i.next();
+			if (c.getColor() != color) {
+				i.remove();
+			}
+		}
+		return false;
+	}
 
 	public String getName()
 	{

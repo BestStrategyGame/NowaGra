@@ -10,7 +10,10 @@ public class PlayerHuman extends Player
 	}
 	
 	@Override
-	public boolean startTurn(int day) {
+	public boolean startTurn(int day)
+	{
+		super.startTurn(day);
+		
 		System.out.println("Start turn "+getName());
 		if (getHeroes().iterator().hasNext()) {
 			setActiveHero(getHeroes().iterator().next());
@@ -130,7 +133,7 @@ public class PlayerHuman extends Player
 			for (int j=y-r; j<=y+r; ++j) {
 				double hypot = java.lang.Math.hypot(i-x, j-y);
 				//System.out.println("hypot: "+hypot);
-				if (hypot <= (r+0.01)) {
+				if (hypot <= (r+0.41)) {
 					try {
 						Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(j, i);
 						visible.add(new Point(i, j));

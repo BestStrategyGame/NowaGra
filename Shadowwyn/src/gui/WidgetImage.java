@@ -12,6 +12,7 @@ public class WidgetImage extends QLabel
 		super(src);
 		QImage image = new QImage(src);
 		setPixmap(QPixmap.fromImage(image));
+		image.dispose();
 	}
 	
 	public WidgetImage(String src, int size)
@@ -45,6 +46,12 @@ public class WidgetImage extends QLabel
 			map.put(src, image);
 		}
 		setPixmap(QPixmap.fromImage(image).copy(x, y, width, height));
+	}
+	
+	public void clean()
+	{
+		pixmap().dispose();
+		dispose();
 	}
 	
 	private static final Map<String, QImage> map = new HashMap<String, QImage>();

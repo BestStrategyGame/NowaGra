@@ -1,15 +1,17 @@
 package core;
 
+import com.trolltech.qt.QSignalEmitter.Signal1;
 import com.trolltech.qt.QSignalEmitter.Signal2;
 import com.trolltech.qt.core.*;
+
 import java.util.*;
 import java.io.*;
 
 public abstract class Mission extends QObject
 {
-	static Mission LAST_INSTANCE;
+	private static Mission LAST_INSTANCE;
 	
-	static Mission getLastInstance()
+	public static Mission getLastInstance()
 	{
 		return LAST_INSTANCE;
 	}
@@ -22,6 +24,7 @@ public abstract class Mission extends QObject
 	protected WorldMap wmap;
 	
 	public Signal1<Player> updateWindow = new Signal1<Player>();
+	public Signal1<Hero> addHero = new Signal1<Hero>();
 
 	private Player activePlayer;
 	
@@ -204,5 +207,19 @@ public abstract class Mission extends QObject
 	public void interactWithHero()
 	{
 		
+		Hero hero = getActivePlayer().getActiveHero();
+		int x = hero.getX();
+		int y = hero.getY();
+		Hero hero2;
+		for (int i=x-1; i<=x+1; ++i) {
+			for (int j=y-1; j<=y+1; ++j) {
+				hero2 = wmap.getHeroAt(i, j);
+				if (hero2 != null && hero != hero2 && hero.getColor() == hero2.getColor()) {
+					new gui.DialogHero(hero, hero2).exec();
+					return;
+				}
+			}
+		}
+		new gui.DialogHero(hero, null).exec();
 	}
 }

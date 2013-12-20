@@ -3,6 +3,6 @@ public class IndependentUnits extends Hero implements WorldMapObject
 {
 	public IndependentUnits()
 	{
-		super("");
+		super("", null);
 	}
 }

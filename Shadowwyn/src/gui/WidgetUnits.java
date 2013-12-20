@@ -19,9 +19,13 @@ public class WidgetUnits extends QWidget
 	private QPushButton right = new QPushButton(">>");
 	private QPushButton split = new QPushButton("<->");
 	
+	private QLabel name1 = new QLabel();
+	private QLabel name2 = new QLabel();
+	
 	public WidgetUnits(List<core.GroupOfUnits> u1, List<core.GroupOfUnits> u2, core.Hero h1, core.Hero h2)
 	{
 		super();
+		
 		units1 = u1;
 		units2 = u2;
 		hero1 = h1;
@@ -29,12 +33,17 @@ public class WidgetUnits extends QWidget
 		
 		setSizePolicy(Policy.Fixed, Policy.Fixed);
 		
+		left.setMaximumSize(32, 32);
+		right.setMaximumSize(32, 32);
+		split.setMaximumSize(32, 32);
+		
 		if (h2 == null) {
 			left.setEnabled(false);
 			right.setEnabled(false);
 			split.setEnabled(false);
 			list2.setEnabled(false);
-			h2 = hero2 = new core.Hero("");
+			
+			h2 = hero2 = new core.Hero("", null);
 			u2 = units2 = new ArrayList<core.GroupOfUnits>();
 		}
 		
@@ -43,9 +52,10 @@ public class WidgetUnits extends QWidget
 		list1.setMaximumSize(150, 110);
 		list2.setMaximumSize(150, 110);
 		
-		layout.addWidget(new QLabel(h1.getName()), 0, 0);
+		
+		layout.addWidget(name1, 0, 0);
 		layout.addWidget(list1, 1, 0, 4, 1);
-		layout.addWidget(new QLabel(h2.getName()), 0, 2);
+		layout.addWidget(name2, 0, 2);
 		layout.addWidget(list2, 1, 2, 4, 2);
 		layout.addWidget(left, 1, 1);
 		layout.addWidget(right, 2, 1);
@@ -60,8 +70,28 @@ public class WidgetUnits extends QWidget
 		
 	}
 	
+	public void setRight(core.Hero h2)
+	{
+		units2 = h2.getUnits();
+		hero2 = h2;
+		
+		left.setEnabled(true);
+		right.setEnabled(true);
+		split.setEnabled(true);
+		list2.setEnabled(true);
+		
+		left.setDisabled(false);
+		right.setDisabled(false);
+		split.setDisabled(false);
+		list2.setDisabled(false);
+		
+		updateUnits();
+	}
+	
 	public void updateUnits()
 	{
+		name1.setText(hero1.getName());
+		name2.setText(hero2.getName());
 		list1.clear();
 		list2.clear();
 		
@@ -172,7 +202,7 @@ public class WidgetUnits extends QWidget
 		//u2.add(new core.GroupOfUnits(core.UnitType.ANIOL, null, 30));
 	
 		QApplication.initialize(args);
-		WidgetUnits wu = new WidgetUnits(u1, u2, new core.Hero("Bohater"), new core.Hero("Zamek"));
+		WidgetUnits wu = new WidgetUnits(u1, u2, new core.Hero("Bohater", null), new core.Hero("Zamek", null));
 		wu.show();
 		QApplication.exec();
 	}

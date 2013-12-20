@@ -134,7 +134,7 @@ public class WidgetRecruit extends QFrame
 		core.Castle c1 = new core.Castle(core.CastleType.HUMAN_CASTLE, null);
 		c1.addAvailableToRecruit(1, 99);
 		QApplication.initialize(args);
-		core.Hero h =  new core.Hero("dummy");
+		core.Hero h =  new core.Hero("dummy", null);
 		WidgetRecruit w = new WidgetRecruit(p1, c1, h, core.UnitType.WOJAK);
 		w.show();
 		QApplication.exec();

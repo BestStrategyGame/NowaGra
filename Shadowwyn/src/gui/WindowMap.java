@@ -13,6 +13,7 @@ import core.Hero;
 public class WindowMap extends QWidget
 {
 	private core.Player player;
+	private core.Hero hero;
 	
 	private QWidget map;
 	private QWidget minimap = new MiniMap(this);
@@ -29,11 +30,13 @@ public class WindowMap extends QWidget
 	private QPushButton buttonMove = new QPushButton("Idź\nbohaterem");
 	private QPushButton buttonTurn = new QPushButton("Zakończ\nturę");
 	private QPushButton buttonCastle = new QPushButton("Interakcja\nz zamkiem");
-	private QPushButton buttonHero = new QPushButton("Interakcja\nz innym\nbohaterem");
+	private QPushButton buttonHero = new QPushButton("Wybranty\nbohater");
+	private QPushButton buttonGC = new QPushButton("GARBAGE COLLECTOR");
 	
 	private QScrollArea heroesScroll = new QScrollArea();
 	private QScrollArea castlesScroll = new QScrollArea();
 	private QWidget right = new QWidget();
+	private QScrollArea scroll;
 	
 	private List<core.Castle> castles = new ArrayList<core.Castle>();
 	private QWidget castlesWidget = new QWidget();
@@ -107,12 +110,28 @@ public class WindowMap extends QWidget
 		layoutButtons.addWidget(buttonTurn, 0, 1);
 		layoutButtons.addWidget(buttonCastle, 1, 0);
 		layoutButtons.addWidget(buttonHero, 1, 1);
+		layoutButtons.addWidget(buttonGC, 3, 0);
 		
+		buttonGC.clicked.connect(this, "runGC()");
 		buttonMove.clicked.connect(moveClicked);
+		buttonMove.clicked.connect(this, "moveClicked()");
 		buttonTurn.clicked.connect(turnClicked);
 		buttonCastle.clicked.connect(interactWithCastle);
 		buttonHero.clicked.connect(interactWithHero);
 		
+	}
+	
+	public void runGC()
+	{
+		WindowStack.getLastInstance().pop();
+		System.gc();
+	}
+	
+	public void moveClicked()
+	{
+		if (hero != null) {
+			scroll.ensureVisible(this.hero.getX()*64, this.hero.getY()*64, 64*4, 64*4);
+		}
 	}
 	
 	public void addHero(core.Hero hero)
@@ -154,7 +173,9 @@ public class WindowMap extends QWidget
 		} else {
 			button.setChecked(true);
 		}
-		heroChanged.emit((Hero)hero);
+		this.hero = (Hero)hero;
+		scroll.ensureVisible(this.hero.getX()*64, this.hero.getY()*64, 64*4, 64*4);
+		heroChanged.emit(this.hero);
 	}
 	
 	public void selectCastle(Object object)
@@ -165,7 +186,14 @@ public class WindowMap extends QWidget
 		if (ws != null) {
 			Castle castle = (Castle)object;
 			ws.push(new WindowCastle(player, castle, castle.getHero()));
+			
+			core.WorldMap wm = core.WorldMap.getLastInstance();
+			if (wm != null) {
+				core.Point pos = wm.getPositionOfObject(castle);
+				scroll.ensureVisible(pos.x*64, pos.y*64, 64*4, 64*4);
+			}
 		}
+		
 	}
 	
 	public void cleanHeroes()
@@ -230,6 +258,11 @@ public class WindowMap extends QWidget
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
 		statusOre.setText(""+player.getResource(core.ResourceType.ORE));
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));
+		
+		cleanCastles();
+		for (Castle castle: player.getCastles()) {
+			addCastle(castle);
+		}
 	}
 	
 	public void setMap(QWidget m)
@@ -239,7 +272,7 @@ public class WindowMap extends QWidget
 		}
 		map = m;
 		map.setStyleSheet("background-color: none; color: none;");
-		QScrollArea scroll = new QScrollArea();
+		scroll = new QScrollArea();
 		scroll.setSizePolicy(Policy.MinimumExpanding, Policy.Preferred);
 		scroll.setWidget(m);
 		layout.addWidget(scroll, 0, 0);
