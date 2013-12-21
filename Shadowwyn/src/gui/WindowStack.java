@@ -1,10 +1,14 @@
 package gui;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
+import com.trolltech.qt.core.*;
+import com.trolltech.qt.core.QIODevice.OpenMode;
+import com.trolltech.qt.core.QIODevice.OpenModeFlag;
 import com.trolltech.qt.gui.*;
-
-import core.MissionMap2;
 
 public class WindowStack extends QWidget
 {
@@ -21,9 +25,7 @@ public class WindowStack extends QWidget
 	{
 		super();
 		
-		//setStyleSheet("background-color: #ccc; color: black;");
 		setStyleSheet(core.Const.style);
-		
 		setLayout(layout);
 		
 		LAST_INSTANCE = this;
@@ -51,7 +53,8 @@ public class WindowStack extends QWidget
 		core.Mission mission;
 		gui.WindowMap window;
 		
-		mission = new MissionMap2();
+		mission = new core.MissionC1();
+		mission.init();
 		window = new gui.WindowMap();
 		gui.WidgetMap map = mission.getMapWidget();
 		mission.startTurn.connect(window, "startTurn(int,Player)");

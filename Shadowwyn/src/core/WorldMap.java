@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.trolltech.qt.core.*;
+import com.trolltech.qt.QThread;
 
 public class WorldMap
 {
@@ -70,6 +71,7 @@ public class WorldMap
 	private gui.WidgetMap mapWidget;
 	private String background;
 	private boolean ready = false;
+	QThread thread;
 
 	public WorldMap(String b)
 	{
@@ -121,7 +123,7 @@ public class WorldMap
 					
 					MapBuildingType mbt = MapBuildingType.fromRGB(r, g, b);
 					if (mbt != null) {
-						System.out.println("("+r+","+g+","+b+") ("+i+","+j+","+mbt.name+") ");
+						//System.out.println("("+r+","+g+","+b+") ("+i+","+j+","+mbt.name+") ");
 						addObject(j, i, new MapBuilding(mbt, null));
 						continue;
 					}
@@ -187,8 +189,12 @@ public class WorldMap
 		}*/
 		System.out.println(getHeight());
 		System.out.println(getWidth());
+		
+		System.out.println("CREATE MAP WIDGET: NEW WIDGET MAP");
 		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size);
+		System.out.println("CREATE MAP WIDGET: SET BACKGROUND");
 		mapWidget.setBackground(background);
+		System.out.println("CREATE MAP WIDGET: ADD SHADOW");
 		mapWidget.addShadow();
 	}
 	
@@ -416,49 +422,71 @@ public class WorldMap
 		return (tmap[fromy][fromx].cost + tmap[toy][tox].cost)*0.45f*times + plus;
 	}
 	
-	public void calculateRoute(Hero hero)
+	public void calculateRoute(final Hero hero)
 	{
 		System.out.println("calculate route "+p2o);
-		PriorityQueue<Point> q = new PriorityQueue<Point>();
-		for (int y=0; y<getHeight(); ++y) {
-			for (int x=0; x<getWidth(); ++x) {
-				if (hero.getX() == x && hero.getY() == y) {
-					route[y][x] = new Point(x, y, 0);
-				} else {
-					route[y][x] = new Point(x, y);
-				}
-				q.add(route[y][x]);
-			}
-		}
-		Point u, v;
-		while (!q.isEmpty()) {
-			u = q.remove();
-			for (int i=-1; i<=1; ++i) {
-				for (int j=-1; j<=1; ++j) {
-					try {
-						v = route[u.y+i][u.x+j];
-						if (v.x >=0 && v.x < getWidth() && v.y >= 0 && v.y < getHeight()) {
-							float w = wages(hero, u.x, u.y, v.x, v.y);
-							if (v.getDistance() > u.getDistance() + w) {
-								v.setDistance(u.getDistance() + w);
-								v.setParent(u);
-								q.add(v);
-							}
+		
+		thread = new QThread(new Runnable() {
+			@Override
+			public void run()
+			{
+				PriorityQueue<Point> q = new PriorityQueue<Point>();
+				for (int y=0; y<getHeight(); ++y) {
+					for (int x=0; x<getWidth(); ++x) {
+						if (hero.getX() == x && hero.getY() == y) {
+							route[y][x] = new Point(x, y, 0);
+						} else {
+							route[y][x] = new Point(x, y);
 						}
-					} catch (Exception e) {}
+						q.add(route[y][x]);
+					}
 				}
+				Point u, v;
+				while (!q.isEmpty()) {
+					u = q.remove();
+					for (int i=-1; i<=1; ++i) {
+						for (int j=-1; j<=1; ++j) {
+							try {
+								v = route[u.y+i][u.x+j];
+								if (v.x >=0 && v.x < getWidth() && v.y >= 0 && v.y < getHeight()) {
+									float w = wages(hero, u.x, u.y, v.x, v.y);
+									if (v.getDistance() > u.getDistance() + w) {
+										v.setDistance(u.getDistance() + w);
+										v.setParent(u);
+										q.add(v);
+									}
+								}
+							} catch (Exception e) {}
+						}
+					}
+				}
+				System.out.println("end calculate route");
 			}
-		}
-		System.out.println("end calculate route");
+		});
+		thread.start();
 	}
 	
 	public float getDistance(int x, int y)
 	{
+		if (thread != null) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return route[y][x].getDistance();
 	}
 	
 	public Point getRoute(int x, int y)
 	{
+		if (thread != null) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return route[y][x];
 	}
 }

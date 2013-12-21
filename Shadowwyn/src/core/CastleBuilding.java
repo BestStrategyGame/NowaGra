@@ -1,9 +1,24 @@
 package core;
 public enum CastleBuilding
 {
-	CITY_COUNCIL("Rada miasta", "Generuje dochód 500 zlota/dzień", null, new Cost(1000, 5, 5)),
-	TOWN_HALL("Ratusz", "Generuje dochód 1000 zlota/dzień", null, new Cost(1500, 10, 10), CITY_COUNCIL),
-	CAPITOL("Kapitol", "Generuje dochód 2000 zlota/dzień", null, new Cost(4000, 20, 20), TOWN_HALL),
+	CITY_COUNCIL("Rada miasta", "Generuje dochód 500 zlota/dzień", null, new Cost(1000, 5, 5)) {
+		public void dailyBonus(Player player, Castle castle)
+		{
+			player.addResource(ResourceType.GOLD, 500);
+		}
+	},
+	TOWN_HALL("Ratusz", "Generuje dochód 1000 zlota/dzień", null, new Cost(1500, 10, 10), CITY_COUNCIL) {
+		public void dailyBonus(Player player, Castle castle)
+		{
+			player.addResource(ResourceType.GOLD, 1000);
+		}
+	},
+	CAPITOL("Kapitol", "Generuje dochód 2000 zlota/dzień", null, new Cost(4000, 20, 20), TOWN_HALL) {
+		public void dailyBonus(Player player, Castle castle)
+		{
+			player.addResource(ResourceType.GOLD, 2000);
+		}
+	},
 	FORT("Fort", "+5 do obrony bohatera podczas oblężenia", null, new Cost(1500, 20, 10)),
 	CITADEL("Cytadela", "+10 do obrony bohatera podczas oblężenia", null, new Cost(2500, 5, 15), FORT),
 	CASTLE("Zamek", "+20 do obrony bohatera podczas oblężenia", null, new Cost(5000, 5, 25), CITADEL),

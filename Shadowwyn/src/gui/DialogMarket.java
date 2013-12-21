@@ -55,9 +55,8 @@ public class DialogMarket extends QDialog
 		
 		QHBoxLayout buttonsLayout = new QHBoxLayout();
 		QFrame line = new QFrame();
-		line.setMinimumHeight(20);
-		line.setFrameShape(Shape.HLine);
-		line.setFrameShadow(Shadow.Sunken);
+		line.setMinimumHeight(1);
+		line.setObjectName("hline");
 		layout.addWidget(line, 6, 0, 1, 3);
 		layout.addLayout(buttonsLayout, 7, 0, 1, 3);
 		

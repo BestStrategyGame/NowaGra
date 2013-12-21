@@ -44,7 +44,8 @@ public class WorldMapView
 	public WorldMapView()
 	{
 		System.out.println("start");
-		mission = new MissionMap2();
+		mission = new MissionC1();
+		mission.init("foo");
 		window = new gui.WindowMap();
 		gui.WidgetMap map = mission.getMapWidget();
 		mission.startTurn.connect(window, "startTurn(int,Player)");

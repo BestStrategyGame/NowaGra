@@ -54,9 +54,8 @@ public class DialogHero extends QDialog
 		layout.addWidget(units, 3, 1, 3, 3);
 		
 		QFrame line = new QFrame();
-		line.setMinimumHeight(20);
-		line.setFrameShape(Shape.HLine);
-		line.setFrameShadow(Shadow.Sunken);
+		line.setMinimumHeight(1);
+		line.setObjectName("hline");
 		layout.addWidget(line, 8, 1, 1, 3);
 		
 		QHBoxLayout buttonsLayout = new QHBoxLayout();
@@ -87,7 +86,7 @@ public class DialogHero extends QDialog
 		u1.add(new core.GroupOfUnits(core.UnitType.WOJAK, null, 10));
 		core.Hero h1 = new core.Hero("Bohater 1", null);
 		List<core.GroupOfUnits> u2 = new ArrayList<core.GroupOfUnits>();
-		u2.add(new core.GroupOfUnits(core.UnitType.WOJAK, null, 20));
+		u2.add(new core.GroupOfUnits(core.UnitType.KUSZNIK, null, 20));
 		core.Hero h2 = new core.Hero("Bohater 2", null);
 		h1.setUnits(u1);
 		h2.setUnits(u2);

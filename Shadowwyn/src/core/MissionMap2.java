@@ -1,7 +1,8 @@
 package core;
 
-public class MissionMap2 extends Mission
+/*public class MissionMap2 extends Mission
 {
+	public void init() {}
 
 	public MissionMap2()
 	{
@@ -48,4 +49,4 @@ public class MissionMap2 extends Mission
 		
 		wmap.populateMapWidget();
 	}
-}
+}*/

@@ -26,7 +26,7 @@ public abstract class Player
 	private void updateWindow()
 	{
 		if (Mission.getLastInstance() != null) {
-			Mission.getLastInstance().updateWindow.emit(this);
+			Mission.getLastInstance().emitUpdateWindowSignal(this);
 		}
 	}
 	

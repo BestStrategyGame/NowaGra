@@ -26,7 +26,7 @@ public class Castle implements WorldMapObject
 	
 	public void lockStanding()
 	{
-		lock = true;
+		//lock = true;
 	}
 
 	public void setHero(Hero hero)

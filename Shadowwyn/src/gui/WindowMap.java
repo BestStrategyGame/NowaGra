@@ -1,7 +1,6 @@
 package gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.gui.QLayout.SizeConstraint;
@@ -9,8 +8,10 @@ import com.trolltech.qt.gui.QSizePolicy.Policy;
 
 import core.Castle;
 import core.Hero;
+import core.Mission;
+import core.WorldMap;
 
-public class WindowMap extends QWidget
+public class WindowMap extends QFrame
 {
 	private core.Player player;
 	private core.Hero hero;
@@ -31,7 +32,7 @@ public class WindowMap extends QWidget
 	private QPushButton buttonTurn = new QPushButton("Zakończ\nturę");
 	private QPushButton buttonCastle = new QPushButton("Interakcja\nz zamkiem");
 	private QPushButton buttonHero = new QPushButton("Wybranty\nbohater");
-	private QPushButton buttonGC = new QPushButton("GARBAGE COLLECTOR");
+	private QPushButton buttonQuit = new QPushButton("Zakończ misję");
 	
 	private QScrollArea heroesScroll = new QScrollArea();
 	private QScrollArea castlesScroll = new QScrollArea();
@@ -57,6 +58,7 @@ public class WindowMap extends QWidget
 	public Signal0 interactWithHero = new Signal0();
 	
 	
+	
 	public WindowMap()
 	{
 		super();
@@ -67,6 +69,7 @@ public class WindowMap extends QWidget
 		right.setSizePolicy(Policy.Fixed, Policy.Preferred);
 		right.setLayout(layoutRight);
 		layout.addWidget(right, 0, 1);
+		layoutRight.setMargin(0);
 		layoutRight.addWidget(minimap);
 		layoutRight.addWidget(new QLabel("Zamki:"));
 		
@@ -99,20 +102,22 @@ public class WindowMap extends QWidget
 		layoutRight.addWidget(heroesScroll);
 		
 		layoutRight.addLayout(layoutResources);
-		layoutResources.addRow("Dzień:", statusDay);
-		layoutResources.addRow("Gracz:", statusPlayer);
-		layoutResources.addRow("Złoto:", statusGold);
-		layoutResources.addRow("Kamień:", statusOre);
-		layoutResources.addRow("Drewno:", statusWood);
+		layoutResources.addRow("  Dzień:", statusDay);
+		layoutResources.addRow("  Gracz:", statusPlayer);
+		layoutResources.addRow("  Złoto:", statusGold);
+		layoutResources.addRow("  Kamień:", statusOre);
+		layoutResources.addRow("  Drewno:", statusWood);
 		
 		layoutRight.addLayout(layoutButtons);
+		layoutButtons.setWidgetSpacing(0);
 		layoutButtons.addWidget(buttonMove, 0, 0);
 		layoutButtons.addWidget(buttonTurn, 0, 1);
 		layoutButtons.addWidget(buttonCastle, 1, 0);
 		layoutButtons.addWidget(buttonHero, 1, 1);
-		layoutButtons.addWidget(buttonGC, 3, 0, 1, 2);
+		layoutButtons.addWidget(buttonQuit, 3, 0, 1, 2);
 		
-		buttonGC.clicked.connect(this, "runGC()");
+		
+		buttonQuit.clicked.connect(this, "quitClicked()");
 		buttonMove.clicked.connect(moveClicked);
 		buttonMove.clicked.connect(this, "moveClicked()");
 		buttonTurn.clicked.connect(turnClicked);
@@ -127,10 +132,11 @@ public class WindowMap extends QWidget
 		scroll.ensureVisible(y*64, x*64, 64*4, 64*4);
 	}
 	
-	public void runGC()
+	public void quitClicked()
 	{
 		WindowStack.getLastInstance().pop();
-		System.gc();
+		WindowStack.getLastInstance().pop();
+		Mission.getLastInstance().dispose();
 	}
 	
 	public void moveClicked()
@@ -259,7 +265,7 @@ public class WindowMap extends QWidget
 			((WidgetChooserButton)(heroesInner.itemAt(0).widget())).click();
 		}
 		
-		//buttonTurn.setStyleSheet("background-color: #ff0000");
+		//buttonTurn.Sheet("background-color: #ff0000");
 		minimap.repaint();
 	}
 	
@@ -284,10 +290,11 @@ public class WindowMap extends QWidget
 			map.dispose();
 		}
 		map = m;
-		map.setStyleSheet("background-color: none; color: none;");
+		
 		scroll = new QScrollArea();
 		scroll.setSizePolicy(Policy.MinimumExpanding, Policy.Preferred);
 		scroll.setWidget(m);
 		layout.addWidget(scroll, 0, 0);
+		//scroll.setStyleSheet("background-color: blue;");
 	}
 }

@@ -18,8 +18,10 @@ public class WidgetMap extends WidgetStack
 		cols = c;
 		size = s;
 		grid = new WidgetStackGrid(r, c, s);
+		grid.setObjectName("map");
 		setLayer(1, grid);
 		grid.pressed.connect(pressed);
+		
 		
 	}
 	

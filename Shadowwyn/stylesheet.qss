@@ -1,0 +1,110 @@
+* {
+	background-color: #333;
+	color: #ddd;
+	selection-background-color: #000;
+}
+QLabel, QFrame {
+	background-color: none;
+}
+QTextEdit, QLineEdit, QComboBox, QListView, QSpinBox, QSpinBox::up-button,  QSpinBox::down-button,  QComboBox::drop-down {
+	border-top: 1px solid #888;
+     border-left: 1px solid #888;
+     border-bottom: 1px solid #555;
+     border-right: 1px solid #555;
+     background-color: #333;
+     padding: 3px;
+}
+QTextEdit {
+	padding: 0px
+}
+
+
+ QPushButton:disabled {
+	color: #888;
+ }
+
+ QPushButton {
+ 	padding: 3px;
+     border-top: 1px solid #888;
+     border-left: 1px solid #888;
+     border-bottom: 1px solid #555;
+     border-right: 1px solid #555;
+ }
+
+ QPushButton:checked, QPushButton:pressed {
+     border-top: 1px solid #555;
+     border-left: 1px solid #555;
+     border-bottom: 1px solid #888;
+     border-right: 1px solid #888;
+ }
+ 
+ QPushButton:checked {
+ 	background-color: #222;
+ }
+
+ QPushButton:flat {
+     border: none; /* no border for a flat push button */
+ }
+ 
+  QSlider::handle:horizontal, QSlider::groove:horizontal {
+	border-top: 1px solid #888;
+     border-left: 1px solid #888;
+     border-bottom: 1px solid #555;
+     border-right: 1px solid #555;
+}
+QSlider::handle:horizontal {
+	width: 18px;
+	height: 12px;
+	margin: -2px 0;
+	background-color: #333;
+}
+QSlider::groove:horizontal {
+	height: 5px;
+	background-color: #222;
+	margin: 2px 0;
+}
+QListView::item:selected {
+	 background: #888;
+	 color: black;
+     border-top: 1px solid #888;
+     border-left: 1px solid #888;
+     border-bottom: 1px solid #555;
+     border-right: 1px solid #555;
+ }
+  QListView::item:hover {
+  	background: #333;
+  }
+  QListView::item:hover:selected {
+  	background: #888;
+  }
+  
+#hline {
+  	border-top: 1px solid #888;
+  	border-bottom: 1px solid #555;
+  }
+  
+#map {
+	background-color:  red;
+}
+
+QScrollArea {
+	background-color: #333;
+}
+QScrollBar:horizontal {
+	background: #333;
+	border: 0px;
+}
+QScrollBar::handle {
+	border-top: 1px solid #888;
+	border-left: 1px solid #888;
+	border-bottom: 1px solid #555;
+	border-right: 1px solid #555;
+}
+QScrollBar::add-line {
+	width: 0px;
+	height: 0px;
+}
+QScrollBar::sub-line {
+	width: 0px;
+	height: 0px;
+}

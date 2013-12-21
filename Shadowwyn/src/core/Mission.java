@@ -11,7 +11,7 @@ public abstract class Mission extends QObject
 {
 	private static Mission LAST_INSTANCE;
 	
-	public static Mission getLastInstance()
+	public static Mission getLastInstance() 
 	{
 		return LAST_INSTANCE;
 	}
@@ -23,10 +23,15 @@ public abstract class Mission extends QObject
 	private int day = 1;
 	protected WorldMap wmap;
 	
-	public Signal1<Player> updateWindow = new Signal1<Player>();
+	public Signal1<Player> updateWindow;
 	public Signal1<Hero> addHero = new Signal1<Hero>();
 
 	private Player activePlayer;
+	
+	public void emitUpdateWindowSignal(Player player)
+	{
+		updateWindow.emit(player);
+	}
 	
 	protected void setActivePlayer(Player activePlayer)
 	{
@@ -40,6 +45,14 @@ public abstract class Mission extends QObject
 		LAST_INSTANCE = this;
 	}
 	
+	public void init(String ... names)
+	{
+		 updateWindow = new Signal1<Player>();
+	}
+	public abstract String getName();
+	public abstract String getDescription();
+	public abstract String getObjective();
+	
 	public WorldMap getWorldMap() {
 		return wmap;
 	}
@@ -51,11 +64,16 @@ public abstract class Mission extends QObject
 	
 	protected void loadMap(String bg, String tr, String rs)
 	{
+		System.out.println("LOAD MAP: NEW WORLD MAP");
 		wmap = new WorldMap(bg);
 		//loadForeground(fg);
+		System.out.println("LOAD MAP: LOAD TERRAIN");
 		wmap.loadTerrain(tr);
+		System.out.println("LOAD MAP: LOAD RESOURCES");
 		wmap.loadResources(rs);
+		System.out.println("LOAD MAP: INIT ROUTE");
 		wmap.initRoute();
+		System.out.println("LOAD MAP: CREATE MAP WIDGET");
 		wmap.createMapWidget();
 	}
 	
@@ -209,19 +227,20 @@ public abstract class Mission extends QObject
 		Hero hero = getActivePlayer().getActiveHero();
 		int x = hero.getX();
 		int y = hero.getY();
-		do {
-			Hero hero2;
-			for (int i=x-1; i<=x+1; ++i) {
-				for (int j=y-1; j<=y+1; ++j) {
-					hero2 = wmap.getHeroAt(i, j);
-					if (hero2 != null && hero != hero2 && hero.getColor() == hero2.getColor()) {
-						new gui.DialogHero(hero, hero2).exec();
-						break;
-					}
+		boolean found = false;
+		Hero hero2 = null;
+		for (int i=x-1; i<=x+1; ++i) {
+			for (int j=y-1; j<=y+1; ++j) {
+				hero2 = wmap.getHeroAt(i, j);
+				if (hero2 != null && hero != hero2 && hero.getColor() == hero2.getColor()) {
+					//new gui.DialogHero(hero, hero2).exec();
+					found = true;
+					break;
 				}
 			}
-			new gui.DialogHero(hero, null).exec();
-		} while(false);
+			if (found) break;
+		}
+		new gui.DialogHero(hero, hero2).exec();
 		
 		WorldMapObject object = wmap.getObjectAt(x, y);
 		if (object != null && object.getTooltip() != null) {

@@ -121,7 +121,8 @@ public class WindowCastle extends QWidget
 		
 		QVBoxLayout buttonsLayout = new QVBoxLayout();
 		buttonsLayout.setMargin(10);
-
+		
+		buttonsLayout.setWidgetSpacing(0);
 		buttonsLayout.addWidget(exit);
 		buttonsLayout.addWidget(newHero);
 		buttonsLayout.addWidget(oldHero);
@@ -208,7 +209,7 @@ public class WindowCastle extends QWidget
 		if (wmap != null) {
 			player.addHero(hero);
 			castle.setHero(hero);
-			castle.lockStanding();
+			//castle.lockStanding();
 			units.setRight(hero);
 			core.Point pos = wmap.getPositionOfObject(castle);
 			wmap.addObject(pos.x, pos.y, hero);
