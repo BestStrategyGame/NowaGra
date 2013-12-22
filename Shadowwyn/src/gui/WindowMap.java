@@ -227,12 +227,19 @@ public class WindowMap extends QFrame
 		}
 	}
 	
+	public void setHero(Hero h)
+	{
+		hero = h;
+	}
+	
 	public void removeHero()
 	{
 		heroesInner.takeAt(heroesSelected).widget().dispose();
 		heroes.remove(heroesSelected);
 		heroesSelected = 0;
-		((WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget())).setChecked(true);
+		try {
+			((WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget())).setChecked(true);
+		} catch (java.lang.NullPointerException e) {}
 		selectHero(heroes.get(heroesSelected));
 		
 		minimap.repaint();
@@ -251,7 +258,7 @@ public class WindowMap extends QFrame
 		
 		cleanHeroes();
 		for (Hero hero: player.getHeroes()) {
-			System.out.println("add hero?");
+			System.out.println("add hero?" + hero.getName());
 			addHero(hero);
 		}
 		

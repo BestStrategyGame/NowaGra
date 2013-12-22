@@ -3,6 +3,7 @@ package core;
 import com.trolltech.qt.QSignalEmitter.Signal1;
 import com.trolltech.qt.QSignalEmitter.Signal2;
 import com.trolltech.qt.core.*;
+import com.trolltech.qt.gui.QMessageBox;
 
 import java.util.*;
 import java.io.*;
@@ -25,8 +26,51 @@ public abstract class Mission extends QObject
 	
 	public Signal1<Player> updateWindow;
 	public Signal1<Hero> addHero = new Signal1<Hero>();
+	public Signal0 removeHero = new Signal0();
 
 	private Player activePlayer;
+	
+	public Player getPlayer(Color c)
+	{
+		for (Player player: players) {
+			if (player != null && player.getColor() == c) {
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2)
+	{
+		Player winner, looser;
+		Hero winnerh, looserh;
+		
+		if (player1.getColor() == color) {
+			winner = player1;
+			winnerh = hero1;
+			looser = player2;
+			looserh = hero2;
+		} else {
+			winner = player2;
+			winnerh = hero2;
+			looser = player1;
+			looserh = hero1;
+		}
+		
+		
+		WorldMap wm = WorldMap.getLastInstance();
+		looserh.setUnits(null);
+		if (looserh.getX() != -1) {
+			looser.dieHero(looserh);
+			if (looser == getActivePlayer()) {
+				removeHero.emit();
+			}
+			wm.removeHero(looserh);
+		}
+		
+		QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy", "Wygrywa gracz "+color.name);
+		
+	}
 	
 	public void emitUpdateWindowSignal(Player player)
 	{
@@ -208,6 +252,8 @@ public abstract class Mission extends QObject
 	
 	public void activeHeroChanged(Hero hero)
 	{
+		System.out.println("~~~~~ ACTIVE HERO CHANGE "+hero.getName());
+
 		getActivePlayer().activeHeroChanged(hero);
 	}
 	
@@ -240,7 +286,8 @@ public abstract class Mission extends QObject
 			}
 			if (found) break;
 		}
-		new gui.DialogHero(hero, hero2).exec();
+		gui.DialogHero dialog = new gui.DialogHero(hero, hero2);
+		dialog.exec();
 		
 		WorldMapObject object = wmap.getObjectAt(x, y);
 		if (object != null && object.getTooltip() != null) {

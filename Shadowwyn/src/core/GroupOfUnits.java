@@ -1,10 +1,13 @@
 package core;
-public class GroupOfUnits
+
+public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 {
 	public final UnitType type;
 	private int totalHP;
 	private int number;
 	private Hero owner;
+	private int turn = 0;
+	private byte wait;
 	
 	public GroupOfUnits(UnitType t, Hero o, int n)
 	{
@@ -13,9 +16,30 @@ public class GroupOfUnits
 		number = n;
 	}
 	
+	public String getQueue()
+	{
+		return "turn: "+turn+", wait: "+wait;
+	}
+	
 	public void setOwner(Hero o)
 	{
 		owner = o;
+	}
+	
+	public void setWait(byte w)
+	{
+		wait = w;
+	}
+	
+	public int getHP()
+	{
+		int hp = totalHP%getDefense();
+		return hp == 0 ? getDefense() : hp;
+	}
+	
+	public Hero getOwner()
+	{
+		return owner;
 	}
 	
 	/**
@@ -25,6 +49,7 @@ public class GroupOfUnits
 	public void setNumber(int n)
 	{
 		number = n;
+		totalHP = getDefense()*number;
 	}
 	
 	/**
@@ -33,7 +58,6 @@ public class GroupOfUnits
 	*/
 	public int getNumber()
 	{
-		//return java.lang.Math.max(0, totalHP/type.defense);
 		return number;
 	}
 	
@@ -73,6 +97,8 @@ public class GroupOfUnits
 	public void prepareToBattle()
 	{
 		totalHP = getDefense()*number;
+		turn = 0;
+		wait = 0;
 	}
 	
 	/**
@@ -83,6 +109,34 @@ public class GroupOfUnits
 	public boolean hit(GroupOfUnits target)
 	{
 		target.totalHP -= number*getAttack();
+		target.number = java.lang.Math.max(0, (int)java.lang.Math.ceil((float)target.totalHP/target.getDefense()));
 		return target.totalHP <= 0;
+	}
+
+
+	@Override
+	public int compareTo(GroupOfUnits o)
+	{
+		System.out.println("compare "+this.type.name+", "+o.type.name);
+		int result = turn - o.turn;
+		if (result != 0) {
+			System.out.println(result);
+			return result;
+		}
+		result = wait - o.wait;
+		if (result != 0) {
+			System.out.println("wait"+result);
+			return result;
+		}
+		result = o.getSpeed() - getSpeed();
+		System.out.println(result);
+		return result;
+	}
+	
+	public void nextTurn()
+	{
+		if (wait == 0) {
+			++turn;
+		}
 	}
 }

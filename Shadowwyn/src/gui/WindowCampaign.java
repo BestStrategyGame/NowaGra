@@ -111,6 +111,8 @@ public class WindowCampaign extends QWidget
 			window.interactWithCastle.connect(mission, "interactWithCastle()");
 			window.interactWithHero.connect(mission, "interactWithHero()");
 			mission.addHero.connect(window, "addHero(Hero)");
+			mission.addHero.connect(window, "setHero(Hero)");
+			mission.removeHero.connect(window, "removeHero()");
 			map.pressed.connect(mission, "clickedOnMap(int,int)");
 			window.setMap(map);
 			

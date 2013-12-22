@@ -3,9 +3,11 @@ package gui;
 import java.util.*;
 
 import com.trolltech.qt.core.Qt.Orientation;
+import com.trolltech.qt.core.Qt.WindowType;
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.gui.QFrame.Shadow;
 import com.trolltech.qt.gui.QFrame.Shape;
+import com.trolltech.qt.gui.QLayout.SizeConstraint;
 
 public class DialogMarket extends QDialog
 {
@@ -33,11 +35,13 @@ public class DialogMarket extends QDialog
 	{
 		super();
 		
-		setStyleSheet(core.Const.style);
-		
 		player = p;
 		
 		setLayout(layout);
+		setWindowFlags(WindowType.Drawer);
+		setStyleSheet(core.Const.style);
+		layout.setSizeConstraint(SizeConstraint.SetFixedSize);
+		
 		layout.addWidget(new QLabel("<b>Surowce</b>"), 0, 0, 1, 3);
 		layout.addWidget(new QLabel("Złoto: "), 1, 0);
 		layout.addWidget(sliderGold, 1, 1);

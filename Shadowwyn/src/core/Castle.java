@@ -1,7 +1,10 @@
 package core;
+import gui.WindowBattle;
 import gui.WindowCastle;
 
 import java.util.*;
+
+import com.trolltech.qt.gui.QApplication;
 
 public class Castle implements WorldMapObject
 {
@@ -115,8 +118,22 @@ public class Castle implements WorldMapObject
 				}
 				
 			} else {
-				// TODO fight
+				Mission m = Mission.getLastInstance();
+				Player cp = m.getPlayer(getColor());
 				
+				Battle b = new Battle(player, cp, hero, getGarission(), Terrain.GRASS);
+				b.createMapWidget();
+				b.populateMapWidget();;
+				
+				WindowBattle bat = new WindowBattle(b, player, cp, hero, getGarission());
+				b.updateQueue.connect(bat, "updateQueue(Queue)");
+				b.start();
+				
+				gui.WindowStack ws = gui.WindowStack.getLastInstance();
+				if (ws != null) {
+					ws.push(bat);
+				}
+	
 				System.out.println("fight in castle");
 			}
 			
@@ -141,6 +158,7 @@ public class Castle implements WorldMapObject
 	
 	public void setColor(Color c)
 	{
+		garisson.setColor(c);
 		if (WorldMap.getLastInstance() != null) {
 			WorldMap.getLastInstance().colorChanged(this, c);
 		}

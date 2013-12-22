@@ -9,7 +9,7 @@ import com.trolltech.qt.QThread;
 
 public class WorldMap
 {
-	class Point implements java.lang.Comparable<Point>
+	static class Point implements java.lang.Comparable<Point>
 	{
 		public final int x;
 		public final int y;
@@ -63,8 +63,8 @@ public class WorldMap
 		return LAST_INSTANCE;
 	}
 	
-	private Position2Object p2o = new Position2Object();
-	private Position2Object p2h = new Position2Object();
+	private Position2Object<WorldMapObject> p2o = new Position2Object<WorldMapObject>();
+	private Position2Object<Hero> p2h = new Position2Object<Hero>();
 	private Terrain[][] tmap;
 	private Point[][] route; 
 	//private gui.WidgetStackGrid mapWidget;
@@ -191,7 +191,7 @@ public class WorldMap
 		System.out.println(getWidth());
 		
 		System.out.println("CREATE MAP WIDGET: NEW WIDGET MAP");
-		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size);
+		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size, false);
 		System.out.println("CREATE MAP WIDGET: SET BACKGROUND");
 		mapWidget.setBackground(background);
 		System.out.println("CREATE MAP WIDGET: ADD SHADOW");
@@ -226,6 +226,7 @@ public class WorldMap
 			}
 		}
 		ready = true;
+		//mapWidget.objectAt(9, 9).setLayer(2, new gui.WidgetLabel("1000", Color.BLUE));
 	}
 	
 	public gui.WidgetMap getMapWidget()
@@ -254,6 +255,24 @@ public class WorldMap
 		System.out.println("add hero");
 		p2h.put(x, y, hero);
 		hero.setPosition(x, y);
+	}
+	
+	public void removeHero(Hero hero)
+	{
+		System.out.println("remove hero "+hero);
+		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
+		WorldMapObject o = p2o.get(hero.getX(), hero.getY());
+		if (o != null) {
+			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip(o.getTooltip());
+		} else {
+			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip("");
+		}
+		p2h.remove(hero);
+		
+		Player activePlayer = Mission.getLastInstance().getActivePlayer();
+		if (hero.getColor() != activePlayer.getColor()) {
+			calculateRoute(activePlayer.getActiveHero());
+		}
 	}
 	
 	public core.Point getPositionOfObject(WorldMapObject obj)
@@ -340,36 +359,57 @@ public class WorldMap
 		}
 		addObject(x, y, hero);
 		
+		calculateRoute(hero);
+		
+		if (px == -1) {
+			return;
+		}
 		if (object != null) if (object.stand(hero, player)) {
 			p2o.remove(object);
 			mapWidget.objectAt(y, x).setLayer(object.stackLevel(), null);
 		}
 
-		/*object = p2o.get(x-1, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x-1, y-1);
+		object = p2h.get(x-1, y-1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x-1, y);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x-1, y);
+		object = p2h.get(x-1, y);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x-1, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x-1, y+1);
+		object = p2h.get(x-1, y+1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x+1, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x+1, y-1);
+		object = p2h.get(x+1, y-1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x+1, y);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x+1, y);
+		object = p2h.get(x+1, y);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x+1, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x+1, y+1);
+		object = p2h.get(x+1, y+1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x, y-1);
+		object = p2h.get(x, y-1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		object = p2o.get(x, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) p2o.remove(x, y+1);*/
+		object = p2h.get(x, y+1);
+		if (object != null) if (object.standNextTo(hero, player)) {
+			p2h.remove(x-1, y-1);
+		}
 		
-		calculateRoute(hero);
+		
 	}
 	
 	private boolean forbiddenNeighbourhood(Hero hero, int x, int y)
@@ -424,7 +464,19 @@ public class WorldMap
 	
 	public void calculateRoute(final Hero hero)
 	{
-		System.out.println("calculate route "+p2o);
+		System.out.println("calculate route "+hero.getName());
+		
+		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+		    System.out.println(ste);
+		}
+
+		if (thread != null) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		thread = new QThread(new Runnable() {
 			@Override

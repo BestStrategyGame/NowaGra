@@ -106,7 +106,7 @@ public class WidgetRecruit extends QFrame
 		int max = (int)min;
 		amount.setRange(0, max);
 		amount.setValue(0);
-		available.setText("<i>("+max+" dostępnych)</i>");
+		available.setText("<i>("+castle.getAvailableToRecruit(unit.level)+" dostępnych)</i>");
 	}
 	
 	private void pay()

@@ -8,8 +8,8 @@ public abstract class Player
 	
 	private Map<ResourceType, Integer> resources = new HashMap<ResourceType, Integer>();
 	private List<Hero> deadHeroes = new LinkedList<Hero>();
-	private List<Hero> heroes = new LinkedList<Hero>();
-	private List<Castle> castles = new LinkedList<Castle>();
+	private Set<Hero> heroes = new HashSet<Hero>();
+	private Set<Castle> castles = new HashSet<Castle>();
 	private Hero activeHero;
 	protected Set<Point> visible = new HashSet<Point>();
 	
@@ -22,6 +22,8 @@ public abstract class Player
 			resources.put(i, 0);
 		}
 	}
+	
+	public abstract boolean battleStartTurn(GroupOfUnits unit);
 	
 	private void updateWindow()
 	{

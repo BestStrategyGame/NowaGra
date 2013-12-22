@@ -32,6 +32,14 @@ public class PlayerHuman extends Player
 
 	}
 	
+	@Override
+	public boolean battleStartTurn(GroupOfUnits unit)
+	{
+		System.out.println("start turn "+unit.type);
+		unit.setWait((byte)0);
+		return true;
+	}
+	
 	public void clickedOnMap(int x, int y)
 	{
 		if (getActiveHero() == null) {

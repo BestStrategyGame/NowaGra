@@ -1,12 +1,12 @@
 package core;
 import java.util.*;
 
-public class Position2Object
+public class Position2Object<T>
 {
-	Map<Point, WorldMapObject> mapP2O = new HashMap<Point, WorldMapObject>();
-	Map<WorldMapObject, Point> mapO2P = new HashMap<WorldMapObject, Point>();
+	Map<Point, T> mapP2O = new HashMap<Point, T>();
+	Map<T, Point> mapO2P = new HashMap<T, Point>();
 	
-	public void put(int x, int y, WorldMapObject o)
+	public void put(int x, int y, T o)
 	{
 		mapP2O.put(new Point(x, y), o);
 		mapO2P.put(o, new Point(x, y));
@@ -14,7 +14,7 @@ public class Position2Object
 		//System.out.println("get: "+x+", "+y+", "+get(x, y));
 	}
 	
-	public WorldMapObject get(int x, int y)
+	public T get(int x, int y)
 	{
 		if (mapP2O == null) {
 			return null;
@@ -22,7 +22,7 @@ public class Position2Object
 		return mapP2O.get(new Point(x, y));
 	}
 	
-	public WorldMapObject get(Point p)
+	public T get(Point p)
 	{
 		if (mapP2O == null) {
 			return null;
@@ -30,7 +30,7 @@ public class Position2Object
 		return mapP2O.get(p);
 	}
 	
-	public Point get(WorldMapObject o)
+	public Point get(T o)
 	{
 		if (mapO2P == null) {
 			return null;
@@ -41,12 +41,12 @@ public class Position2Object
 	public void remove(int x, int y)
 	{
 		System.out.println("remove");
-		WorldMapObject o = get(x, y);
+		T o = get(x, y);
 		mapP2O.remove(new Point(x, y));
 		mapO2P.remove(o);
 	}
 	
-	public void remove(WorldMapObject o)
+	public void remove(T o)
 	{
 		System.out.println("remove");
 		Point p = get(o);
@@ -54,7 +54,7 @@ public class Position2Object
 		mapO2P.remove(o);
 	}
 	
-	public Collection<WorldMapObject> objects()
+	public Collection<T> objects()
 	{
 		return mapP2O.values();
 	}

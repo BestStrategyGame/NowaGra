@@ -216,10 +216,11 @@ public class WindowCastle extends QWidget
 			//wmap.getMapWidget().objectAt(pos.y, pos.x).setLayer(hero.getLevel(), new WidgetImage(hero.getImageFile(), 64));
 			wmap.moveTo(hero, player, pos.x, pos.y, -1, -1);
 			core.Mission m = core.Mission.getLastInstance();
+			player.setActiveHero(hero);
 			if (m != null) {
 				m.addHero.emit(hero);
 			}
-			player.setActiveHero(hero);
+			
 		}
 	}
 	

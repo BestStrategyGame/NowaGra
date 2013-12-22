@@ -5,10 +5,11 @@ import com.trolltech.qt.gui.*;
 public class WidgetHolder extends QStackedWidget
 {
 
-	public WidgetHolder(QWidget parent, int size, QWidget widget)
+	public WidgetHolder(QWidget parent, int width, int height, QWidget widget)
 	{
 		super(parent);
-		setGeometry(0, 0, size, size);
+		//move(0, 0);
+		setGeometry(0, 0, width, height);
 		if (widget != null) {
 			addWidget(widget);
 		}

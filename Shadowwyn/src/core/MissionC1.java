@@ -1,5 +1,7 @@
 package core;
 
+import java.util.*;
+
 public class MissionC1 extends Mission
 {
 
@@ -27,6 +29,11 @@ public class MissionC1 extends Mission
 		p1.addHero(h3);
 		p1.dieHero(h3);	
 		p2.addHero(h4);
+		
+		List<GroupOfUnits> u1 = new ArrayList<GroupOfUnits>();
+		u1.add(new GroupOfUnits(core.UnitType.WOJAK, null, 10));
+		u1.add(new GroupOfUnits(core.UnitType.KUSZNIK, null, 3));
+		h4.setUnits(u1);
 		
 		wmap.addObject(10, 10, h1);
 		wmap.addObject(5, 27, h2);

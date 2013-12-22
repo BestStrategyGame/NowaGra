@@ -10,15 +10,17 @@ public class WidgetStackGrid extends QWidget
 	private int height;
 	
 	public Signal2<Integer, Integer> pressed = new Signal2<Integer, Integer>();
+	public Signal2<Integer, Integer> over = new Signal2<Integer, Integer>();
 	
-	public WidgetStackGrid(int w, int h, int size)
+	public WidgetStackGrid(int w, int h, int size, boolean showGrid)
 	{
 		super();
 		width = w;
 		height = h;
 		
-		setMaximumSize(width*size, height*size);
-		layout.setSpacing(0);
+		//setMaximumSize(width*size, height*size);
+		//setMinimumSize(width*size, height*size);
+		layout.setSpacing(showGrid ? 1 : 0);
 		layout.setMargin(0);
 		setLayout(layout);
 		
@@ -26,8 +28,9 @@ public class WidgetStackGrid extends QWidget
 		for (int i=0; i<height; ++i) {
 			stack[i] = new WidgetStack[width];
 			for (int j=0; j<width; ++j) {
-				stack[i][j] = new WidgetStack(size, 5, i, j);
-				stack[i][j].pressed.connect(this, "pressed(int, int)");
+				stack[i][j] = new WidgetStack(size, size, size, 5, i, j);
+				stack[i][j].pressed.connect(pressed);
+				stack[i][j].over.connect(over);
 				layout.addWidget(stack[i][j], i, j);
 			}
 		}
@@ -50,6 +53,6 @@ public class WidgetStackGrid extends QWidget
 	public void pressed(int row, int col)
 	{
 		pressed.emit(row, col);
-		System.out.println(row + ", "+col);
+		//System.out.println(row + ", "+col);
 	}
 }

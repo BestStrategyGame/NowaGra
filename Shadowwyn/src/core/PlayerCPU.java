@@ -19,4 +19,10 @@ public class PlayerCPU extends Player
 		
 		return false;
 	}
+	
+	@Override
+	public boolean battleStartTurn(GroupOfUnits unit)
+	{
+		return false;
+	}
 }

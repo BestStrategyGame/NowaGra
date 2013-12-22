@@ -1,6 +1,9 @@
 package gui;
 
 import com.trolltech.qt.gui.*;
+import com.trolltech.qt.core.*;
+import com.trolltech.qt.core.QEvent.Type;
+
 
 public class WidgetStack extends QWidget
 {
@@ -9,8 +12,9 @@ public class WidgetStack extends QWidget
 	protected WidgetHolder[] layer;
 	
 	public Signal2<Integer, Integer> pressed = new Signal2<Integer, Integer>();
+	public Signal2<Integer, Integer> over = new Signal2<Integer, Integer>();
 
-	public WidgetStack(int size, int layers, int r, int c)
+	public WidgetStack(int width, int height, int size, int layers, int r, int c)
 	{
 		super();
 		
@@ -18,11 +22,11 @@ public class WidgetStack extends QWidget
 		row = r;
 		col = c;
 		layer = new WidgetHolder[layers];
-		setMinimumSize(size, size);
+		setMinimumSize(width, height);
 		
 		for (int i=0; i<layers; ++i) {
-			layer[i] = new WidgetHolder(this, size, null);
-			layer[i].show();
+			layer[i] = new WidgetHolder(this, width, height, null);
+			layer[i].setParent(this);
 		}
 	}
 	
@@ -41,5 +45,14 @@ public class WidgetStack extends QWidget
 	protected void mousePressEvent(QMouseEvent event)
 	{
 		pressed.emit(row, col);
+	}
+	
+	@Override
+	public boolean event(QEvent e)
+	{
+		if (e.type() == Type.Enter) {
+			over.emit(row, col);
+		}
+		return super.event(e);
 	}
 }

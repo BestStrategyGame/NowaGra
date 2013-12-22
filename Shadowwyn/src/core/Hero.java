@@ -1,5 +1,7 @@
 package core;
 
+import gui.WindowBattle;
+
 import java.util.*;
 
 public class Hero implements WorldMapObject
@@ -21,8 +23,8 @@ public class Hero implements WorldMapObject
 	private static final int basicMovePoints = 32;
 	private int movePoints = basicMovePoints;
 	
-	private int x;
-	private int y;
+	private int x = -1;
+	private int y = -1;
 	
 	private Set<Artifact> artifacts = new HashSet<Artifact>();
 	private Map<ArtifactType, Artifact> active = new HashMap<ArtifactType, Artifact>();
@@ -52,6 +54,32 @@ public class Hero implements WorldMapObject
 	
 	public boolean standNextTo(Hero hero, Player player)
 	{
+		if (hero.getColor() == getColor()) {
+			return false;
+		}
+		
+		Mission m = Mission.getLastInstance();
+		Player cp = m.getPlayer(getColor());
+		
+		if (getUnits().size() == 0) {
+			m.battleFinished(hero.getColor(), player, cp, hero, this);
+
+		} else if (hero.getUnits().size() == 0){
+			m.battleFinished(getColor(), player, cp, hero, this);
+		} else {
+			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS);
+			b.createMapWidget();
+			b.populateMapWidget();;
+			
+			WindowBattle bat = new WindowBattle(b, player, cp, hero, this);
+			b.updateQueue.connect(bat, "updateQueue(Queue)");
+			b.start();
+			
+			gui.WindowStack ws = gui.WindowStack.getLastInstance();
+			if (ws != null) {
+				ws.push(bat);
+			}
+		}
 		return false;
 	}
 	
@@ -162,7 +190,14 @@ public class Hero implements WorldMapObject
 	
 	public void setUnits(List<GroupOfUnits> u)
 	{
-		units = u;
+		if (u == null) {
+			units = new ArrayList<GroupOfUnits>();
+		} else {
+			units = u;
+		}
+		for (GroupOfUnits unit: units) {
+			unit.setOwner(this);
+		}
 	}
 	
 	public void moveUnits(Hero dst, int dstPos, int srcPos)

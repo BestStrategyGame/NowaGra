@@ -2,9 +2,11 @@ package gui;
 
 import java.util.*;
 
+import com.trolltech.qt.core.Qt.WindowType;
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.gui.QFrame.Shadow;
 import com.trolltech.qt.gui.QFrame.Shape;
+import com.trolltech.qt.gui.QLayout.SizeConstraint;
 
 public class DialogHero extends QDialog
 {
@@ -26,7 +28,7 @@ public class DialogHero extends QDialog
 	{
 		super();
 		
-		setStyleSheet(core.Const.style);
+		
 		
 		hero1 = h1;
 		if (h2 == null) {
@@ -36,6 +38,9 @@ public class DialogHero extends QDialog
 		hero2 = h2;
 		
 		setLayout(layout);
+		setWindowFlags(WindowType.Drawer);
+		setStyleSheet(core.Const.style);
+		layout.setSizeConstraint(SizeConstraint.SetFixedSize);
 		
 		QFormLayout statsLayout = new QFormLayout();
 		statsLayout.setMargin(10);
