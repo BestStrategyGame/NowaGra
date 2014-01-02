@@ -106,13 +106,18 @@ QScrollBar::sub-line {
 	width: 0px;
 	height: 0px;
 }
-QDialog, #about, QToolTip {
+QDialog, #dialog, QToolTip {
 	background-color: #333;
 	border-top: 1px solid #888;
 	border-left: 1px solid #888;
 	border-bottom: 1px solid #555;
 	border-right: 1px solid #555;
 }
+
+#dialog {
+	border-width: 3px;
+}
+
 #label {
 	border: 1px solid white;
 	/*border-left: 1px solid white;*/

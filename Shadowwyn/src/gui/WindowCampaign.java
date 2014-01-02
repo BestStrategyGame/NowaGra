@@ -100,8 +100,12 @@ public class WindowCampaign extends QWidget
 			core.Mission mission = (core.Mission)this.mission.itemData(this.mission.currentIndex());
 			mission.init(name.text());
 			
+			QApplication.processEvents();
+			
 			gui.WindowMap window = new gui.WindowMap();
 			gui.WidgetMap map = mission.getMapWidget();
+			
+			QApplication.processEvents();
 			
 			mission.startTurn.connect(window, "startTurn(int,Player)");
 			mission.updateWindow.connect(window, "updateData(Player)");
@@ -116,9 +120,13 @@ public class WindowCampaign extends QWidget
 			map.pressed.connect(mission, "clickedOnMap(int,int)");
 			window.setMap(map);
 			
+			QApplication.processEvents();
 			mission.start();
 			
+			QApplication.processEvents();
 			ws.push(window);
+			
+			QApplication.processEvents();
 		}
 	}
 	

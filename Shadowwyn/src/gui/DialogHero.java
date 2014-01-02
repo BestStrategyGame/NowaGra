@@ -8,7 +8,7 @@ import com.trolltech.qt.gui.QFrame.Shadow;
 import com.trolltech.qt.gui.QFrame.Shape;
 import com.trolltech.qt.gui.QLayout.SizeConstraint;
 
-public class DialogHero extends QDialog
+public class DialogHero extends QFrame
 {
 	private core.Hero hero1;
 	private core.Hero hero2;
@@ -28,6 +28,13 @@ public class DialogHero extends QDialog
 	{
 		super();
 		
+		hide();
+		setObjectName("dialog");
+		
+		QFrame line = new QFrame();
+		line.setMinimumHeight(1);
+		line.setObjectName("hline");
+		
 		
 		
 		hero1 = h1;
@@ -38,7 +45,7 @@ public class DialogHero extends QDialog
 		hero2 = h2;
 		
 		setLayout(layout);
-		setWindowFlags(WindowType.Drawer);
+		//setWindowFlags(WindowType.Drawer);
 		setStyleSheet(core.Const.style);
 		layout.setSizeConstraint(SizeConstraint.SetFixedSize);
 		
@@ -52,23 +59,33 @@ public class DialogHero extends QDialog
 		statsLayout.addRow("Szybkość:", statsSpeed);
 		
 		layout.addWidget(new QLabel("<b>"+h1.getName()+"</b>"), 0, 1);
-		layout.addLayout(statsLayout, 1, 1);
+		layout.addWidget(line, 1, 1, 1, 3);
+		layout.addLayout(statsLayout, 2, 1);
 		
 		units = new WidgetUnits(h1.getUnits(), h2.getUnits(), h1, h2);
-		layout.addWidget(new QLabel("<b>Wymiania/usunięcie jednostek</b>"), 2, 1);
-		layout.addWidget(units, 3, 1, 3, 3);
+		layout.addWidget(new QLabel("<b>Wymiania/usunięcie jednostek</b>"), 3, 1);
+		layout.addWidget(units, 4, 1, 3, 3);
 		
-		QFrame line = new QFrame();
+		QFrame line2 = new QFrame();
 		line.setMinimumHeight(1);
 		line.setObjectName("hline");
-		layout.addWidget(line, 8, 1, 1, 3);
+		layout.addWidget(line2, 9, 1, 1, 3);
 		
 		QHBoxLayout buttonsLayout = new QHBoxLayout();
 		buttonsLayout.addWidget(close);
-		layout.addLayout(buttonsLayout, 9, 3);
+		layout.addLayout(buttonsLayout, 10, 3);
 		updateStats();
 		
 		close.clicked.connect(this, "closeClicked()");
+	}
+	
+	public void exec()
+	{
+		if (WindowStack.getLastInstance() != null) {
+			setParent(WindowStack.getLastInstance());
+		}
+		move(200, 200);
+		show();
 	}
 	
 	private void closeClicked()

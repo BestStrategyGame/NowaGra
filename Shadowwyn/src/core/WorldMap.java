@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.trolltech.qt.core.*;
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.QThread;
 
 public class WorldMap
@@ -191,10 +192,16 @@ public class WorldMap
 		System.out.println(getWidth());
 		
 		System.out.println("CREATE MAP WIDGET: NEW WIDGET MAP");
+		QApplication.processEvents();
 		mapWidget = new gui.WidgetMap(getHeight(), getWidth(), size, false);
+		
 		System.out.println("CREATE MAP WIDGET: SET BACKGROUND");
+		QApplication.processEvents();
 		mapWidget.setBackground(background);
+		
+		
 		System.out.println("CREATE MAP WIDGET: ADD SHADOW");
+		QApplication.processEvents();
 		mapWidget.addShadow();
 	}
 	
@@ -202,6 +209,7 @@ public class WorldMap
 	{
 		WorldMapObject o;
 		for (core.Point pos: p2o.points()) {
+			QApplication.processEvents();
 			o = p2o.get(pos);
 			if (o != null) {
 				if (o.getImageFile() != null) {
@@ -218,6 +226,7 @@ public class WorldMap
 			}
 		}
 		for (core.Point pos: p2h.points()) {
+			QApplication.processEvents();
 			o = p2h.get(pos);
 			if (o.getImageFile() != null) {
 				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));

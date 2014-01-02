@@ -39,6 +39,7 @@ public class MiniMap extends QFrame
 		
 		for (int i=0; i<tmap.length; ++i) {
 			for (int j=0; j<tmap[0].length; ++j) {
+				
 				if (ommit.contains(new core.Point(j, i))) {
 					continue;
 				}
@@ -63,7 +64,6 @@ public class MiniMap extends QFrame
 				}
 			}
 		}
-		
 		//for (core.Point pos: wmap.getH)
 		QImage scaled = image.scaled(38*5, 36*5);
 		painter.drawImage(0, 0, scaled);

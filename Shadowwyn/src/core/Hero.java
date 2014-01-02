@@ -62,10 +62,10 @@ public class Hero implements WorldMapObject
 		Player cp = m.getPlayer(getColor());
 		
 		if (getUnits().size() == 0) {
-			m.battleFinished(hero.getColor(), player, cp, hero, this);
+			m.battleFinished(hero.getColor(), player, cp, hero, this, 0, 0);
 
 		} else if (hero.getUnits().size() == 0){
-			m.battleFinished(getColor(), player, cp, hero, this);
+			m.battleFinished(getColor(), player, cp, hero, this, 0, 0);
 		} else {
 			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS);
 			b.createMapWidget();
@@ -243,9 +243,11 @@ public class Hero implements WorldMapObject
 		speed += n;
 	}
 	
-	public void incExperience(int n)
+	public int incExperience(int n)
 	{
+		int oldLevel = getLevel();
 		experience += n;
+		return getLevel()-oldLevel; 
 	}
 	
 	public int getExp()

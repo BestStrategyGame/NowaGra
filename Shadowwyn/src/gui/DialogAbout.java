@@ -5,15 +5,18 @@ import com.trolltech.qt.gui.*;
 
 public class DialogAbout extends QFrame
 {
-	private QGridLayout layout = new QGridLayout();
-	
+	private QGridLayout layout = new QGridLayout();	
 	private QPushButton close = new QPushButton("Zamknij okno");
+	private QWidget parent;
 	
-	public DialogAbout()
+	public DialogAbout(QWidget p)
 	{
 		super();
 		
-		setObjectName("about");
+		parent = p;
+		hide();
+		
+		setObjectName("dialog");
 		setLayout(layout);
 		setStyleSheet(core.Const.style);
 		
@@ -38,6 +41,13 @@ public class DialogAbout extends QFrame
 
 		close.clicked.connect(this, "hide()");
 		
+	}
+	
+	public void exec()
+	{
+		setParent(parent);
+		move(300, 300);
+		show();
 	}
 	
 	public static void main(String[] args)

@@ -17,7 +17,7 @@ public class WindowMain extends QWidget
 	private WidgetImage background = new WidgetImage("image/menu/main.png");
 	private WidgetImage logo = new WidgetImage("image/menu/logo.png");
 	
-	private DialogAbout dialog = new DialogAbout();
+	private DialogAbout dialog = new DialogAbout(this);
 	
 	public WindowMain()
 	{
@@ -49,9 +49,7 @@ public class WindowMain extends QWidget
 		fast.clicked.connect(this, "fastClicked()");
 		campaign.clicked.connect(this, "campaignClicked()");
 		
-		dialog.hide();
-		dialog.setParent(this);
-		dialog.move(300, 300);
+		
 	}
 	
 	public void exitClicked()
@@ -64,7 +62,7 @@ public class WindowMain extends QWidget
 	
 	public void aboutClicked()
 	{
-		dialog.show();
+		dialog.exec();
 	}
 	
 	public void fastClicked()

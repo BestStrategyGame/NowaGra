@@ -9,7 +9,7 @@ import com.trolltech.qt.gui.QFrame.Shadow;
 import com.trolltech.qt.gui.QFrame.Shape;
 import com.trolltech.qt.gui.QLayout.SizeConstraint;
 
-public class DialogMarket extends QDialog
+public class DialogMarket extends QFrame
 {
 	private core.Player player;
 	private QGridLayout layout = new QGridLayout();
@@ -37,6 +37,7 @@ public class DialogMarket extends QDialog
 		
 		player = p;
 		
+		setObjectName("dialog");
 		setLayout(layout);
 		setWindowFlags(WindowType.Drawer);
 		setStyleSheet(core.Const.style);
@@ -61,7 +62,7 @@ public class DialogMarket extends QDialog
 		QFrame line = new QFrame();
 		line.setMinimumHeight(1);
 		line.setObjectName("hline");
-		layout.addWidget(line, 6, 0, 1, 3);
+		//layout.addWidget(line, 6, 0, 1, 3);
 		layout.addLayout(buttonsLayout, 7, 0, 1, 3);
 		
 		buttonsLayout.addStretch();
@@ -93,6 +94,15 @@ public class DialogMarket extends QDialog
 		
 		cancel.clicked.connect(this, "close()");
 		change.clicked.connect(this, "change()");
+	}
+	
+	public void exec()
+	{
+		if (WindowStack.getLastInstance() != null) {
+			setParent(WindowStack.getLastInstance());
+		}
+		move(400, 300);
+		show();
 	}
 	
 	private void change()

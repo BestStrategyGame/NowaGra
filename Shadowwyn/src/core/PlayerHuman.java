@@ -1,5 +1,7 @@
 package core;
 
+import com.trolltech.qt.gui.QApplication;
+
 public class PlayerHuman extends Player
 {
 	private WorldMap.Point target = null;
@@ -14,6 +16,8 @@ public class PlayerHuman extends Player
 	{
 		super.startTurn(day);
 		
+		QApplication.processEvents();
+		
 		System.out.println("Start turn "+getName());
 		if (getHeroes().iterator().hasNext()) {
 			setActiveHero(getHeroes().iterator().next());
@@ -22,9 +26,10 @@ public class PlayerHuman extends Player
 		}
 		//Mission.getLastInstance().finnishTurn(this);
 		
-		
+		QApplication.processEvents();
 		Mission.getLastInstance().getWorldMap().getMapWidget().resetShadow();
 		for (Point p: visible) {
+			QApplication.processEvents();
 			Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(p.y, p.x);
 		}
 		

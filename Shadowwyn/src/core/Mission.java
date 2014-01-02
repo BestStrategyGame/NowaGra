@@ -3,7 +3,10 @@ package core;
 import com.trolltech.qt.QSignalEmitter.Signal1;
 import com.trolltech.qt.QSignalEmitter.Signal2;
 import com.trolltech.qt.core.*;
+import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QMessageBox;
+
+import gui.WindowStack;
 
 import java.util.*;
 import java.io.*;
@@ -40,21 +43,24 @@ public abstract class Mission extends QObject
 		return null;
 	}
 	
-	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2)
+	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2, int strength1, int strength2)
 	{
 		Player winner, looser;
 		Hero winnerh, looserh;
+		int exp = 0;
 		
 		if (player1.getColor() == color) {
 			winner = player1;
 			winnerh = hero1;
 			looser = player2;
 			looserh = hero2;
+			exp = strength2;
 		} else {
 			winner = player2;
 			winnerh = hero2;
 			looser = player1;
 			looserh = hero1;
+			exp = strength1;
 		}
 		
 		
@@ -69,7 +75,12 @@ public abstract class Mission extends QObject
 		}
 		
 		QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy", "Wygrywa gracz "+color.name);
-		
+		exp *= 10;
+		System.out.println("exp add " + exp);
+		int i = winnerh.incExperience(exp);
+		while (i-- != 0) {
+			new gui.DialogLevelUp(winnerh, i).exec();
+		}
 	}
 	
 	public void emitUpdateWindowSignal(Player player)
@@ -109,15 +120,20 @@ public abstract class Mission extends QObject
 	protected void loadMap(String bg, String tr, String rs)
 	{
 		System.out.println("LOAD MAP: NEW WORLD MAP");
+		QApplication.processEvents();
 		wmap = new WorldMap(bg);
 		//loadForeground(fg);
 		System.out.println("LOAD MAP: LOAD TERRAIN");
+		QApplication.processEvents();
 		wmap.loadTerrain(tr);
 		System.out.println("LOAD MAP: LOAD RESOURCES");
+		QApplication.processEvents();
 		wmap.loadResources(rs);
 		System.out.println("LOAD MAP: INIT ROUTE");
+		QApplication.processEvents();
 		wmap.initRoute();
 		System.out.println("LOAD MAP: CREATE MAP WIDGET");
+		QApplication.processEvents();
 		wmap.createMapWidget();
 	}
 	

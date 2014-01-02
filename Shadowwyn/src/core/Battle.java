@@ -67,6 +67,8 @@ public class Battle extends QObject
 	
 	private core.Player player1;
 	private core.Player player2;
+	private int strength1;
+	private int strength2;
 	private core.Hero hero1;
 	private core.Hero hero2;
 	private Terrain terrain;
@@ -96,6 +98,8 @@ public class Battle extends QObject
 		player2 = p2;
 		hero1 = h1;
 		hero2 = h2;
+		strength1 = h1.getStrenght();
+		strength2 = h2.getStrenght();
 		terrain = t;
 		
 		int i = 1;
@@ -155,7 +159,7 @@ public class Battle extends QObject
 		ws.pop();
 		Mission m = Mission.getLastInstance();
 		
-		m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2);
+		m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2);
 	}
 	
 	public void start()
