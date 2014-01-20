@@ -13,12 +13,19 @@ public class MissionC1 extends Mission
 		loadMap("maps/c1/background.jpg", "maps/c1/mask.pnm", "maps/c1/resources.pnm");
 		System.out.println("END LOAD MAP");
 		
+		
+		
+		
 		Player p1 = new PlayerHuman(names[0], Color.BLUE);
-		Player p2 = new PlayerHuman("Komputer", Color.RED);
+		Player p2 = new PlayerCPU("Komputer", Color.RED);
 		
 		p1.addResource(ResourceType.GOLD, 5000);
 		p1.addResource(ResourceType.WOOD, 10);
 		p1.addResource(ResourceType.ORE, 10);
+		
+		p2.addResource(ResourceType.GOLD, 5000);
+		p2.addResource(ResourceType.WOOD, 10);
+		p2.addResource(ResourceType.ORE, 10);
 		
 		Hero h1 = new Hero("Bohater 1", CastleType.HUMAN_CASTLE);
 		Hero h2 = new Hero("Bohater 2", CastleType.HUMAN_CASTLE);
@@ -53,6 +60,15 @@ public class MissionC1 extends Mission
 		addPlayer(p1);
 		addPlayer(p2);
 		
+		
+		List<GroupOfUnits> u100 = new ArrayList<GroupOfUnits>();
+		u100.add(new GroupOfUnits(UnitType.WOJAK, null, 10));
+		IndependentUnits i100 = new IndependentUnits();
+		i100.setUnits(u100);
+		
+		wmap.addObject(4, 8, i100);
+		
+		
 		setActivePlayer(p1);
 		System.out.println("START POPULATE");
 		wmap.populateMapWidget();
@@ -75,4 +91,26 @@ public class MissionC1 extends Mission
 	{
 		return "Twoim celem jest odbicie zamku twojego ojca, a także pokonanie wszystkich wrogich jednostek znajdujących się na twoich ziemiach. Twój bohater nie może zginąć.";
 	}
+
+	private Player last;
+	
+	@Override
+	public boolean endCondition()
+	{
+		int size, i;
+		for (size=0, i=0; i<playersNo; ++i) {
+			if (players[i].isFinished() == false) {
+				++size;
+				last = players[i];
+			}
+		}
+		return size <= 1;
+	}
+
+	@Override
+	public boolean won()
+	{
+		return last.getColor() == Color.BLUE;
+	}
+	
 }

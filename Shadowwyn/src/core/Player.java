@@ -5,7 +5,18 @@ public abstract class Player
 {
 	private String name;
 	private Color color;
+	private boolean finished = false;
 	
+	public boolean isFinished()
+	{
+		return finished;
+	}
+
+	public void setFinished(boolean finished)
+	{
+		this.finished = finished;
+	}
+
 	private Map<ResourceType, Integer> resources = new HashMap<ResourceType, Integer>();
 	private List<Hero> deadHeroes = new LinkedList<Hero>();
 	private Set<Hero> heroes = new HashSet<Hero>();
@@ -91,6 +102,47 @@ public abstract class Player
 	public Collection<Castle> getCastles()
 	{
 		return castles;
+	}
+	
+	private Cost balancedBudget = null;
+	public Cost getBalancedBudget()
+	{
+		return balancedBudget;
+	}
+	
+	public void generateBalancedBudget()
+	{
+		Player dummy = new PlayerCPU("dummy", getColor());
+		
+		int rgold = 0, rwood = 0, rore = 0;
+		Cost cost;
+		
+		for (Castle c: getCastles()) {
+			c.generateWeeklyRequirements(dummy);
+			cost = c.getWeeklyRequirements();
+			rgold += cost.gold;
+			rwood += cost.wood;
+			rore += cost.ore;
+		}
+		
+		WorldMap wmap = WorldMap.getLastInstance();
+		wmap.weeklyBonus(dummy);
+		for (int i=0; i<7; ++i) {
+			wmap.dailyBonus(dummy);
+		}
+		
+		/*if (dummy.getResource(ResourceType.GOLD) < rgold) {
+			balancedBudget =  ResourceType.GOLD;
+		} else if (dummy.getResource(ResourceType.WOOD) < rwood) {
+			balancedBudget =  ResourceType.WOOD;
+		} else if (dummy.getResource(ResourceType.ORE) < rore) {
+			balancedBudget =  ResourceType.ORE;
+		} else {
+			balancedBudget = null;
+		}*/
+		balancedBudget = new Cost(rgold-dummy.getResource(ResourceType.GOLD),
+				rwood-dummy.getResource(ResourceType.WOOD),
+				rore-dummy.getResource(ResourceType.ORE));
 	}
 	
 	public int getResource(ResourceType type)

@@ -68,10 +68,25 @@ public class MapBuilding implements WorldMapObject
 	}
 
 	@Override
-	public int willingnessToMoveHere(Hero hero, Player player, int distance,
+	public int willingnessToMoveHere(Hero hero, Player player, float distance,
 			int day) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		if (color == player.getColor()) {
+			return 0;
+		}
+		
+		float moveRatio = hero.getMovePoints()/(distance+1);
+		float result = 0;
+		Cost need = player.getBalancedBudget();
+		
+		if (type == MapBuildingType.GOLD_MINE) {
+			result = 1.8f*(moveRatio + Math.min(2, need.gold/200));
+		} else if (type == MapBuildingType.WOOD_MINE) {
+			result = 1.2f*(moveRatio + Math.min(2, need.wood/10));
+		} else if (type == MapBuildingType.ORE_MINE) {
+			result = 1.2f*(moveRatio + Math.min(2, need.ore/10));
+		}
+		return (int)(100*result);
 	}
 
 	@Override

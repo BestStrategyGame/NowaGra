@@ -6,7 +6,7 @@ public interface WorldMapObject
 	boolean stand(Hero hero, Player player);
 	boolean standNextTo(Hero hero, Player player);
 	int stackLevel();
-	int willingnessToMoveHere(Hero hero, Player player, int distance, int day);
+	int willingnessToMoveHere(Hero hero, Player player, float distance, int day);
 	void dailyBonus(Player player);
 	void weeklyBonus(Player player);
 	String getImageFile();

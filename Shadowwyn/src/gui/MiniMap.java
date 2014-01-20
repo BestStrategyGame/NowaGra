@@ -53,7 +53,7 @@ public class MiniMap extends QFrame
 					image.setPixel(j, i, tmap[i][j].rgb);
 				}
 				core.Hero hero = wmap.getHeroAt(j, i);
-				if (hero != null) {
+				if (hero != null && hero.getColor() != core.Color.NONE) {
 					//image.setPixel(j, i, hero.getColor().rgb);
 					image.setPixel(j+1, i, hero.getColor().rgb);
 					image.setPixel(j-1, i, hero.getColor().rgb);
@@ -69,7 +69,7 @@ public class MiniMap extends QFrame
 		painter.drawImage(0, 0, scaled);
 		image.dispose();
 		scaled.dispose();
-		System.out.println("PAINTER");
+		//System.out.println("PAINTER");
 	}
 	
 	@Override

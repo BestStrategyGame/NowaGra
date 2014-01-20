@@ -4,10 +4,10 @@ public class Resource implements WorldMapObject
 	private ResourceType type;
 	private int amount;
 	
-	public Resource(ResourceType t, int a)
+	public Resource(ResourceType t)
 	{
 		type = t;
-		amount = a;
+		amount = t.defaultAmount();
 	}
 	
 	public String getName()
@@ -51,10 +51,20 @@ public class Resource implements WorldMapObject
 	}
 
 	@Override
-	public int willingnessToMoveHere(Hero hero, Player player, int distance,
+	public int willingnessToMoveHere(Hero hero, Player player, float distance,
 			int day) {
-		// TODO Auto-generated method stub
-		return 0;
+		float moveRatio = hero.getMovePoints()/distance;
+		float result = 0;
+		Cost need = player.getBalancedBudget();
+		
+		if (type == ResourceType.GOLD) {
+			result = 1.2f*(moveRatio + Math.min(3, need.gold/amount));
+		} else if (type == ResourceType.WOOD) {
+			result = 1.0f*(moveRatio + Math.min(3, need.wood/amount));
+		} else if (type == ResourceType.ORE) {
+			result = 1.0f*(moveRatio + Math.min(3, need.ore/amount));
+		}
+		return (int)(100*result);
 	}
 
 	@Override

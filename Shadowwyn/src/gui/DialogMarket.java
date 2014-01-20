@@ -96,6 +96,7 @@ public class DialogMarket extends QFrame
 		change.clicked.connect(this, "change()");
 	}
 	
+	private boolean wait = true;
 	public void exec()
 	{
 		if (WindowStack.getLastInstance() != null) {
@@ -103,8 +104,17 @@ public class DialogMarket extends QFrame
 		}
 		move(400, 300);
 		show();
+		wait = true;
+		while (wait) {
+			QApplication.processEvents();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	
+
 	private void change()
 	{
 		player.addResource(core.ResourceType.GOLD, -sliderGold.value());

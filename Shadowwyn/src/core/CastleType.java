@@ -3,20 +3,32 @@ package core;
  
  public enum CastleType
  {
-	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0, "image/heroes/human.png"),
-	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0, "image/heroes/demon.png"),
-	FOREST_ROOK(3, "Leśna Twierdza", 172, 113, 0, "image/heroes/forest.png");
+	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0, UnitType.WOJAK, UnitType.KUSZNIK, UnitType.MAG_OGNIA, UnitType.RYCERZ_MROKU, "image/heroes/human.png"),
+	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, "image/heroes/demon.png"),
+	FOREST_ROOK(3, "Leśna Twierdza", 172, 113, 0, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, "image/heroes/forest.png");
 	
 	public final int id;
 	public final String name;
 	public final int rgb;
+	public final UnitType tier1;
+	public final UnitType tier2;
+	public final UnitType tier3;
+	public final UnitType tier4;
 	public final String file;
 	
-	private CastleType(int i, String n, int r, int g, int b, String f)
+	private CastleType(int i, String n, int r, int g, int b, UnitType t1, UnitType t2, UnitType t3, UnitType t4, String f)
 	{
 		id = i;
 		name = n;
 		rgb = 256*256*r + 256*g + b;
+		t1.castle = this;
+		t2.castle = this;
+		t3.castle = this;
+		t4.castle = this;
+		tier1 = t1;
+		tier2 = t2;
+		tier3 = t3;
+		tier4 = t4;
 		file = f;
 	}
 	

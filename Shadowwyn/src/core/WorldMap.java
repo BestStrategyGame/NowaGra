@@ -14,7 +14,7 @@ public class WorldMap
 	{
 		public final int x;
 		public final int y;
-		private float distance = 1000000;
+		private float distance = 10000000;
 		private Point parent = null;
 		
 		Point(int x, int y)
@@ -118,7 +118,7 @@ public class WorldMap
 					
 					ResourceType rt = ResourceType.fromRGB(r, g, b);
 					if (rt != null) {
-						addObject(j, i, new Resource(rt, 2));
+						addObject(j, i, new Resource(rt));
 						continue;
 					}
 					
@@ -163,7 +163,7 @@ public class WorldMap
 					
 					ResourceType rt = ResourceType.fromRGB(r, g, b);
 					if (rt != null) {
-						addObject(j, i, new Resource(rt, 2));
+						addObject(j, i, new Resource(rt));
 						continue;
 					}
 				}
@@ -473,11 +473,19 @@ public class WorldMap
 	
 	public void calculateRoute(final Hero hero)
 	{
+		if (hero == null) {
+			for (int y=0; y<getHeight(); ++y) {
+				for (int x=0; x<getWidth(); ++x) {
+					route[y][x] = new Point(x, y);
+				}
+			}
+		}
 		System.out.println("calculate route "+hero.getName());
 		
-		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-		    System.out.println(ste);
-		}
+		
+		//for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+		//    System.out.println(ste);
+		//}
 
 		if (thread != null) {
 			try {
@@ -549,5 +557,76 @@ public class WorldMap
 			}
 		}
 		return route[y][x];
+	}
+	
+	public Point whereToGo(Hero hero, Player player, int day)
+	{
+		int priority = -1000000;
+		int newPriority;
+		float distance;
+		calculateRoute(hero);
+		core.Point p;
+		core.Point resultPoint = null;
+		
+		for (WorldMapObject obj: p2o.objects()) {
+			p = p2o.get(obj);
+			distance = getDistance(p.x, p.y);
+			newPriority = obj.willingnessToMoveHere(hero, player, distance, day);
+			if (newPriority > 0)
+				System.out.println("AI: WTM OBJECT "+obj.getName()+" ~ "+newPriority);
+			if (newPriority >  priority) {
+				priority = newPriority;
+				resultPoint = p;
+			}
+		}
+		for (Hero obj: p2h.objects()) {
+			if (obj == hero) {
+				continue;
+			}
+			p = p2h.get(obj);
+			System.out.println(getRoute(p.x, p.y));
+			if (getRoute(p.x, p.y).getParent() == null) {
+				continue;
+			}
+			System.out.println(getRoute(p.x, p.y).getParent());
+			distance = getRoute(p.x, p.y).getParent().getDistance()-500000;
+			newPriority = obj.willingnessToMoveHere(hero, player, distance, day);
+			System.out.println("AI: WTM HERO "+obj.getName()+" ~ "+newPriority+", dist="+distance+", "+p.x+", "+p.y);
+			if (newPriority >  priority && newPriority > 0) {
+				priority = newPriority;
+				resultPoint = p;
+			}
+		}
+		//try {
+			Point route = getRoute(resultPoint.x, resultPoint.y);
+			try {
+				if (!p2o.get(route.x, route.y).isVisitable()) {
+					route = route.getParent();
+				}
+			} catch (NullPointerException e) {
+				//return null;
+			}
+			return route;
+		//} catch (NullPointerException e) {
+			//return null;
+		//}
+	}
+
+	public boolean checkDangerFor(Castle castle, Hero dummy)
+	{
+		int strength = 0;
+		if (castle.getGarission() != null) {
+			strength += castle.getGarission().getStrenght();
+		}
+		if (castle.getHero() != null) {
+			strength += castle.getHero().getStrenght();
+		}
+		
+		for (Hero h: p2h.objects()) {
+			if (h.getStrenght() > strength && h.getMaxMovePoints() < getDistance(dummy.getX(), dummy.getY())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

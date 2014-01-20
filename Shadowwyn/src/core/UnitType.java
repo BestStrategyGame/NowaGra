@@ -1,17 +1,18 @@
 package core;
- import java.util.*;
- 
- public enum UnitType
- {
-	WOJAK(1, "Wojak", CastleType.HUMAN_CASTLE, 1, 4, 5, 3,  false, false, new Cost(50, 0, 0), "image/units/human/tier1.png"),
-	KUSZNIK(2, "Kusznik", CastleType.HUMAN_CASTLE, 2, 4, 5, 4, true, false, new Cost(190, 0, 0), "image/units/human/tier2.png"),
-	MAG_OGNIA(3, "Mag Ognia", CastleType.HUMAN_CASTLE, 3, 4, 5, 5, true, true, new Cost(440, 0, 0), "image/units/human/tier3.png"),
-	RYCERZ_MROKU(4, "Rycerz Mroku", CastleType.HUMAN_CASTLE, 4, 4, 5, 3, false, false, new Cost(800, 0, 0), "image/units/human/tier4.png");
+import java.util.*;
+
+public enum UnitType
+{
+	DUMMY(0, "Dummy", 1, 1, 1, 1, false ,false, new Cost(0, 0, 0), ""),
+	WOJAK(1, "Wojak", 1, 4, 5, 3,  false, false, new Cost(50, 0, 0), "image/units/human/tier1.png"),
+	KUSZNIK(2, "Kusznik", 2, 4, 5, 4, true, false, new Cost(190, 0, 0), "image/units/human/tier2.png"),
+	MAG_OGNIA(3, "Mag Ognia", 3, 4, 5, 5, true, true, new Cost(440, 0, 0), "image/units/human/tier3.png"),
+	RYCERZ_MROKU(4, "Rycerz Mroku", 4, 4, 5, 3, false, false, new Cost(800, 0, 0), "image/units/human/tier4.png");
 	
 	public final int id;
 	public final String name;
 	
-	public final CastleType castle;
+	public CastleType castle = null;
 	public final int level;
 	public final int attack;
 	public final int defense;
@@ -21,11 +22,10 @@ package core;
 	public final Cost cost;
 	public final String file;
 	
-	private UnitType(int i, String n, CastleType c, int l, int a, int d, int s, boolean sh, boolean mg, Cost co, String f)
+	private UnitType(int i, String n, int l, int a, int d, int s, boolean sh, boolean mg, Cost co, String f)
 	{
 		id = i;
 		name = n;
-		castle = c;
 		level = l;
 		attack = a;
 		defense = d;
@@ -50,6 +50,7 @@ package core;
 	public static UnitType getTier(int tier, CastleType type)
 	{
 		for (UnitType i: UnitType.values()) {
+			System.out.println ("unit "+i.level+", "+i.castle);
 			if (i.level == tier && i.castle == type) {
 				return i;
 			}

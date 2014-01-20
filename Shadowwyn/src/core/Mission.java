@@ -6,6 +6,7 @@ import com.trolltech.qt.core.*;
 import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QMessageBox;
 
+import gui.WindowCampaign;
 import gui.WindowStack;
 
 import java.util.*;
@@ -22,8 +23,8 @@ public abstract class Mission extends QObject
 	
 	private final int maxPlayers = 8;
 	
-	private Player[] players = new Player[maxPlayers];
-	private int playersNo = 0;
+	protected Player[] players = new Player[maxPlayers];
+	protected int playersNo = 0;
 	private int day = 1;
 	protected WorldMap wmap;
 	
@@ -32,9 +33,13 @@ public abstract class Mission extends QObject
 	public Signal0 removeHero = new Signal0();
 
 	private Player activePlayer;
+	private static Player ai = new PlayerCPU("Sztuczna inteligencja", Color.NONE);
 	
 	public Player getPlayer(Color c)
 	{
+		if (c == Color.NONE) {
+			return ai;
+		}
 		for (Player player: players) {
 			if (player != null && player.getColor() == c) {
 				return player;
@@ -74,12 +79,40 @@ public abstract class Mission extends QObject
 			wm.removeHero(looserh);
 		}
 		
-		QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy", "Wygrywa gracz "+color.name);
-		exp *= 10;
-		System.out.println("exp add " + exp);
-		int i = winnerh.incExperience(exp);
-		while (i-- != 0) {
-			new gui.DialogLevelUp(winnerh, i).exec();
+		if (player1 instanceof PlayerHuman || player2 instanceof PlayerHuman) {
+			if (color == Color.NONE) {
+				QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy", "Przegrałeś!");
+			} else {
+				QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy",  "Wygrywa gracz "+color.name);
+			}
+		}
+		
+		if (winnerh.getColor() == Color.NONE) return;
+		if (winner instanceof PlayerCPU) {
+			int i = winnerh.incExperience(exp);
+			while (i-- != 0) {
+				if (winnerh.getBaseAttack() < winnerh.getBaseDefense()) {
+					if (winnerh.getBaseAttack() < winnerh.getBaseSpeed()) {
+						winnerh.incAttack(1);
+					} else {
+						winnerh.incSpeed(1);
+					}
+				} else {
+					if (winnerh.getBaseDefense() < winnerh.getBaseSpeed()) {
+						winnerh.incDefense(1);
+					} else {
+						winnerh.incSpeed(1);
+					}
+				}
+			}
+		} else {
+		
+		//exp *= 10;
+			System.out.println("exp add " + exp);
+			int i = winnerh.incExperience(exp);
+			while (i-- != 0) {
+				new gui.DialogLevelUp(winnerh, i).exec();
+			}
 		}
 	}
 	
@@ -107,6 +140,8 @@ public abstract class Mission extends QObject
 	public abstract String getName();
 	public abstract String getDescription();
 	public abstract String getObjective();
+	public abstract boolean endCondition();
+	public abstract boolean won();
 	
 	public WorldMap getWorldMap() {
 		return wmap;
@@ -160,7 +195,7 @@ public abstract class Mission extends QObject
 					
 					ResourceType rt = ResourceType.fromRGB(r, g, b);
 					if (rt != null) {
-						wmap.addObject(j, i, new Resource(rt, 2));
+						wmap.addObject(j, i, new Resource(rt));
 						
 						continue;
 					}
@@ -204,6 +239,8 @@ public abstract class Mission extends QObject
 	
 	public void finnishTurn(Player player)
 	{
+		checkEnd();
+		
 		System.out.println(playersNo);
 		System.out.println(player);
 		System.out.println(players[0]);
@@ -212,16 +249,37 @@ public abstract class Mission extends QObject
 		if (day % 7 == 0) {
 			wmap.weeklyBonus(player);
 		}
-		
 		int i;
 		for (i=0; players[i] != player; ++i);
-		++i;
+		do {
+			i = (i+1)%playersNo;
+			if (i == 0) ++day;
+		} while (players[i].isFinished());
 		
-		if (i == playersNo) {
-			i = 0;
-			if (dayEnded()) {
-				return;
+		
+		
+		//if (i == playersNo) {
+			//i = 0;
+			//if (dayEnded()) {
+			//	return;
+			//}
+		//}
+		
+		if (endCondition()) {
+			System.out.println("!!END!!!");
+			if (won()) {
+				QMessageBox.warning(WindowStack.getLastInstance(), "Wygrana", "Gratulacje! Udało Ci się przejść misję.");
+			} else {
+				QMessageBox.warning(WindowStack.getLastInstance(), "Przegrana", "Przegrałeś misję! Nie udało Ci się osiągnąć celu.");
 			}
+			WindowStack ws = WindowStack.getLastInstance();
+			if (ws != null) {
+				WindowCampaign campaign = new WindowCampaign();
+				ws.pop();
+				ws.pop();
+				ws.push(campaign);
+			}
+			return;
 		}
 		
 		activePlayer = players[i];
@@ -231,9 +289,19 @@ public abstract class Mission extends QObject
 		}
 	}
 	
-	private boolean dayEnded()
+	private boolean checkEnd()
 	{
-		++day;
+		int size, i;
+		for (i=0; i<playersNo; ++i) if (players[i].isFinished() == false) {
+			size = players[i].getCastles().size() + players[i].getHeroes().size();
+
+			if (size == 0) {
+				QMessageBox.warning(WindowStack.getLastInstance(), "Przegrana", "Gracz "+players[i].getColor().name+" przegrywa!");
+				players[i].setFinished(true);
+			}
+		}
+
+		
 		return false;
 	}
 	
@@ -246,6 +314,7 @@ public abstract class Mission extends QObject
 	}
 
 
+	
 	public Player getActivePlayer() {
 		return activePlayer;
 	}

@@ -3,7 +3,12 @@ import java.util.*;
 
 public enum ResourceType
 {
-	GOLD("Złoto", 0.01f, 255, 255, 200, "image/resource/gold.png"),
+	GOLD("Złoto", 0.01f, 255, 255, 200, "image/resource/gold.png") {
+		public int defaultAmount()
+		{
+			return 1500;
+		}
+	},
 	ORE("Kamień", 1f, 200, 255, 255, "image/resource/ore.png"),
 	WOOD("Drewno", 2f, 255, 200, 200, "image/resource/wood.png");
 	
@@ -18,6 +23,11 @@ public enum ResourceType
 		rgb = 256*256*r + 256*g + b;
 		exchange = e;
 		file = f;
+	}
+	
+	public int defaultAmount()
+	{
+		return 2;
 	}
 	
 	private static final Map<Integer, ResourceType> mapId = new HashMap<Integer, ResourceType>();

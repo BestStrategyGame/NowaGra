@@ -33,8 +33,15 @@ public class WindowStack extends QWidget
 	
 	public void push(QWidget widget)
 	{
-		layout.addWidget(widget);
-		layout.setCurrentIndex(layout.count()-1);
+		if (layout.currentWidget() == null || layout.currentWidget().getClass() != widget.getClass()) {
+			layout.addWidget(widget);
+			layout.setCurrentIndex(layout.count()-1);
+		}
+	}
+	
+	public QWidget top()
+	{
+		return layout.currentWidget();
 	}
 	
 	public void pop()

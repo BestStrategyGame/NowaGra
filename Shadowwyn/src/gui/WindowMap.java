@@ -278,7 +278,7 @@ public class WindowMap extends QFrame
 	
 	public void updateData(core.Player player)
 	{
-		System.out.println("update");
+		//System.out.println("update");
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
 		statusOre.setText(""+player.getResource(core.ResourceType.ORE));
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));

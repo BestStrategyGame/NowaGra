@@ -16,6 +16,13 @@ import core.Terrain;
 
 public class WindowBattle extends QWidget
 {
+	private static WindowBattle LAST_INSTANCE;
+	
+	public static WindowBattle getLastInstance()
+	{
+		return LAST_INSTANCE;
+	}
+	
 	private QGridLayout layout = new QGridLayout();
 	private QFormLayout layoutStats = new QFormLayout();
 	private QHBoxLayout layoutButtons = new QHBoxLayout();
@@ -45,6 +52,7 @@ public class WindowBattle extends QWidget
 	public WindowBattle(core.Battle b, core.Player p1, core.Player p2, core.Hero h1, core.Hero h2)
 	{
 		super();
+		LAST_INSTANCE = this;
 		
 		battle = b;
 		player1 = p1;
@@ -87,6 +95,11 @@ public class WindowBattle extends QWidget
 		layoutButtons.addWidget(give);
 		layoutButtons.addWidget(wait);
 		layoutButtons.addWidget(surrender);
+	}
+	
+	public void setCanWait(boolean enable)
+	{
+		wait.setEnabled(enable);
 	}
 	
 	public void addLogLine(String line)
@@ -165,7 +178,7 @@ public class WindowBattle extends QWidget
 		Player p1 = new PlayerHuman("Gracz 1", Color.RED);
 		Player p2 = new PlayerHuman("Gracz 2", Color.BLUE);
 		
-		Battle b = new Battle(p1, p2, h1, h2, Terrain.GRASS);
+		Battle b = new Battle(p1, p2, h1, h2, Terrain.GRASS, null);
 		
 		QApplication.initialize(args);
 		b.createMapWidget();

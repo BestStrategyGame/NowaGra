@@ -69,6 +69,9 @@ public class WindowCastle extends QWidget
 		buys[6] = new WidgetBuy(p, c, core.CastleBuilding.HUMAN_CASTLE_TIER1);
 		buyLayout.addWidget(buys[6], 3, 1, AlignmentFlag.AlignTop);
 		
+		System.out.println("ctype "+c.getType());
+		System.out.println("utype "+core.UnitType.getTier(1, c.getType()));
+		
 		recruits[0] = new WidgetRecruit(p, c, g, core.UnitType.getTier(1, c.getType()));
 		buyLayout.addWidget(recruits[0], 3, 2, 3, 3, AlignmentFlag.AlignTop);
 		
@@ -185,7 +188,7 @@ public class WindowCastle extends QWidget
 	
 	public void recruitHero()
 	{
-		if (castle.getHero() != null) {
+		if (castle.getHero() != null && castle.getHero().isInCastle(castle)) {
 			QMessageBox.warning(this, "Nie można wynająć bohatera", "W tym zamku znajduje się już inny bohater");
 		} else if (player.getResource(core.ResourceType.GOLD) < 2500) {
 			QMessageBox.warning(this, "Nie można wynająć bohatera", "Wynajęcie bohatera kosztuje 2500 złota");
@@ -228,6 +231,7 @@ public class WindowCastle extends QWidget
 	{
 		DialogMarket dialog = new DialogMarket(player);
 		dialog.exec();
+		buyed();
 		buyed();
 	}
 	

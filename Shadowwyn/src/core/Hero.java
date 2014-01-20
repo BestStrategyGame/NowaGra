@@ -4,6 +4,8 @@ import gui.WindowBattle;
 
 import java.util.*;
 
+import com.trolltech.qt.gui.QApplication;
+
 public class Hero implements WorldMapObject
 {
 	private String name;
@@ -67,18 +69,20 @@ public class Hero implements WorldMapObject
 		} else if (hero.getUnits().size() == 0){
 			m.battleFinished(getColor(), player, cp, hero, this, 0, 0);
 		} else {
-			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS);
+			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS, null);
 			b.createMapWidget();
 			b.populateMapWidget();;
 			
 			WindowBattle bat = new WindowBattle(b, player, cp, hero, this);
 			b.updateQueue.connect(bat, "updateQueue(Queue)");
+			b.log.connect(bat, "addLogLine(String)");
 			b.start();
 			
 			gui.WindowStack ws = gui.WindowStack.getLastInstance();
 			if (ws != null) {
 				ws.push(bat);
 			}
+			QApplication.processEvents();
 		}
 		return false;
 	}
@@ -90,7 +94,9 @@ public class Hero implements WorldMapObject
 	
 	public void dailyBonus(Player player)
 	{
-		movePoints = basicMovePoints + getSpeed();
+		if (!player.getName().equals("dummy")) {
+			movePoints = getMaxMovePoints();
+		}
 		if (color == player.getColor()) {
 			for (Artifact a: active.values()) {
 				a.dailyBonus(player);
@@ -121,6 +127,11 @@ public class Hero implements WorldMapObject
 		return tooltip;
 	}
 	
+	public int getMaxMovePoints()
+	{
+		return basicMovePoints + getSpeed();
+	}
+	
 	public int getMovePoints()
 	{
 		return movePoints;
@@ -129,6 +140,11 @@ public class Hero implements WorldMapObject
 	public void takeMovePoints(int n)
 	{
 		movePoints -= n;
+	}
+	
+	public void takeMovePoints(float n)
+	{
+		takeMovePoints((int)Math.ceil(n));
 	}
 	
 	public void setPosition(int x, int y)
@@ -316,9 +332,31 @@ public class Hero implements WorldMapObject
 	}
 
 	@Override
-	public int willingnessToMoveHere(Hero hero, Player player, int distance,
+	public int willingnessToMoveHere(Hero hero, Player player, float distance,
 			int day) {
-		// TODO Auto-generated method stub
+		float moveRatio = hero.getMovePoints()/(distance+1);
+		
+		if (hero == this) {
+			return -100;
+		}
+		
+		if (hero.getColor() == getColor()) {
+			return -100;
+			/*float stat1 = getLevel()+2;
+			float stat2 = hero.getLevel()+2;
+			if (stat1 > 2*stat2) {
+				return (int)(100*(Math.min(2, stat1/stat2) + Math.min(2, hero.getStrenght()/getStrenght()) + moveRatio));
+			} else if (stat2 > 2*stat1) {
+				return (int)(100*(Math.min(2, stat2/stat1) + Math.min(2, getStrenght()/hero.getStrenght()) + moveRatio));
+			} else {
+				return (int)(100*moveRatio);
+			}*/
+		} else {
+			System.out.println("AI: STRENGTH "+hero.getStrenght()+" vs "+getStrenght());
+			if (hero.getStrenght() > 1.2f*getStrenght()) {
+				return (int)(100+200*moveRatio);
+			}
+		}
 		return 0;
 	}
 

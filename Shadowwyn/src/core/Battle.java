@@ -72,7 +72,8 @@ public class Battle extends QObject
 	private core.Hero hero1;
 	private core.Hero hero2;
 	private Terrain terrain;
-	private boolean gui = false;
+	private Castle castle;
+	private boolean gui0 = false;
 	private boolean afterMove = false;
 	private boolean wait = false;
 	private GroupOfUnits currentUnit = null;
@@ -90,10 +91,11 @@ public class Battle extends QObject
 		return LAST_INSTANCE;
 	}
 	
-	public Battle(core.Player p1, core.Player p2, core.Hero h1, core.Hero h2, core.Terrain t)
+	public Battle(core.Player p1, core.Player p2, core.Hero h1, core.Hero h2, core.Terrain t, Castle c)
 	{
 		super();
 		
+		castle = c;
 		player1 = p1;
 		player2 = p2;
 		hero1 = h1;
@@ -102,24 +104,97 @@ public class Battle extends QObject
 		strength2 = h2.getStrenght();
 		terrain = t;
 		
-		int i = 1;
-		for (GroupOfUnits unit: h1.getUnits()) {
-			addObject(0, i, unit);
-			unit.prepareToBattle();
-			units.add(unit);
-			i += 2;
+		Collection<GroupOfUnits> us; 
+		Iterator<GroupOfUnits> it;
+		
+		us = h1.getUnits();
+		it = us.iterator();
+		switch (us.size()) {
+			case 1:
+				addObjectAndPrepare(0, 4, it.next());
+				break;
+			case 2:
+				addObjectAndPrepare(0, 3, it.next());
+				addObjectAndPrepare(0, 6, it.next());
+				break;
+			case 3:
+				addObjectAndPrepare(0, 2, it.next());
+				addObjectAndPrepare(0, 4, it.next());
+				addObjectAndPrepare(0, 6, it.next());
+				break;
+			case 4:
+				addObjectAndPrepare(0, 1, it.next());
+				addObjectAndPrepare(0, 3, it.next());
+				addObjectAndPrepare(0, 5, it.next());
+				addObjectAndPrepare(0, 7, it.next());
+				break;
+			case 5:
+				addObjectAndPrepare(0, 1, it.next());
+				addObjectAndPrepare(0, 4, it.next());
+				addObjectAndPrepare(0, 8, it.next());
+				addObjectAndPrepare(1, 3, it.next());
+				addObjectAndPrepare(1, 6, it.next());
+				break;
+			case 6:
+				addObjectAndPrepare(0, 1, it.next());
+				addObjectAndPrepare(0, 4, it.next());
+				addObjectAndPrepare(0, 5, it.next());
+				addObjectAndPrepare(0, 8, it.next());
+				addObjectAndPrepare(1, 3, it.next());
+				addObjectAndPrepare(1, 6, it.next());
+				break;
+			default:
 		}
-		i = 1;
-		for (GroupOfUnits unit: h2.getUnits()) {
-			addObject(getWidth()-1, i, unit);
-			unit.prepareToBattle();
-			units.add(unit);
-			i += 2;
+		
+		us = h2.getUnits();
+		it = us.iterator();
+		switch (us.size()) {
+			case 1:
+				addObjectAndPrepare(getWidth()-1, 4, it.next());
+				break;
+			case 2:
+				addObjectAndPrepare(getWidth()-1, 3, it.next());
+				addObjectAndPrepare(getWidth()-1, 6, it.next());
+				break;
+			case 3:
+				addObjectAndPrepare(getWidth()-1, 2, it.next());
+				addObjectAndPrepare(getWidth()-1, 4, it.next());
+				addObjectAndPrepare(getWidth()-1, 6, it.next());
+				break;
+			case 4:
+				addObjectAndPrepare(getWidth()-1, 1, it.next());
+				addObjectAndPrepare(getWidth()-1, 3, it.next());
+				addObjectAndPrepare(getWidth()-1, 5, it.next());
+				addObjectAndPrepare(getWidth()-1, 7, it.next());
+				break;
+			case 5:
+				addObjectAndPrepare(getWidth()-1, 1, it.next());
+				addObjectAndPrepare(getWidth()-1, 4, it.next());
+				addObjectAndPrepare(getWidth()-1, 8, it.next());
+				addObjectAndPrepare(getWidth()-2, 3, it.next());
+				addObjectAndPrepare(getWidth()-2, 5, it.next());
+				break;
+			case 6:
+				addObjectAndPrepare(getWidth()-1, 1, it.next());
+				addObjectAndPrepare(getWidth()-1, 4, it.next());
+				addObjectAndPrepare(getWidth()-1, 5, it.next());
+				addObjectAndPrepare(getWidth()-1, 8, it.next());
+				addObjectAndPrepare(getWidth()-2, 3, it.next());
+				addObjectAndPrepare(getWidth()-2, 5, it.next());
+				break;
+			default:
 		}
 		
 		LAST_INSTANCE = this;
 		
 		initRoute();
+	}
+	
+	private void addObjectAndPrepare(int x, int y, GroupOfUnits u)
+	{
+		addObject(x, y, u);
+		u.prepareToBattle();
+		units.add(u);
 	}
 	
 	public void waitUnit() 
@@ -159,11 +234,16 @@ public class Battle extends QObject
 		ws.pop();
 		Mission m = Mission.getLastInstance();
 		
+		if (castle != null) {
+			castle.setColor(currentUnit.getOwner().getColor());
+		}
 		m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2);
 	}
 	
 	public void start()
 	{
+		gui.WindowBattle wb = gui.WindowBattle.getLastInstance();
+		wb.setCanWait(true);
 		if (currentUnit != null) {
 			currentUnit.nextTurn();
 			units.add(currentUnit);
@@ -191,8 +271,8 @@ public class Battle extends QObject
 		currentUnit = unit;
 		unit.setWait((byte)0);
 		Player player = unit.getOwner().getColor() == player1.getColor() ? player1 : player2;
-		player.battleStartTurn(unit);
 		calculateRoute(unit);
+		player.battleStartTurn(unit);
 		
 		for (int r=0; r<getHeight(); ++r) {
 			for (int c=0; c<getWidth(); ++c) {
@@ -277,12 +357,51 @@ public class Battle extends QObject
 					mapWidget.clearLevel(1);
 					moveTo(c, r);
 					afterMove = true;
+					gui.WindowBattle wb = gui.WindowBattle.getLastInstance();
+					wb.setCanWait(false);
+					
+					boolean hasNeighbour = false;
+					for (int x=c-1; x<=c+1; ++x) {
+						for (int y=r-1; y<=r+1; ++y) {
+							if (x != c || y != r) {
+								//System.out.println("   -> "+x+" "+y);
+								GroupOfUnits n = p2u.get(x, y);
+								if (n != null && n.getOwner() != currentUnit.getOwner()) {
+									hasNeighbour = true;
+									break;
+								}
+							}
+						}
+					}
+					if (hasNeighbour == false) {
+						finnishTurn(null);
+					}
 				}
 			} else if (unit.getOwner() != currentUnit.getOwner()) {
 				if (currentUnit.type.shooting) {
 					// ATTACK unit
-					hit(unit);
-					finnishTurn(null);
+					core.Point pos = p2u.get(currentUnit);
+					if (Math.abs(r-pos.x) <= 1 && Math.abs(c-pos.y) <= 1) {
+						hit(unit);
+						finnishTurn(null);
+					} else {
+						boolean hasNeighbour = false;
+						for (int x=pos.x-1; x<=pos.x+1; ++x) {
+							for (int y=pos.y-1; y<=pos.y+1; ++y) {
+								if (x != pos.x || y != pos.y) {
+									System.out.println("   -> "+x+" "+y);
+									 if (p2u.get(x, y) != null) {
+										 hasNeighbour = true;
+										 break;
+									 }
+								}
+							}
+						}
+						if (hasNeighbour == false) {
+							hit(unit);
+							finnishTurn(null);
+						}
+					}
 				} else {
 					Point pos = getRoute(r, c).getParent();
 					System.out.println(pos);
@@ -297,9 +416,13 @@ public class Battle extends QObject
 					}
 				}
 			}
-		} else if (unit != null && unit.getOwner() != currentUnit.getOwner() && currentUnit.type.shooting) {
-			hit(unit);
-			finnishTurn(null);
+		} else if (unit != null && unit.getOwner() != currentUnit.getOwner()) {
+			core.Point pos1 = p2u.get(unit);
+			core.Point pos2 = p2u.get(currentUnit);
+			if (Math.abs(pos1.x-pos2.x) <= 1 && Math.abs(pos1.y-pos2.y) <= 1) {
+				hit(unit);
+				finnishTurn(null);
+			}
 		}
 	}
 	

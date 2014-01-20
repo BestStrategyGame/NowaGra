@@ -23,27 +23,31 @@ public enum CastleBuilding
 	CITADEL("Cytadela", "+10 do obrony bohatera podczas oblężenia", null, new Cost(2500, 5, 15), FORT),
 	CASTLE("Zamek", "+20 do obrony bohatera podczas oblężenia", null, new Cost(5000, 5, 25), CITADEL),
 	// Zamek ludzi
-	HUMAN_CASTLE_TIER1("Wylęgarnia - Wojak", "Pozwala rekrutować jednostki Wojak", null, new Cost(500, 5, 5)) {
+	HUMAN_CASTLE_TIER1("Wylęgarnia - Wojak", "Pozwala rekrutować jednostki Wojak",  CastleType.HUMAN_CASTLE, new Cost(500, 5, 5)) {
 		public void weeklyBonus(Player player, Castle castle)
 		{
+			if (!player.getName().equals("dummy"))
 			castle.addAvailableToRecruit(1, 20);
 		}
 	},
-	HUMAN_CASTLE_TIER2("Wylęgarnia - Kusznik", "Pozwala rekrutować jednostki Kusznik", null, new Cost(1500, 0, 10), HUMAN_CASTLE_TIER1) {
+	HUMAN_CASTLE_TIER2("Wylęgarnia - Kusznik", "Pozwala rekrutować jednostki Kusznik",  CastleType.HUMAN_CASTLE, new Cost(1500, 0, 10), HUMAN_CASTLE_TIER1) {
 		public void weeklyBonus(Player player, Castle castle)
 		{
+			if (!player.getName().equals("dummy"))
 			castle.addAvailableToRecruit(2, 10);
 		}
 	},
-	HUMAN_CASTLE_TIER3("Wylęgarnia - Mag ognia", "Pozwala rekrutować jednostki Mag ognia", null, new Cost(3500, 15, 15), HUMAN_CASTLE_TIER2) {
+	HUMAN_CASTLE_TIER3("Wylęgarnia - Mag ognia", "Pozwala rekrutować jednostki Mag ognia", CastleType.HUMAN_CASTLE, new Cost(3500, 15, 15), HUMAN_CASTLE_TIER2) {
 		public void weeklyBonus(Player player, Castle castle)
 		{
+			if (!player.getName().equals("dummy"))
 			castle.addAvailableToRecruit(3, 5);
 		}
 	},
-	HUMAN_CASTLE_TIER4("Wylęgarnia - Rycerz mrodku", "Pozwala rekrutować jednostki Rycerz mrodku", null, new Cost(4500, 20, 20), HUMAN_CASTLE_TIER3) {
+	HUMAN_CASTLE_TIER4("Wylęgarnia - Rycerz mrodku", "Pozwala rekrutować jednostki Rycerz mrodku", CastleType.HUMAN_CASTLE, new Cost(4500, 20, 20), HUMAN_CASTLE_TIER3) {
 		public void weeklyBonus(Player player, Castle castle)
 		{
+			if (!player.getName().equals("dummy"))
 			castle.addAvailableToRecruit(4, 2);
 		}
 	};

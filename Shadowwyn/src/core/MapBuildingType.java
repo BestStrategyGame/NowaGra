@@ -3,7 +3,7 @@ import java.util.*;
 
 public enum MapBuildingType
 {
-	GOLD_MINE("Kopolania z≥ota", 255, 255, 0, "image/building/gold.png"),
+	GOLD_MINE("Kopolania z≈Çota", 255, 255, 0, "image/building/gold.png"),
 	ORE_MINE("Kopolania kamienia", 255, 0, 0, "image/building/ore.png"),
 	WOOD_MINE("Tartak", 0, 72, 255, "image/building/wood.png");
 	

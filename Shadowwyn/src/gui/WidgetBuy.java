@@ -115,7 +115,7 @@ public class WidgetBuy extends QFrame
 		player.addResource(core.ResourceType.WOOD, -building.cost.wood);
 		player.addResource(core.ResourceType.ORE, -building.cost.ore);
 		buy.setText("Kupiony");
-		building.buyBonus(player, castle);
+		//building.buyBonus(player, castle);
 		buyed.emit();
 		
 	}

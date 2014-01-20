@@ -84,7 +84,7 @@ public enum Artifact implements WorldMapObject
 	}
 
 	@Override
-	public int willingnessToMoveHere(Hero hero, Player player, int distance,
+	public int willingnessToMoveHere(Hero hero, Player player, float distance,
 			int day) {
 		// TODO Auto-generated method stub
 		return 0;
