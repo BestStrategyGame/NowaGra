@@ -181,8 +181,8 @@ public class Castle implements WorldMapObject
 				b.log.connect(bat, "addLogLine(String)");
 				b.start();
 				
-				gui.WindowStack ws = gui.WindowStack.getLastInstance();
-				if (ws != null) {
+				if (player instanceof PlayerHuman || cp instanceof PlayerHuman) {
+					gui.WindowStack ws = gui.WindowStack.getLastInstance();
 					ws.push(bat);
 				}
 	
@@ -361,7 +361,7 @@ public class Castle implements WorldMapObject
 			if (getGarission() != null)
 				strength += getGarission().getStrenght();
 			System.out.println(" 3 "+hero.getName());
-			return (int)(Math.min(100f*hero.getStrenght()/strength, 300f) + 50*moveRatio);
+			return (int)(Math.min(200f*hero.getStrenght()/strength, 300f) + 50*moveRatio);
 		}
 		
 		return 0;

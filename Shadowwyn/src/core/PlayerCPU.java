@@ -4,6 +4,7 @@ import com.trolltech.qt.gui.QApplication;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMessageBox.StandardButton;
 import com.trolltech.qt.gui.QMessageBox.StandardButtons;
+import java.util.*;
 
 public class PlayerCPU extends Player
 {
@@ -242,6 +243,243 @@ public class PlayerCPU extends Player
 	@Override
 	public boolean battleStartTurn(GroupOfUnits unit)
 	{
+
+		Battle stan = Battle.getLastInstance();
+		PriorityQueue<GroupOfUnits> tab = stan.units;//stan.GetPriorityQueue();
+		stan.calculateRoute(unit);
+		Iterator<GroupOfUnits> iter;
+		System.out.println("coos");
+		if(unit.type.shooting)
+		{ // ARCHER
+			GroupOfUnits jedn = null;
+			boolean shoot = true;
+			//System.out.println("coos22");
+			//for(Iterator<GroupOfUnits> it = tab.iterator(); it.hasNext(); )
+			for(GroupOfUnits jedn1 : tab)
+			{
+				core.Point pkt = stan.getPositionOf(jedn1);
+				// Sprawdzam czy jakas wroga jednostka stoi obok archera
+				//System.out.println("Sprawdzam   " +stan.getRoute(pkt.x, pkt.y).getParent().getDistance());
+				//System.out.println("Sprawdzam2   " +stan.getRoute(pkt.x, pkt.y).getDistance());
+				if(stan.getRoute(pkt.x,pkt.y).getParent().getDistance() == 0  && unit.getOwner().getColor() != jedn1.getOwner().getColor() )
+				{
+					shoot = false;
+					jedn = jedn1;
+					break;
+				}
+				
+			}
+			// Jesli wrog stoi obok to archer nie moze strzelac i musi uciekac
+			if(!shoot)
+			{
+				int count = 1;
+				for(Iterator<GroupOfUnits> it = tab.iterator(); it.hasNext(); )
+				{
+					if(unit.getOwner().getColor() == it.next().getOwner().getColor())
+						count++;
+				}
+				if(count == 1)
+				{
+					stan.hit(jedn);
+					//if(jedn.canDoCounterAttack())
+					{
+					// *********
+					// KONTRATAK
+					// *********
+					}
+				}
+				else if(true)  // ARCHER MOZE UCIEC
+				{
+					// ********
+					// UCIEKA
+					// ********
+					System.out.println("MUSZE UCIEKAĆ!!!");
+					Battle.Point route;
+					boolean znaleziony = false;
+					
+					// Przeszukuje cala mape w celu znalezienia optymalnego punktu w ktory przeniose jednostke poczynajac od 0 kolumny
+					for(int i = 0 ; i <12; ++i)
+					{
+						if(znaleziony == true)
+							break;
+						
+						for(int j = 0; j < 10; ++j)
+						{
+							if(znaleziony == true)
+								continue;
+							route = stan.getRoute(i, j);
+							//warunek sprawdzenia czy moge sie przeniesc w dany punkty
+							if(route.getDistance() > unit.getSpeed())
+								continue; // jezeli nie, to wracam do petli
+						
+							
+							else // jezeli moge sie przeniesc w wybrany punkt to sprawdzam czy do obok punktu do ktorego chce sie przeniesc nie stoi wroga jednostka
+							{
+								for(GroupOfUnits jedn1 : tab)
+								{
+									Battle stan2 = Battle.getLastInstance();
+									stan2.calculateRoute(jedn1); // tutaj warunek if stoi obok tam gdzie chcemy sie przeniesc to znaleziony false
+									if(stan2.getRoute(i, j).getParent().getDistance() == 0  && unit.getOwner().getColor() != jedn1.getOwner().getColor() )
+									{
+										System.out.println("wtf!!!!!");
+										znaleziony = false;
+										break;
+										
+									}
+									znaleziony = true;
+									
+								}
+								
+								
+								if(znaleziony == true)
+								{
+									stan.moveTo(j, i);
+									break;
+								}
+								
+								else
+								{
+									
+									continue;
+								} 
+								
+							}
+							
+						
+						}
+					}
+				
+					
+					
+				
+			
+					
+					
+					
+				
+				}
+				else
+				{
+					stan.hit(jedn);
+					//if(jedn.canDoCounterAttack())
+					{
+					// *********
+					// KONTRATAK
+					// *********
+					}
+				}
+
+			}
+			else
+			{
+				jedn = null;
+				for(Iterator<GroupOfUnits> it = tab.iterator(); it.hasNext(); )
+				{
+					if(jedn == null)
+					{
+						jedn = it.next();
+						if(jedn.getOwner().getColor() == unit.getOwner().getColor() )
+							jedn = null;
+					}
+					else 
+					{
+						GroupOfUnits pom = it.next();
+						if( (unit.getAttack()-jedn.getDefense()) < (unit.getAttack()-pom.getDefense()) )
+							jedn = pom;
+							
+					}
+				}
+				stan.hit(jedn);
+				
+			}
+		}
+		else
+		{ // MELEE
+			GroupOfUnits jedn = null;
+			boolean atk = false;
+			Point pkt;
+			float odl = 10000;
+			for(Iterator<GroupOfUnits> it = tab.iterator(); it.hasNext(); )
+			{
+				if(jedn == null)
+				{
+					jedn = it.next();
+					if(jedn.getOwner().getColor() == unit.getOwner().getColor() )
+						jedn = null;
+					else if((pkt = stan.getPositionOf(jedn)) != null && unit.getSpeed() >= stan.getRoute(pkt.x, pkt.y).getParent().getDistance() )
+					{
+						System.out.println(jedn.toString()+ "\n\n\n\n");
+						atk = true;
+					}
+					else
+						odl = stan.getRoute(pkt.x, pkt.y).getParent().getDistance();
+				}
+				else 
+				{
+					GroupOfUnits pom = it.next();
+					pkt = stan.getPositionOf(pom);
+					boolean atk2 = false;
+					if( unit.getSpeed() >= stan.getRoute(pkt.x, pkt.y).getParent().getDistance()  && jedn.getOwner().getColor() == pom.getOwner().getColor() )
+						atk2 = true;
+					System.out.println(jedn.type.name + " " + pom.type.name + " ATK = " + atk + " ATK2 = " + atk2 + "\n\n");
+					// Gdy obie wrogie jednostki sa w zasiegu sprawdzam ktorej wiecej zadam obrazen
+					if( atk && atk2 && (unit.getAttack()-jedn.getDefense()) < (unit.getAttack()-pom.getDefense())  && jedn.getOwner().getColor() == pom.getOwner().getColor())
+						jedn = pom;
+					// Gdy tylko jedna z nich jest w zasiegu
+					else if(atk == false && atk2 == true  && jedn.getOwner().getColor() == pom.getOwner().getColor())
+					{
+						jedn = pom;
+						atk = true;
+					}
+					// Gdy zadna z obu wrogich jednostek nie jest w zasiegu atku to sprawdzam do ktorej mam blizej
+					else if(atk == false && atk2 == false  && jedn.getOwner().getColor() == pom.getOwner().getColor())
+					{
+							// Sprawdzam do ktorej jednostki mam blizej
+							if(odl > stan.getRoute(pkt.x, pkt.y).getParent().getDistance() )
+							{
+								System.out.println("WCHODzZE???\n\n");
+								odl = stan.getRoute(pkt.x, pkt.y).getParent().getDistance();
+								jedn = pom;
+							}
+							
+					}
+				}	
+			}
+			
+			
+			if(atk)
+			{
+				System.out.println("ATKATKATKATKATKATK\n\n\n");
+				pkt = stan.getPositionOf(jedn);
+				System.out.println(jedn.type.name);
+				Battle.Point inny = stan.getRoute(pkt.x, pkt.y).getParent();
+				stan.moveTo(inny.y, inny.x);
+				stan.hit(jedn);
+				/*if(jedn.canDoCounterAttack())
+				{
+				// ******************
+				// WROG KONTRATAKUJE 
+				// ****************** 
+				}*/
+			}
+			//else if((unit.getSpeed()+jedn.getSpeed()) <= odl )
+				//stan.waitUnit();
+			else
+			{
+				pkt = stan.getPositionOf(jedn);
+				Battle.Point route = stan.getRoute(pkt.x, pkt.y);
+				System.out.println(jedn.type.name + "\n\n" + pkt.x + " " + pkt.y);
+				while(route.getDistance() > unit.getSpeed() )
+				{
+					route = route.getParent();
+					
+				}
+				System.out.println("FSHIHNSFIHIHGI");
+				stan.moveTo(route.y, route.x);
+			}
+		}
+		System.out.println("cos jeszcze?");
+		stan.finnishTurn(this); 
 		return false;
 	}
 }

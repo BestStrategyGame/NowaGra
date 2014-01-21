@@ -78,8 +78,9 @@ public class Hero implements WorldMapObject
 			b.log.connect(bat, "addLogLine(String)");
 			b.start();
 			
-			gui.WindowStack ws = gui.WindowStack.getLastInstance();
-			if (ws != null) {
+			
+			if (player instanceof PlayerHuman || cp instanceof PlayerHuman) {
+				gui.WindowStack ws = gui.WindowStack.getLastInstance();
 				ws.push(bat);
 			}
 			QApplication.processEvents();

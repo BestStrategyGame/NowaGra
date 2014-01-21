@@ -48,7 +48,7 @@ public class WindowStack extends QWidget
 	{
 		QWidget w = layout.currentWidget();
 		layout.removeWidget(w);
-		w.dispose();
+		//w.dispose();
 	}
 	
 	public static void main(String[] args)

@@ -229,9 +229,13 @@ public class Battle extends QObject
 	
 	public void finishBattle()
 	{
-		log.emit("Gracz "+currentUnit.getOwner().getColor().name+" wygrał");
-		WindowStack ws = WindowStack.getLastInstance();
-		ws.pop();
+		
+		if (player1 instanceof PlayerHuman || player2 instanceof PlayerHuman) {
+			
+			WindowStack ws = WindowStack.getLastInstance();
+			ws.pop();
+		}
+		
 		Mission m = Mission.getLastInstance();
 		
 		if (castle != null) {
@@ -296,6 +300,11 @@ public class Battle extends QObject
 	{
 		System.out.println("add object");
 		p2u.put(x, y, unit);
+	}
+	
+	public core.Point getPositionOf(GroupOfUnits unit)
+	{
+		return p2u.get(unit);
 	}
 	
 	public int getHeight()
