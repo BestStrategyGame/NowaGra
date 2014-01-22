@@ -282,7 +282,7 @@ public class Battle extends QObject
 			for (int c=0; c<getWidth(); ++c) {
 				float d = getDistance(c, r);
 				//System.out.println("distance "+r+", "+c+", "+d);
-				if (d <= unit.getSpeed()+0.01 && d >= 0.01) {
+				if (d <= currentUnit.getSpeed()+0.01 && d >= 0.01) {
 					//System.out.println(true);
 					mapWidget.objectAt(r, c).setLayer(1, new gui.WidgetImage("image/markers/distance.png"));
 				} else if (d <= 0.01) {

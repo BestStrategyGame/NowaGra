@@ -242,6 +242,7 @@ public class WindowMap extends QFrame
 		} catch (java.lang.NullPointerException e) {}
 		selectHero(heroes.get(heroesSelected));
 		
+		QApplication.processEvents();
 		minimap.repaint();
 	}
 	
@@ -255,6 +256,7 @@ public class WindowMap extends QFrame
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));
 		statusDay.setText(""+((day-1)%7+1)+" / "+((day-1)/7+1)+" tydzień");
 		statusPlayer.setText(player.getName());
+		QApplication.processEvents();
 		
 		cleanHeroes();
 		for (Hero hero: player.getHeroes()) {
@@ -274,14 +276,17 @@ public class WindowMap extends QFrame
 		
 		//buttonTurn.Sheet("background-color: #ff0000");
 		minimap.repaint();
+		QApplication.processEvents();
 	}
 	
 	public void updateData(core.Player player)
 	{
 		//System.out.println("update");
+		
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
 		statusOre.setText(""+player.getResource(core.ResourceType.ORE));
 		statusWood.setText(""+player.getResource(core.ResourceType.WOOD));
+		
 		
 		cleanCastles();
 		for (Castle castle: player.getCastles()) {
@@ -289,6 +294,7 @@ public class WindowMap extends QFrame
 		}
 		
 		minimap.repaint();
+		QApplication.processEvents();
 	}
 	
 	public void setMap(QWidget m)
