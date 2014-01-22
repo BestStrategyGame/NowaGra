@@ -108,7 +108,7 @@ public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 	*/
 	public boolean hit(GroupOfUnits target)
 	{
-		target.totalHP -= number*getAttack()*type.damageRatio(target.type);
+		target.totalHP -= number*getAttack()*type.damageRatio(target.type)*target.type.receivedDamageRation(type);
 		target.number = java.lang.Math.max(0, (int)java.lang.Math.ceil((float)target.totalHP/target.getDefense()));
 		return target.totalHP <= 0;
 	}

@@ -11,7 +11,12 @@ public enum UnitType
 			return 1.2f;
 		}
 	},
-	KUSZNIK(2, "Kusznik", 2, 4, 5, 4, true, false, new Cost(190, 0, 0), "image/units/human/tier2.png"),
+	KUSZNIK(2, "Kusznik", 2, 4, 5, 4, true, false, new Cost(190, 0, 0), "image/units/human/tier2.png") {
+		public float receivedDamageRation(UnitType from)
+		{
+			return 0.7f;
+		}
+	},
 	MAG_OGNIA(3, "Mag Ognia", 3, 4, 5, 5, true, true, new Cost(440, 0, 0), "image/units/human/tier3.png"),
 	RYCERZ_MROKU(4, "Rycerz Mroku", 4, 4, 5, 3, false, false, new Cost(800, 0, 0), "image/units/human/tier4.png");
 	
@@ -54,6 +59,11 @@ public enum UnitType
 	}
 	
 	public float damageRatio(UnitType target)
+	{
+		return 1f;
+	}
+	
+	public float receivedDamageRation(UnitType from)
 	{
 		return 1f;
 	}
