@@ -230,6 +230,7 @@ public class WorldMap
 			o = p2h.get(pos);
 			if (o.getImageFile() != null) {
 				mapWidget.objectAt(pos.y, pos.x).setLayer(o.stackLevel(), new gui.WidgetImage(o.getImageFile(), 64));
+				mapWidget.objectAt(pos.y, pos.x).setLayer(5, new gui.WidgetImage(o.getColor().mfFile));
 				mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getTooltip());
 				//mapWidget.objectAt(pos.y, pos.x).setToolTip(o.getName());
 			}
@@ -270,6 +271,7 @@ public class WorldMap
 	{
 		System.out.println("remove hero "+hero);
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
+		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(5, null);
 		WorldMapObject o = p2o.get(hero.getX(), hero.getY());
 		if (o != null) {
 			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip(o.getTooltip());
@@ -351,6 +353,7 @@ public class WorldMap
 		
 		p2h.remove(hero.getX(), hero.getY());
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
+		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(5, null);
 		if (standing != null) {
 			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip(standing.getTooltip());
 		}
@@ -360,6 +363,7 @@ public class WorldMap
 			x = px;
 			y = py;
 		}*/
+		mapWidget.objectAt(y, x).setLayer(5, new gui.WidgetImage(hero.getColor().mfFile));
 		mapWidget.objectAt(y, x).setLayer(hero.stackLevel(), new gui.WidgetImage(hero.getImageFile(), 64));
 		if (object != null && object.getTooltip() != null) {
 			mapWidget.objectAt(y, x).setToolTip(object.getTooltip() +"\n\n"+ hero.getTooltip());

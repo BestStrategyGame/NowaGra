@@ -241,7 +241,11 @@ public class Battle extends QObject
 		if (castle != null) {
 			castle.setColor(currentUnit.getOwner().getColor());
 		}
-		m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2);
+		try {
+			m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2);
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
+		}
 	}
 	
 	public void start()

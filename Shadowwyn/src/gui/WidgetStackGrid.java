@@ -28,7 +28,7 @@ public class WidgetStackGrid extends QWidget
 		for (int i=0; i<height; ++i) {
 			stack[i] = new WidgetStack[width];
 			for (int j=0; j<width; ++j) {
-				stack[i][j] = new WidgetStack(size, size, size, 5, i, j);
+				stack[i][j] = new WidgetStack(size, size, size, 6, i, j);
 				stack[i][j].pressed.connect(pressed);
 				stack[i][j].over.connect(over);
 				layout.addWidget(stack[i][j], i, j);

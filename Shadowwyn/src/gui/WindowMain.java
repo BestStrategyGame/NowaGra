@@ -67,7 +67,13 @@ public class WindowMain extends QWidget
 	
 	public void fastClicked()
 	{
-		
+		WindowStack ws = WindowStack.getLastInstance();
+		System.out.println(ws);
+		if (ws != null) {
+			
+			WindowFast fast = new WindowFast();
+			ws.push(fast);
+		}
 	}
 	
 	public void campaignClicked()

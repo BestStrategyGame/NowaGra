@@ -4,7 +4,7 @@ public enum Color
 	BLUE("Niebieski", 0, 0, 255, "image/colors/mf_blue.png"),
 	RED("Czerwony", 255, 0, 0, "image/colors/mf_red.png"),
 	GREEN("Zielony", 0, 255, 0, "image/colors/mf_blue.png"),
-	NONE("", 128, 128, 128, "image/colors/mf_none.png");
+	NONE("Niezależny", 128, 128, 128, "image/colors/mf_none.png");
 	
 	public final String name;
 	public final int rgb;

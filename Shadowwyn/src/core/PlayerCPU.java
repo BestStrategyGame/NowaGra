@@ -8,7 +8,7 @@ import java.util.*;
 
 public class PlayerCPU extends Player
 {
-	PlayerCPU(String n, Color c)
+	public PlayerCPU(String n, Color c)
 	{
 		super(n, c);
 	}

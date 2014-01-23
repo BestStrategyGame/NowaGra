@@ -63,4 +63,10 @@ public class Position2Object<T>
 	{
 		return mapP2O.keySet();
 	}
+	
+	public void clear()
+	{
+		mapP2O.clear();
+		mapO2P.clear();
+	}
 }
