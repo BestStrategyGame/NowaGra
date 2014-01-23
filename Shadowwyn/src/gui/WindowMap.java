@@ -13,6 +13,12 @@ import core.WorldMap;
 
 public class WindowMap extends QFrame
 {
+	private static WindowMap LAST_INSTANCE;
+	public static WindowMap getLastInstance()
+	{
+		return LAST_INSTANCE;
+	}
+	
 	private core.Player player;
 	private core.Hero hero;
 	
@@ -62,6 +68,7 @@ public class WindowMap extends QFrame
 	public WindowMap()
 	{
 		super();
+		LAST_INSTANCE = this;
 		
 		setLayout(layout);
 		//layout.addWidget(new WidgetHolder(this, 100, new WidgetChooser(true)));

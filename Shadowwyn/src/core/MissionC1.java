@@ -37,6 +37,8 @@ public class MissionC1 extends Mission
 		p1.dieHero(h3);	
 		p2.addHero(h4);
 		
+		setMainHero(h1);
+		
 		List<GroupOfUnits> u1 = new ArrayList<GroupOfUnits>();
 		u1.add(new GroupOfUnits(core.UnitType.WOJAK, null, 10));
 		u1.add(new GroupOfUnits(core.UnitType.KUSZNIK, null, 3));
@@ -97,20 +99,20 @@ public class MissionC1 extends Mission
 	@Override
 	public boolean endCondition()
 	{
-		int size, i;
-		for (size=0, i=0; i<playersNo; ++i) {
-			if (players[i].isFinished() == false) {
-				++size;
-				last = players[i];
-			}
-		}
-		return size <= 1;
+		Color last = lastStanding();
+		return last != null;
 	}
 
 	@Override
+	public Color playerColor()
+	{
+		return Color.BLUE;
+	}
+	
+	@Override
 	public boolean won()
 	{
-		return last.getColor() == Color.BLUE;
+		return playerColor() == lastStanding();
 	}
 	
 }

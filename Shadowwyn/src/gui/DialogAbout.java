@@ -27,7 +27,7 @@ public class DialogAbout extends QFrame
 		layout.addWidget(new QLabel("<b>Shadowwyn</b> wersja 1.0"));
 		layout.addWidget(line);
 		layout.addWidget(new QLabel("Autorzy:\n  Dawid Garus, Bartłomiej Bajdo, Paweł Fatyga,\n  Łukasz Juszczak, Michał Kalita, Dominik Adamek"));
-		layout.addWidget(new QLabel("Stuff..."));
+		layout.addWidget(new QLabel("Nasza super gra ;)"));
 		
 		QFrame line2 = new QFrame();
 		line2.setMinimumHeight(1);

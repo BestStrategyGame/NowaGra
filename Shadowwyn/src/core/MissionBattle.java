@@ -32,13 +32,19 @@ public class MissionBattle extends Mission {
 	}
 
 	@Override
-	public boolean won() {
-		// TODO Auto-generated method stub
+	public Color playerColor()
+	{
+		return null;
+	}
+	
+	@Override
+	public boolean won()
+	{
 		return false;
 	}
 	
 	@Override
-	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2, int strength1, int strength2)
+	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2, int strength1, int strength2, Castle castle)
 	{
 		WindowFast.getLastInstance().finished(color);
 	}

@@ -9,6 +9,7 @@ import javax.print.attribute.standard.Finishings;
 import com.trolltech.qt.QThread;
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.core.*;
+import com.trolltech.qt.core.Qt.CursorShape;
 
 import core.WorldMap.Point;
 
@@ -78,6 +79,13 @@ public class Battle extends QObject
 	private boolean wait = false;
 	private GroupOfUnits currentUnit = null;
 	
+	public GroupOfUnits getCurrentUnit()
+	{
+		return currentUnit;
+	}
+
+	private QCursor cursor;
+	
 	PriorityQueue<GroupOfUnits> units = new PriorityQueue<GroupOfUnits>();
 	
 	public Signal1<GroupOfUnits> mouseOver = new Signal1<GroupOfUnits>();
@@ -94,6 +102,12 @@ public class Battle extends QObject
 	public Battle(core.Player p1, core.Player p2, core.Hero h1, core.Hero h2, core.Terrain t, Castle c)
 	{
 		super();
+		
+		cursor = QApplication.overrideCursor();
+		if (p1 instanceof PlayerHuman || p2 instanceof PlayerHuman) {
+			QApplication.restoreOverrideCursor();
+			QApplication.processEvents();
+		}
 		
 		castle = c;
 		player1 = p1;
@@ -190,6 +204,11 @@ public class Battle extends QObject
 		initRoute();
 	}
 	
+	public boolean humanPlaying()
+	{
+		return player1 instanceof PlayerHuman || player2 instanceof PlayerHuman;
+	}
+		
 	private void addObjectAndPrepare(int x, int y, GroupOfUnits u)
 	{
 		addObject(x, y, u);
@@ -238,11 +257,11 @@ public class Battle extends QObject
 		
 		Mission m = Mission.getLastInstance();
 		
-		if (castle != null) {
-			castle.setColor(currentUnit.getOwner().getColor());
-		}
+		QApplication.setOverrideCursor(cursor);
+		QApplication.processEvents();
+		
 		try {
-			m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2);
+			m.battleFinished(currentUnit.getOwner().getColor(), player1, player2, hero1, hero2, strength1, strength2, castle);
 		} catch (NullPointerException e) {
 			//e.printStackTrace();
 		}
@@ -250,6 +269,7 @@ public class Battle extends QObject
 	
 	public void start()
 	{
+		
 		gui.WindowBattle wb = gui.WindowBattle.getLastInstance();
 		wb.setCanWait(true);
 		if (currentUnit != null) {
@@ -342,16 +362,32 @@ public class Battle extends QObject
 	{
 		int no = target.getNumber();
 		
+		if (humanPlaying()) {
+			if (currentUnit.type.shooting) {
+				gui.Sound.play("sound/shot.wav");
+			} else {
+				gui.Sound.play("sound/attk.wav");
+			}
+		}
+			
+		QApplication.processEvents();
+		
 		boolean isDead = currentUnit.hit(target);
 		String l = currentUnit.type.name+" ("+currentUnit.getOwner().getColor().name+") uderzył "+target.type.name+" i zabił "+(no-target.getNumber())+" jednostek";
 		log.emit(l);
-		
+		QApplication.processEvents();
 		core.Point pos = p2u.get(target);
 		if (isDead) {
 			mapWidget.objectAt(pos.y, pos.x).setLayer(3, null);
 			mapWidget.objectAt(pos.y, pos.x).setLayer(4, null);
 			p2u.remove(pos.x, pos.y);
 			units.remove(target);
+			
+			if (humanPlaying()) {
+				gui.Sound.play("sound/kill.wav");
+			}
+			QApplication.processEvents();
+			
 		} else {
 			mapWidget.objectAt(pos.y, pos.x).setLayer(4, new gui.WidgetLabel(""+target.getNumber(), target.getOwner().getColor()));
 		}
@@ -441,6 +477,9 @@ public class Battle extends QObject
 	
 	public void moveTo(int c, int r)
 	{
+		if (humanPlaying()) {
+			gui.Sound.play("sound/move.wav");
+		}
 		log.emit(currentUnit.type.name+" ("+currentUnit.getOwner().getColor().name+") ruszył się na pole ("+(r+1)+", "+(c+1)+")");
 		core.Point pos = p2u.get(currentUnit);
 		p2u.remove(pos.x, pos.y);
@@ -451,6 +490,8 @@ public class Battle extends QObject
 		mapWidget.objectAt(c, r).setLayer(1, new gui.WidgetImage("image/markers/current.png"));
 		mapWidget.objectAt(c, r).setLayer(3, new gui.WidgetImage(currentUnit.type.file));
 		mapWidget.objectAt(c, r).setLayer(4, new gui.WidgetLabel(""+currentUnit.getNumber(), currentUnit.getOwner().getColor()));
+		
+		QApplication.processEvents();
 	}
 	
 	public void createMapWidget()

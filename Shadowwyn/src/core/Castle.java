@@ -292,8 +292,10 @@ public class Castle implements WorldMapObject
 		}
 		if (found == false) {
 			amount = recruitPay(player, unit);
-			garisson.getUnits().add(new GroupOfUnits(unit, garisson, amount));
-			found = true;
+			if (amount > 0) {
+				garisson.getUnits().add(new GroupOfUnits(unit, garisson, amount));
+				found = true;
+			}
 		}
 		System.out.println("!!    AI: RECRUIT ALL FROM TIER "+unit+" "+getAvailableToRecruit(tier)+" "+tier+" "+amount+" "+found);
 		return found;

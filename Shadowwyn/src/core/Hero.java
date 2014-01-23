@@ -64,10 +64,10 @@ public class Hero implements WorldMapObject
 		Player cp = m.getPlayer(getColor());
 		
 		if (getUnits().size() == 0) {
-			m.battleFinished(hero.getColor(), player, cp, hero, this, 0, 0);
+			m.battleFinished(hero.getColor(), player, cp, hero, this, 0, 0, null);
 
 		} else if (hero.getUnits().size() == 0){
-			m.battleFinished(getColor(), player, cp, hero, this, 0, 0);
+			m.battleFinished(getColor(), player, cp, hero, this, 0, 0, null);
 		} else {
 			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS, null);
 			b.createMapWidget();

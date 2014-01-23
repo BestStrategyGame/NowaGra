@@ -1,9 +1,12 @@
 package core;
 
+import com.trolltech.qt.core.Qt.CursorShape;
 import com.trolltech.qt.gui.QApplication;
+import com.trolltech.qt.gui.QCursor;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMessageBox.StandardButton;
 import com.trolltech.qt.gui.QMessageBox.StandardButtons;
+
 import java.util.*;
 
 public class PlayerCPU extends Player
@@ -19,6 +22,11 @@ public class PlayerCPU extends Player
 	public boolean startTurn(int day)
 	{
 		super.startTurn(day);
+		
+		QCursor cursor = new QCursor();
+		cursor.setShape(CursorShape.WaitCursor);
+		QApplication.setOverrideCursor(cursor);
+		QApplication.processEvents();
 		
 		GuiInteraction gui0 = GuiInteraction.INSTANCE;
 		//gui.progressStart();
@@ -236,6 +244,9 @@ public class PlayerCPU extends Player
 		}
 		
 		Mission.getLastInstance().finnishTurn(this);
+
+		QApplication.restoreOverrideCursor();
+		QApplication.processEvents();
 		
 		return false;
 	}
@@ -243,7 +254,10 @@ public class PlayerCPU extends Player
 	@Override
 	public boolean battleStartTurn(GroupOfUnits unit)
 	{
-
+		QCursor cursor = new QCursor();
+		cursor.setShape(CursorShape.WaitCursor);
+		QApplication.setOverrideCursor(cursor);
+		QApplication.processEvents();
 		Battle stan = Battle.getLastInstance();
 		PriorityQueue<GroupOfUnits> tab = stan.units;//stan.GetPriorityQueue();
 		stan.calculateRoute(unit);
@@ -479,7 +493,9 @@ public class PlayerCPU extends Player
 			}
 		}
 		System.out.println("cos jeszcze?");
-		stan.finnishTurn(this); 
+		stan.finnishTurn(this);
+		QApplication.restoreOverrideCursor();
+		QApplication.processEvents();
 		return false;
 	}
 }

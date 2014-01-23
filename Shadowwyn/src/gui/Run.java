@@ -6,6 +6,7 @@ public class Run
 {
 	public static void main(String[] args)
 	{
+		System.out.println("START");
 		QApplication.initialize(args);
 		//QApplication.invokeLater(Runnable);
 		WindowStack w =  new WindowStack();

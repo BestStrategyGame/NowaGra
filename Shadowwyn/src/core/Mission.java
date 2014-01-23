@@ -48,7 +48,7 @@ public abstract class Mission extends QObject
 		return null;
 	}
 	
-	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2, int strength1, int strength2)
+	public void battleFinished(Color color, Player player1, Player player2, Hero hero1, Hero hero2, int strength1, int strength2, Castle castle)
 	{
 		Player winner, looser;
 		Hero winnerh, looserh;
@@ -67,6 +67,16 @@ public abstract class Mission extends QObject
 			looserh = hero1;
 			exp = strength1;
 		}
+		
+		if (castle != null && castle.getColor() != color) {
+			
+			castle.setColor(color);
+			winner.addCastle(castle);
+			winnerh.setInCastle(castle);
+			castle.setHero(winnerh);
+			gui.WindowMap.getLastInstance().addCastle(castle);
+		}
+		
 		
 		
 		WorldMap wm = WorldMap.getLastInstance();
@@ -140,8 +150,36 @@ public abstract class Mission extends QObject
 	public abstract String getName();
 	public abstract String getDescription();
 	public abstract String getObjective();
+	
 	public abstract boolean endCondition();
+	public abstract Color playerColor();
 	public abstract boolean won();
+	
+	public Color lastStanding()
+	{
+		int size, i;
+		Color last = null;
+		for (size=0, i=0; i<playersNo; ++i) {
+			if (players[i].isFinished() == false) {
+				++size;
+				last = players[i].getColor();
+			}
+		}
+		if (size == 1) return last;
+		return null;
+	}
+	
+	private Hero mainHero = null;
+	public void setMainHero(Hero h)
+	{
+		mainHero = h;
+	}
+	
+	public boolean isMainHeroDead()
+	{
+		if (mainHero == null) return false;
+		return getPlayer(playerColor()).getDeadHeroes().contains(mainHero);
+	}
 	
 	public WorldMap getWorldMap() {
 		return wmap;
@@ -265,9 +303,12 @@ public abstract class Mission extends QObject
 			//}
 		//}
 		
-		if (endCondition()) {
+		boolean mdead = isMainHeroDead();
+		if (mdead || endCondition()) {
+			QApplication.restoreOverrideCursor();
+			QApplication.processEvents();
 			System.out.println("!!END!!!");
-			if (won()) {
+			if (won() && !mdead) {
 				QMessageBox.warning(WindowStack.getLastInstance(), "Wygrana", "Gratulacje! Udało Ci się przejść misję.");
 			} else {
 				QMessageBox.warning(WindowStack.getLastInstance(), "Przegrana", "Przegrałeś misję! Nie udało Ci się osiągnąć celu.");

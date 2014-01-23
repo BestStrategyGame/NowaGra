@@ -16,6 +16,7 @@ public class PlayerHuman extends Player
 	{
 		super.startTurn(day);
 		
+		QApplication.restoreOverrideCursor();
 		QApplication.processEvents();
 		
 		System.out.println("Start turn "+getName());
@@ -50,6 +51,13 @@ public class PlayerHuman extends Player
 		if (getActiveHero() == null) {
 			return;
 		}
+		
+		if (target != null && target.x == y && target.y == x) {
+			moveClicked();
+			return;
+		}
+		
+		
 		if (!visible.contains(new Point(y, x))) {
 			System.out.println("clicked on not visible");
 			return;

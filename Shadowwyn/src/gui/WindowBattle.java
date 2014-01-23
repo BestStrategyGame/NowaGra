@@ -2,6 +2,7 @@ package gui;
 
 import java.util.*;
 
+import com.trolltech.qt.core.Qt.CursorShape;
 import com.trolltech.qt.gui.*;
 
 import core.Battle;
@@ -112,6 +113,8 @@ public class WindowBattle extends QWidget
 		if (p2u != null) {
 			core.GroupOfUnits unit = p2u.get(r, c);
 			updateStats(unit);
+			
+			
 		}
 	}
 	
@@ -156,6 +159,7 @@ public class WindowBattle extends QWidget
 			uhp.setText(""+unit.getHP());
 			ushooting.setText(unit.type.shooting ? "Tak" : "Nie");
 			umagic.setText(unit.type.magic ? "Tak" : "Nie");
+			
 		}
 	}
 	
