@@ -89,11 +89,21 @@ public abstract class Mission extends QObject
 			wm.removeHero(looserh);
 		}
 		
+		 if  (winner instanceof PlayerHuman) {
+			if (exp > 0) {
+				gui.Sound.play("sound/win.wav");
+			}
+		} else if (looser instanceof PlayerHuman) {
+			if (exp > 0) {
+				gui.Sound.play("sound/lose.wav");
+			}
+		}
+		
 		if (player1 instanceof PlayerHuman || player2 instanceof PlayerHuman) {
 			if (color == Color.NONE) {
-				QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy", "Przegrałeś!");
+				QMessageBox.about(wm.getMapWidget(), "Koniec bitwy", "Przegrałeś!");
 			} else {
-				QMessageBox.warning(wm.getMapWidget(), "Koniec bitwy",  "Wygrywa gracz "+color.name);
+				QMessageBox.about(wm.getMapWidget(), "Koniec bitwy",  "Wygrywa gracz "+color.name);
 			}
 		}
 		
@@ -309,9 +319,11 @@ public abstract class Mission extends QObject
 			QApplication.processEvents();
 			System.out.println("!!END!!!");
 			if (won() && !mdead) {
-				QMessageBox.warning(WindowStack.getLastInstance(), "Wygrana", "Gratulacje! Udało Ci się przejść misję.");
+				gui.Sound.play("sound/winc.wav");
+				QMessageBox.about(WindowStack.getLastInstance(), "Wygrana", "Gratulacje! Udało Ci się przejść misję.");
 			} else {
-				QMessageBox.warning(WindowStack.getLastInstance(), "Przegrana", "Przegrałeś misję! Nie udało Ci się osiągnąć celu.");
+				gui.Sound.play("sound/losec.wav");
+				QMessageBox.about(WindowStack.getLastInstance(), "Przegrana", "Przegrałeś misję! Nie udało Ci się osiągnąć celu.");
 			}
 			WindowStack ws = WindowStack.getLastInstance();
 			if (ws != null) {

@@ -22,11 +22,7 @@ public class PlayerCPU extends Player
 	public boolean startTurn(int day)
 	{
 		super.startTurn(day);
-		
-		QCursor cursor = new QCursor();
-		cursor.setShape(CursorShape.WaitCursor);
-		QApplication.setOverrideCursor(cursor);
-		QApplication.processEvents();
+		gui.WindowMap.getLastInstance().lock();
 		
 		GuiInteraction gui0 = GuiInteraction.INSTANCE;
 		//gui.progressStart();
@@ -243,10 +239,8 @@ public class PlayerCPU extends Player
 			}
 		}
 		
+		gui.WindowMap.getLastInstance().unlock();
 		Mission.getLastInstance().finnishTurn(this);
-
-		QApplication.restoreOverrideCursor();
-		QApplication.processEvents();
 		
 		return false;
 	}
@@ -493,9 +487,10 @@ public class PlayerCPU extends Player
 			}
 		}
 		System.out.println("cos jeszcze?");
-		stan.finnishTurn(this);
 		QApplication.restoreOverrideCursor();
 		QApplication.processEvents();
+		stan.finnishTurn(this);
+		
 		return false;
 	}
 }

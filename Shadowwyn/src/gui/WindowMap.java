@@ -2,6 +2,7 @@ package gui;
 
 import java.util.*;
 
+import com.trolltech.qt.core.Qt.CursorShape;
 import com.trolltech.qt.gui.*;
 import com.trolltech.qt.gui.QLayout.SizeConstraint;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
@@ -75,7 +76,8 @@ public class WindowMap extends QFrame
 		
 		right.setSizePolicy(Policy.Fixed, Policy.Preferred);
 		right.setLayout(layoutRight);
-		layout.addWidget(right, 0, 1);
+		//layout.addWidget(minimap, 0, 1);
+		layout.addWidget(right, 0, 1, 2, 1);
 		layoutRight.setMargin(0);
 		layoutRight.addWidget(minimap);
 		layoutRight.addWidget(new QLabel("Zamki:"));
@@ -134,6 +136,45 @@ public class WindowMap extends QFrame
 		
 	}
 	
+	private void lockEnableButtons()
+	{
+		buttonMove.setEnabled(lockCount == 0);
+		buttonTurn.setEnabled(lockCount == 0);
+		buttonCastle.setEnabled(lockCount == 0);
+		buttonHero.setEnabled(lockCount == 0);
+		buttonQuit.setEnabled(lockCount == 0);
+	}
+	
+	int lockCount = 0;
+	public void lock()
+	{
+		if (lockCount++ == 0) {
+			//QMessageBox.about(this, "LOCK", "");
+			QCursor cursor = new QCursor();
+			cursor.setShape(CursorShape.WaitCursor);
+			QApplication.setOverrideCursor(cursor);
+			statusPlayer.setText("-");
+			statusGold.setText("-");
+			statusOre.setText("-");
+			statusWood.setText("-");
+			lockEnableButtons();
+			cleanCastles();
+			cleanHeroes();
+			QApplication.processEvents();
+			
+		}
+	}
+	
+	public void unlock()
+	{
+		if (--lockCount == 0) {
+			//QMessageBox.about(this, "UNLOCK", "");
+			lockEnableButtons();
+			QApplication.restoreOverrideCursor();
+			QApplication.processEvents();
+		}
+	}
+	
 	public void minimapClicked(int x, int y)
 	{
 		scroll.ensureVisible(y*64, x*64, 64*4, 64*4);
@@ -156,6 +197,8 @@ public class WindowMap extends QFrame
 	
 	public void addHero(core.Hero hero)
 	{
+		if (lockCount != 0) return;
+		
 		WidgetChooserButton button;
 		
 		if (heroesSelected != -1) {
@@ -177,6 +220,8 @@ public class WindowMap extends QFrame
 	
 	public void addCastle(core.Castle castle)
 	{
+		if (lockCount != 0) return;
+		
 		WidgetChooserButton button;
 		button = new WidgetChooserButton(castle, castle.getName(), false);
 		button.selected.connect(this, "selectCastle(Object)");
@@ -241,6 +286,8 @@ public class WindowMap extends QFrame
 	
 	public void removeHero()
 	{
+		if (lockCount != 0) return;
+		
 		heroesInner.takeAt(heroesSelected).widget().dispose();
 		heroes.remove(heroesSelected);
 		heroesSelected = 0;
@@ -288,6 +335,7 @@ public class WindowMap extends QFrame
 	
 	public void updateData(core.Player player)
 	{
+		if (lockCount != 0) return;
 		//System.out.println("update");
 		
 		statusGold.setText(""+player.getResource(core.ResourceType.GOLD));
@@ -314,7 +362,7 @@ public class WindowMap extends QFrame
 		scroll = new QScrollArea();
 		scroll.setSizePolicy(Policy.MinimumExpanding, Policy.Preferred);
 		scroll.setWidget(m);
-		layout.addWidget(scroll, 0, 0);
+		layout.addWidget(scroll, 0, 0, 2, 1);
 		//scroll.setStyleSheet("background-color: blue;");
 	}
 }

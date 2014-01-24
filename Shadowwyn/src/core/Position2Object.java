@@ -38,25 +38,24 @@ public class Position2Object<T>
 		return mapO2P.get(o);
 	}
 	
-	public void remove(int x, int y)
+	/*public void remove(int x, int y)
 	{
 		System.out.println("remove");
 		T o = get(x, y);
 		mapP2O.remove(new Point(x, y));
 		mapO2P.remove(o);
-	}
+	}*/
 	
 	public void remove(T o)
 	{
 		System.out.println("remove");
-		Point p = get(o);
-		mapP2O.remove(p);
+		mapP2O.remove(get(o));
 		mapO2P.remove(o);
 	}
 	
 	public Collection<T> objects()
 	{
-		return mapP2O.values();
+		return mapO2P.keySet();
 	}
 	
 	public Set<Point> points()

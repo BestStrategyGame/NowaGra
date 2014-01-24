@@ -34,6 +34,9 @@ public class PlayerHuman extends Player
 			Mission.getLastInstance().getWorldMap().getMapWidget().removeShadow(p.y, p.x);
 		}
 		
+		QApplication.restoreOverrideCursor();
+		QApplication.processEvents();
+		
 		return true;
 
 	}

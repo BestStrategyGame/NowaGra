@@ -5,7 +5,7 @@ import java.util.Random;
 public enum UnitType
 {
 	DUMMY(0, "Dummy", 1, 1, 1, 1, false ,false, new Cost(0, 0, 0), "",""),
-	WOJAK(1, "Wojak", 1, 2, 15, 4,  false, false, new Cost(50, 0, 0), "image/units/human/tier1.png", "Nienawidzi diabłów. Zwiększone obrażenia w Arcy Diabły.") {
+	WOJAK(1, "Wojak", 1, 2, 5, 4,  false, false, new Cost(80, 0, 0), "image/units/human/tier1.png", "Nienawidzi diabłów. Zwiększone obrażenia w Arcy Diabły.") {
 		public float damageRatio(UnitType target)
 		{
 			if(target.name().equals("Arcy Diabeł"))
@@ -14,7 +14,7 @@ public enum UnitType
 				return 1.0f;
 		}
 	},
-	KUSZNIK(2, "Kusznik", 2, 6, 15, 4, true, false, new Cost(190, 0, 0), "image/units/human/tier2.png", "Szansa na zwiększone obrażenia w postacie magiczne.") {
+	KUSZNIK(2, "Kusznik", 2, 6, 5, 4, true, false, new Cost(235, 0, 0), "image/units/human/tier2.png", "Szansa na zwiększone obrażenia w postacie magiczne.") {
 		public float damageRatio(UnitType target)
 		{
 			int rand = new Random().nextInt(9)+1;
@@ -24,7 +24,7 @@ public enum UnitType
 				return 1.0f;
 		}
 	},
-	MAG_OGNIA(3, "Mag Ognia", 3, 12, 10+10, 4, true, true, new Cost(440, 0, 0), "image/units/human/tier3.png", "Atakuje ognistymi kulami. Zwiększone obrażenia w Enty i Szkielety."){
+	MAG_OGNIA(3, "Mag Ognia", 3, 12, 10, 4, true, true, new Cost(540, 0, 0), "image/units/human/tier3.png", "Atakuje ognistymi kulami. Zwiększone obrażenia w Enty i Szkielety."){
 		public float damageRatio(UnitType target)
 		{
 			if(target.name().equals("Ent") || target.name().equals("Szkielet"))
@@ -34,7 +34,7 @@ public enum UnitType
 		}
 	},
 	
-	RYCERZ_MROKU(4, "Rycerz Mroku", 4, 12, 10+12, 9, false, false, new Cost(600, 0, 0), "image/units/human/tier4.png", "Szarża.Zwiększone obrażenia w jednostki strzelające."){
+	RYCERZ_MROKU(4, "Rycerz Mroku", 4, 12, 12, 9, false, false, new Cost(950, 0, 0), "image/units/human/tier4.png", "Szarża.Zwiększone obrażenia w jednostki strzelające."){
 		public float damageRatio(UnitType target)
 		{
 			if(target.shooting)
@@ -45,7 +45,7 @@ public enum UnitType
 	},
 	
 	SZKIELET(5, "Szkielet", 1, 3, 2, 4, false, false, new Cost(60, 0, 0), "image/units/demon/tier1.png", "Nekromancja. 50% straconych jednostek powstaje z grobu po walce."),
-	POLNOCNICA(6, "Północnica", 2, 6, 5, 5, false, false, new Cost(180, 0, 0), "image/units/demon/tier2.png", "Mała szansa na uniknięcie otrzymania obrażeń od jednostek strzelających.") {
+	POLNOCNICA(6, "Północnica", 2, 6, 5, 5, false, false, new Cost(200, 0, 0), "image/units/demon/tier2.png", "Mała szansa na uniknięcie otrzymania obrażeń od jednostek strzelających.") {
 		public float receivedDamageRation(UnitType from)
 		{
 			int c = new Random().nextInt(100);
@@ -55,7 +55,7 @@ public enum UnitType
 				return 1.0f;
 		}
 	},
-	WAPIERZ(7, "Wąpierz", 3, 10, 9, 6, false, true, new Cost(400, 0, 0), "image/units/demon/tier3.png", "Wysysa punkty życia."),
+	WAPIERZ(7, "Wąpierz", 3, 10, 9, 6, false, true, new Cost(460, 0, 0), "image/units/demon/tier3.png", "Wysysa punkty życia."),
 	ARCY_DIABEL(8, "Arcy Diabeł", 4, 16, 16, 10, false, true, new Cost(900, 0, 0), "image/units/demon/tier4.png", "Nienawidzi drzew. Zwiększone obrażenia w Enty."){
 		public float damageRatio(UnitType target)
 		{
@@ -75,7 +75,7 @@ public enum UnitType
 				return 1.0f;
 		}
 	},
-	ELFI_SKRYTOBOJCA(10, "Elfi Skrytobójca", 2, 6, 4, 5, false, false, new Cost(210, 0, 0), "image/units/forest/tier2.png", "Mała szansa na podwójne uderzenie."){
+	ELFI_SKRYTOBOJCA(10, "Elfi Skrytobójca", 2, 6, 4, 5, false, false, new Cost(190, 0, 0), "image/units/forest/tier2.png", "Mała szansa na podwójne uderzenie."){
 		public float damageRatio(UnitType target)
 		{
 			int rand = new Random().nextInt(100)+1;

@@ -348,10 +348,11 @@ public class WorldMap
 	public void moveTo(Hero hero, Player player, int x, int y, int px, int py)
 	{
 		WorldMapObject standing = p2o.get(hero.getX(), hero.getY());
+		Hero object2;
 		WorldMapObject object = p2o.get(x, y);
 		System.out.println("move to: "+x+", "+y+", "+object);
 		
-		p2h.remove(hero.getX(), hero.getY());
+		p2h.remove(hero);
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(4, null);
 		if (standing != null) {
@@ -383,50 +384,62 @@ public class WorldMap
 		if (px == -1) {
 			return;
 		}
+		
 		if (object != null) if (object.stand(hero, player)) {
 			p2o.remove(object);
 			mapWidget.objectAt(y, x).setLayer(object.stackLevel(), null);
 		}
+		
 
-		object = p2h.get(x-1, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x-1, y-1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x-1, y);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x-1, y);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x-1, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x-1, y+1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x+1, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x+1, y-1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x+1, y);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x+1, y);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x+1, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x+1, y+1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x, y-1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x, y-1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
 		
-		object = p2h.get(x, y+1);
-		if (object != null) if (object.standNextTo(hero, player)) {
-			p2h.remove(x-1, y-1);
+		object2 = p2h.get(x, y+1);
+		if (object2 != null) if (object2.standNextTo(hero, player)) {
+			p2h.remove(object2);
+			return;
 		}
+		
+		
 		
 		
 	}
@@ -457,7 +470,12 @@ public class WorldMap
 				plus = 1000000f;
 			}
 			if (forbiddenNeighbourhood(hero, tox, toy)) {
-				plus = 500000f;
+				if (obj instanceof Castle) {
+					plus = 1000000f;
+				} else {
+					plus = 500000f;
+				}
+				
 			} /*else*/
 			
 			float times = 1.0f;
@@ -594,6 +612,8 @@ public class WorldMap
 				continue;
 			}
 			p = p2h.get(obj);
+			System.out.println("!!!" + hero.getName() + " " + obj.getName());
+			System.out.flush();
 			System.out.println(getRoute(p.x, p.y));
 			if (getRoute(p.x, p.y).getParent() == null) {
 				continue;

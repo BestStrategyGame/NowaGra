@@ -84,7 +84,7 @@ public class Battle extends QObject
 		return currentUnit;
 	}
 
-	private QCursor cursor;
+	private QCursor cursor = null;
 	
 	PriorityQueue<GroupOfUnits> units = new PriorityQueue<GroupOfUnits>();
 	
@@ -108,8 +108,9 @@ public class Battle extends QObject
 		
 		
 		
-		cursor = QApplication.overrideCursor();
+		
 		if (p1 instanceof PlayerHuman || p2 instanceof PlayerHuman) {
+			cursor = QApplication.overrideCursor();
 			QApplication.restoreOverrideCursor();
 			QApplication.processEvents();
 		}
@@ -318,7 +319,9 @@ public class Battle extends QObject
 		
 		Mission m = Mission.getLastInstance();
 		
-		QApplication.setOverrideCursor(cursor);
+		if (cursor != null) {
+			QApplication.setOverrideCursor(cursor);
+		}
 		QApplication.processEvents();
 		
 		try {
@@ -441,7 +444,7 @@ public class Battle extends QObject
 		if (isDead) {
 			mapWidget.objectAt(pos.y, pos.x).setLayer(3, null);
 			mapWidget.objectAt(pos.y, pos.x).setLayer(4, null);
-			p2u.remove(pos.x, pos.y);
+			p2u.remove(target);
 			units.remove(target);
 			
 			if (humanPlaying()) {
@@ -543,7 +546,7 @@ public class Battle extends QObject
 		}
 		log.emit(currentUnit.type.name+" ("+currentUnit.getOwner().getColor().name+") ruszył się na pole ("+(r+1)+", "+(c+1)+")");
 		core.Point pos = p2u.get(currentUnit);
-		p2u.remove(pos.x, pos.y);
+		p2u.remove(currentUnit);
 		p2u.put(r, c, currentUnit);
 		mapWidget.objectAt(pos.y, pos.x).setLayer(1, null);
 		mapWidget.objectAt(pos.y, pos.x).setLayer(3, null);
