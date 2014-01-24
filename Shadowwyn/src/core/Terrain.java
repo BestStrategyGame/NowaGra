@@ -2,26 +2,28 @@ package core;
 import java.util.*;
 
 public enum Terrain {
-	GRASS("Trawa", 6,118,0, 1.5f, "image/terrain/grass.png"),
-	LAVA("Lawa", 164, 164, 164, 2f, "image/terrain/lava.png"),
-	SWAMP("Bagna", 7, 255, 71, 2.5f, "image/terrain/swamp.png"),
-	PATH("Ścieżka", 103, 103, 78, 1f, "image/terrain/path.png"),
-	MOUNTAINS("Góry", 255, 255, 255, 5000000f, "image/objects/mountains.png"),
-	TREE("Drzewo", 150, 200, 150, 5000000f, "image/objects/tree.png"),
-	CASTLE("Castle", 70, 70, 70, 5000000f, "image/objects/tree.png"),
-	ENTRANCE("Castle entrance", 65, 65, 65, 1f, "image/objects/tree.png"),
-	OTHER("", 66, 66, 66, 1f, "");
+	GRASS("Trawa", true, 6,118,0, 1.5f, "image/terrain/grass.png"),
+	LAVA("Lawa", true, 164, 164, 164, 2f, "image/terrain/lava.jpg"),
+	SWAMP("Bagna", true, 7, 255, 71, 2.5f, "image/terrain/swamp.jpg"),
+	PATH("Ścieżka", false, 103, 103, 78, 1f, "image/terrain/path.png"),
+	MOUNTAINS("Góry", false, 255, 255, 255, 5000000f, "image/objects/mountains.png"),
+	TREE("Drzewo", false, 150, 200, 150, 5000000f, "image/objects/tree.png"),
+	CASTLE("Castle", false, 70, 70, 70, 5000000f, "image/objects/tree.png"),
+	ENTRANCE("Castle entrance", false, 65, 65, 65, 1f, "image/objects/tree.png"),
+	OTHER("", false, 66, 66, 66, 1f, "");
 	
 	
 	public final String name;
+	public final boolean ground;
 	public final int rgb;
 	public final float cost;
 	public final String file;
 	//public gui.WidgetImage image;
 	
-	private Terrain(String n, int r, int g, int b, float c, String f)
+	private Terrain(String n, boolean gr, int r, int g, int b, float c, String f)
 	{
 		name = n;
+		ground = gr;
 		rgb = 256*256*r + 256*g + b;
 		cost = c;
 		file = f;

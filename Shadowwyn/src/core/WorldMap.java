@@ -85,6 +85,23 @@ public class WorldMap
 		return tmap;
 	}
 	
+	public Terrain getTerrainAt(int x, int y)
+	{
+		try {
+			if (tmap[x][y].ground) {
+				return tmap[x][y];
+			}
+			for (int i=x-1; i<=x+1; ++i) {
+				for (int j=y-1; j<=y+1; ++j) {
+					if (tmap[i][j].ground) {
+						return tmap[i][j];
+					}
+				}
+			}
+		} catch (Exception e) {}
+		return Terrain.GRASS;
+	}
+	
 	public void initRoute()
 	{
 		route = new Point[getHeight()][];

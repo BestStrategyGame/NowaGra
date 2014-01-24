@@ -352,6 +352,8 @@ public class Hero implements WorldMapObject
 			} else {
 				return (int)(100*moveRatio);
 			}*/
+		} else if (Mission.getLastInstance().isAlly(hero.getColor(), getColor())) {
+			return -1;
 		} else {
 			System.out.println("AI: STRENGTH "+hero.getStrenght()+" vs "+getStrenght());
 			if (hero.getStrenght() > 1.2f*getStrenght()) {

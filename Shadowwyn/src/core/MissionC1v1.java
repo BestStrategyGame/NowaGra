@@ -22,8 +22,6 @@ public class MissionC1v1 extends MissionC1
 		addPlayer(p2);
 		setActivePlayer(p1);
 	}
-
-	
 	
 	@Override
 	public String getName()

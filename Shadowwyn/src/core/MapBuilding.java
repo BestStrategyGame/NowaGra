@@ -73,6 +73,8 @@ public class MapBuilding implements WorldMapObject
 		
 		if (color == player.getColor()) {
 			return 0;
+		} else if (Mission.getLastInstance().isAlly(hero.getColor(), getColor())) {
+			return -1;
 		}
 		
 		float moveRatio = hero.getMovePoints()/(distance+1);

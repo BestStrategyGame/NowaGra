@@ -172,10 +172,11 @@ public class Castle implements WorldMapObject
 				Mission m = Mission.getLastInstance();
 				Player cp = m.getPlayer(getColor());
 				
+				Terrain t = WorldMap.getLastInstance().getTerrainAt(hero.getX(), hero.getY());
 				Battle b = new Battle(player, cp, hero, getGarission(), Terrain.GRASS, this);
 				b.createMapWidget();
-				b.populateMapWidget();;
-				
+				b.populateMapWidget();
+				getGarission().setInCastle(this);
 				WindowBattle bat = new WindowBattle(b, player, cp, hero, getGarission());
 				b.updateQueue.connect(bat, "updateQueue(Queue)");
 				b.log.connect(bat, "addLogLine(String)");
@@ -367,6 +368,8 @@ public class Castle implements WorldMapObject
 					return (int)(500*moveRatio);
 				}
 			}
+		} else if (Mission.getLastInstance().isAlly(hero.getColor(), getColor())) {
+				return -1;
 		} else {
 			float strength = 1;
 			if (getHero() != null)
