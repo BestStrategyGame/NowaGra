@@ -116,9 +116,9 @@ public enum UnitType
 	public final boolean magic;
 	public final Cost cost;
 	public final String file;
-	public final String opis;
+	public final String desc;
 	
-	private UnitType(int i, String n, int l, int a, int d, int s, boolean sh, boolean mg, Cost co, String f, String op)
+	private UnitType(int i, String n, int l, int a, int d, int s, boolean sh, boolean mg, Cost co, String f, String de)
 	{
 		id = i;
 		name = n;
@@ -130,7 +130,7 @@ public enum UnitType
 		magic = mg;
 		cost = co;
 		file = f;
-		opis = op;
+		desc = de;
 	}
 	
 	private static final Map<Integer, UnitType> mapId = new HashMap<Integer, UnitType>();

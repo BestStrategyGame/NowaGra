@@ -66,28 +66,25 @@ public class WindowCastle extends QWidget
 		buys[5] = new WidgetBuy(p, c, core.CastleBuilding.CASTLE);
 		buyLayout.addWidget(buys[5], 2, 3, AlignmentFlag.AlignTop);
 		
-		buys[6] = new WidgetBuy(p, c, core.CastleBuilding.HUMAN_CASTLE_TIER1);
+		buys[6] = new WidgetBuy(p, c, core.CastleBuilding.getTier(1, c.getType()));
 		buyLayout.addWidget(buys[6], 3, 1, AlignmentFlag.AlignTop);
-		
-		System.out.println("ctype "+c.getType());
-		System.out.println("utype "+core.UnitType.getTier(1, c.getType()));
 		
 		recruits[0] = new WidgetRecruit(p, c, g, core.UnitType.getTier(1, c.getType()));
 		buyLayout.addWidget(recruits[0], 3, 2, 3, 3, AlignmentFlag.AlignTop);
 		
-		buys[7] = new WidgetBuy(p, c, core.CastleBuilding.HUMAN_CASTLE_TIER2);
+		buys[7] = new WidgetBuy(p, c, core.CastleBuilding.getTier(2, c.getType()));
 		buyLayout.addWidget(buys[7], 4, 1, AlignmentFlag.AlignTop);
 		
 		recruits[1] = new WidgetRecruit(p, c, g, core.UnitType.getTier(2, c.getType()));
 		buyLayout.addWidget(recruits[1], 4, 2, 4, 3, AlignmentFlag.AlignTop);
 		
-		buys[8] = new WidgetBuy(p, c, core.CastleBuilding.HUMAN_CASTLE_TIER3);
+		buys[8] = new WidgetBuy(p, c, core.CastleBuilding.getTier(3, c.getType()));
 		buyLayout.addWidget(buys[8], 5, 1, AlignmentFlag.AlignTop);
 		
 		recruits[2] = new WidgetRecruit(p, c, g, core.UnitType.getTier(3, c.getType()));
 		buyLayout.addWidget(recruits[2], 5, 2, 5, 3, AlignmentFlag.AlignTop);
 		
-		buys[9] = new WidgetBuy(p, c, core.CastleBuilding.HUMAN_CASTLE_TIER4);
+		buys[9] = new WidgetBuy(p, c, core.CastleBuilding.getTier(4, c.getType()));
 		buyLayout.addWidget(buys[9], 6, 1, AlignmentFlag.AlignTop);
 		
 		recruits[3] = new WidgetRecruit(p, c, g, core.UnitType.getTier(4, c.getType()));

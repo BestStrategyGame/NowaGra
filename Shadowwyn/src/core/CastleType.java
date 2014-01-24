@@ -4,8 +4,8 @@ package core;
  public enum CastleType
  {
 	HUMAN_CASTLE(1, "Zamek Ludzi", 0, 0, 0, UnitType.WOJAK, UnitType.KUSZNIK, UnitType.MAG_OGNIA, UnitType.RYCERZ_MROKU, "image/heroes/human.png"),
-	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, "image/heroes/demon.png"),
-	FOREST_ROOK(3, "Leśna Twierdza", 172, 113, 0, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, UnitType.DUMMY, "image/heroes/forest.png");
+	DEMONICAL_NECROPOLY(2, "Demoniczna Nekropolia", 119, 0, 0, UnitType.SZKIELET, UnitType.POLNOCNICA, UnitType.WAPIERZ, UnitType.ARCY_DIABEL, "image/heroes/demon.png"),
+	FOREST_ROOK(3, "Leśna Twierdza", 172, 113, 0, UnitType.NIMFA, UnitType.ELFI_SKRYTOBOJCA, UnitType.ENT, UnitType.FENIKS, "image/heroes/forest.png");
 	
 	public final int id;
 	public final String name;

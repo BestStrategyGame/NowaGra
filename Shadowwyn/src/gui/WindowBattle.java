@@ -98,6 +98,8 @@ public class WindowBattle extends QWidget
 		layoutButtons.addWidget(give);
 		layoutButtons.addWidget(wait);
 		layoutButtons.addWidget(surrender);
+		
+		uspecial.setWordWrap(true);
 	}
 	
 	public void setCanWait(boolean enable)
@@ -161,7 +163,7 @@ public class WindowBattle extends QWidget
 			uhp.setText(""+unit.getHP());
 			ushooting.setText(unit.type.shooting ? "Tak" : "Nie");
 			umagic.setText(unit.type.magic ? "Tak" : "Nie");
-			uspecial.setText("Opis" + unit.type.name);
+			uspecial.setText(unit.type.desc);
 			
 		}
 	}

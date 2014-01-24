@@ -49,7 +49,7 @@ public class MissionC1 extends Mission
 		wmap.addObject(3, 3, h4);
 		
 		Castle c1 = new Castle(CastleType.HUMAN_CASTLE, "Zamek NW");
-		Castle c2 = new Castle(CastleType.HUMAN_CASTLE, "Zamek SW");
+		Castle c2 = new Castle(CastleType.FOREST_ROOK, "Zamek SW");
 		Castle c3 = new Castle(CastleType.HUMAN_CASTLE, "Zamek NE");
 		Castle c4 = new Castle(CastleType.HUMAN_CASTLE, "Zamek SE");
 		p1.addCastle(c1);
