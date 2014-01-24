@@ -9,7 +9,8 @@ import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 public class WindowMain extends QWidget
 {
 	
-	private QPushButton campaign = new QPushButton("Kampania");
+	private QPushButton campaign1 = new QPushButton("Kampania Ludzi");
+	private QPushButton campaign2 = new QPushButton("Kampania Demonów");
 	private QPushButton fast = new QPushButton("Szybka walka");
 	private QPushButton about = new QPushButton("O grze");
 	private QPushButton exit = new QPushButton("Wyjście");
@@ -31,7 +32,8 @@ public class WindowMain extends QWidget
 		exit.setGeometry(width()-200, height()-50*1-32, 150, 40);
 		about.setGeometry(width()-200, height()-50*2-32, 150, 40);
 		fast.setGeometry(width()-200, height()-50*3-32, 150, 40);
-		campaign.setGeometry(width()-200, height()-50*4-32, 150, 40);
+		campaign2.setGeometry(width()-200, height()-50*4-32, 150, 40);
+		campaign1.setGeometry(width()-200, height()-50*5-32, 150, 40);
 		
 		logo.move(250, 50);
 		//logo.setStyleSheet("background-color: none");
@@ -41,13 +43,15 @@ public class WindowMain extends QWidget
 		exit.setParent(this);
 		about.setParent(this);
 		fast.setParent(this);
-		campaign.setParent(this);
+		campaign1.setParent(this);
+		campaign2.setParent(this);
 		
 		
 		exit.clicked.connect(this, "exitClicked()");
 		about.clicked.connect(this, "aboutClicked()");
 		fast.clicked.connect(this, "fastClicked()");
-		campaign.clicked.connect(this, "campaignClicked()");
+		campaign1.clicked.connect(this, "campaign1Clicked()");
+		campaign2.clicked.connect(this, "campaign2Clicked()");
 		
 		
 	}
@@ -76,13 +80,24 @@ public class WindowMain extends QWidget
 		}
 	}
 	
-	public void campaignClicked()
+	public void campaign1Clicked()
 	{
 		WindowStack ws = WindowStack.getLastInstance();
 		System.out.println(ws);
 		if (ws != null) {
 			
-			WindowCampaign campaign = new WindowCampaign();
+			WindowCampaign campaign = new WindowCampaign(1);
+			ws.push(campaign);
+		}
+	}
+	
+	public void campaign2Clicked()
+	{
+		WindowStack ws = WindowStack.getLastInstance();
+		System.out.println(ws);
+		if (ws != null) {
+			
+			WindowCampaign campaign = new WindowCampaign(2);
 			ws.push(campaign);
 		}
 	}

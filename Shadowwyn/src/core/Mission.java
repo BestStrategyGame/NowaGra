@@ -82,6 +82,7 @@ public abstract class Mission extends QObject
 		WorldMap wm = WorldMap.getLastInstance();
 		looserh.setUnits(null);
 		if (looserh.getX() != -1) {
+			System.out.println("LOOSER HERO");
 			looser.dieHero(looserh);
 			if (looser == getActivePlayer()) {
 				removeHero.emit();
@@ -327,10 +328,8 @@ public abstract class Mission extends QObject
 			}
 			WindowStack ws = WindowStack.getLastInstance();
 			if (ws != null) {
-				WindowCampaign campaign = new WindowCampaign();
 				ws.pop();
 				ws.pop();
-				ws.push(campaign);
 			}
 			return;
 		}

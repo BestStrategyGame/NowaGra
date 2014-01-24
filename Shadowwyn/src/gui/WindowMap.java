@@ -202,8 +202,10 @@ public class WindowMap extends QFrame
 		WidgetChooserButton button;
 		
 		if (heroesSelected != -1) {
-			button = (WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget());
-			button.setChecked(false);
+			try {
+				button = (WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget());
+				button.setChecked(false);
+			} catch (NullPointerException e) {}
 		}
 		
 		
@@ -293,8 +295,9 @@ public class WindowMap extends QFrame
 		heroesSelected = 0;
 		try {
 			((WidgetChooserButton)(heroesInner.itemAt(heroesSelected).widget())).setChecked(true);
+			selectHero(heroes.get(heroesSelected));
 		} catch (java.lang.NullPointerException e) {}
-		selectHero(heroes.get(heroesSelected));
+
 		
 		QApplication.processEvents();
 		minimap.repaint();

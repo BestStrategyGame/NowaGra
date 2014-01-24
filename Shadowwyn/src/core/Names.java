@@ -1,0 +1,120 @@
+package core;
+
+public class Names
+{
+	static String[] castles = {
+		"Treehold",
+		"Millford",
+		"Staedbergh",
+		"Sirenchester",
+		"Taergoria",
+		"Mirador",
+		"Middleborough",
+		"Highcalere",
+		"Tarsington",
+		"Harle",
+		"Boltan",
+		"Starnborough",
+		"Iredale",
+		"Arcop",
+		"Tarnton",
+		"Parthley",
+		"Tortmain",
+		"Darham",
+		"Baltso",
+		"Baston",
+		"Warlton",
+		"Sraederham",
+		"Barthmont",
+		"Bode",
+		"Selsmire",
+		"Catterborough",
+		"Stowe",
+		"Haeresceugh",
+		"Baltso",
+		"Callborough",
+		"Wishborne",
+		"Barkhamsted",
+		"Rachdale",
+		"Permbridge",
+		"Lyonhall",
+		"Allerton",
+		"Wulworth",
+		"Parton",
+		"Langen",
+		"Bernstaple"};
+	static String[] names = {
+		"Godfrey",
+		"Mordred",
+		"Nicolai",
+		"Seth",
+		"Thomas",
+		"Harold",
+		"Nelo",
+		"Dimitri",
+		"Vincent",
+		"Paine",
+		"Horace",
+		"William",
+		"Brandyn",
+		"Gabe",
+		"Cadell",
+		"Barnabas",
+		"Ezekiel",
+		"Angelus",
+		"Mathias",
+		"James",
+		"Angelus",
+		"Phoenix",
+		"Bryce",
+		"Soran",
+		"Corbin",
+		"Holstein",
+		"Benjamin",
+		"Bryce",
+		"Asa",
+		"Eoghan"};
+	static String[] surnames = {
+		"Ironstalker",
+		"Ragepelt",
+		"Highfist",
+		"Grandblossom",
+		"Peacescream",
+		"Downbough",
+		"Foreflow",
+		"Shieldshard",
+		"Stagore",
+		"Stormtrap",
+		"Snakesky",
+		"Whispercleaver",
+		"Glorytoe",
+		"Caskbrace",
+		"Mistrunner",
+		"Whitgrip",
+		"Rumblebone",
+		"Thunderwatcher",
+		"Shadowhelm",
+		"Twotide",
+		"Hydrataker",
+		"Sternblaze",
+		"Autumnguard",
+		"Fusesong",
+		"Stormcutter",
+		"Singledream",
+		"Stoneblossom",
+		"Mountainhunter",
+		"Gloryhelm",
+		"Pridefury"};
+	
+	static java.util.Random random = new java.util.Random();
+	
+	public static String castle()
+	{
+		return castles[random.nextInt(castles.length)];
+	}
+	
+	public static String name()
+	{
+		return names[random.nextInt(names.length)] + " " + surnames[random.nextInt(surnames.length)];
+	}
+}

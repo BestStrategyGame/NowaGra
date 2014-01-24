@@ -175,9 +175,9 @@ public class Hero implements WorldMapObject
 	{
 		System.out.println("Set in castle");
 		castle = c;
-		cityAttack = 1;
-		cityDefense = 1;
-		citySpeed = 1;
+		cityAttack = 0;
+		cityDefense = c.inCityDefenseBonus(this);
+		citySpeed = 0;
 	}
 	
 	public boolean isInCastle(Castle c)

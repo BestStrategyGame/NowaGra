@@ -41,6 +41,7 @@ public enum ResourceType
 	
 	public static ResourceType fromRGB(int r, int g, int b)
 	{
+		System.out.println("RES FROM RGB " + r +" " + g + " " + b);
 		int rgb = 256*256*r + 256*g + b;
 		return mapId.get(rgb);
 	}

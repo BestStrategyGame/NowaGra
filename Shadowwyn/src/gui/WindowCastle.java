@@ -11,6 +11,7 @@ import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
 
 import core.Hero;
+import core.Names;
 import core.WorldMap;
 
 public class WindowCastle extends QWidget
@@ -194,7 +195,7 @@ public class WindowCastle extends QWidget
 					new StandardButtons(StandardButton.Yes, StandardButton.No)) != StandardButton.Yes) {
 				return;
 			}
-			Hero hero = new Hero("Nowy bohater", castle.getType());
+			Hero hero = new Hero(Names.name(), castle.getType());
 			addNewHero(hero);
 			player.addResource(core.ResourceType.GOLD, -2500);
 			updateResources();
@@ -209,6 +210,7 @@ public class WindowCastle extends QWidget
 		if (wmap != null) {
 			player.addHero(hero);
 			castle.setHero(hero);
+			hero.setInCastle(castle);
 			//castle.lockStanding();
 			units.setRight(hero);
 			core.Point pos = wmap.getPositionOfObject(castle);

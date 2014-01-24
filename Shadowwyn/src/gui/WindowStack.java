@@ -60,7 +60,7 @@ public class WindowStack extends QWidget
 		core.Mission mission;
 		gui.WindowMap window;
 		
-		mission = new core.MissionC1();
+		mission = new core.MissionC1v1();
 		mission.init();
 		window = new gui.WindowMap();
 		gui.WidgetMap map = mission.getMapWidget();

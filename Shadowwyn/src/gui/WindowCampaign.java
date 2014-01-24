@@ -23,7 +23,7 @@ public class WindowCampaign extends QWidget
 	
 	Thread thread;
 	
-	public WindowCampaign()
+	public WindowCampaign(int variant)
 	{
 		super();
 		
@@ -62,8 +62,13 @@ public class WindowCampaign extends QWidget
 		description.setReadOnly(true);
 		
 		core.Mission m;
-		m =  new core.MissionC1();
-		mission.addItem(m.getName(), m);
+		if (variant == 1) {
+			m =  new core.MissionC1v1();
+			mission.addItem(m.getName(), m);
+		} else if (variant == 2) {
+			m =  new core.MissionC1v2();
+			mission.addItem(m.getName(), m);
+		}
 		
 		mission.currentIndexChanged.connect(this, "missionChanged(int)");
 		name.editingFinished.connect(this, "nameCheck()");
@@ -149,7 +154,7 @@ public class WindowCampaign extends QWidget
 	{
 		QApplication.initialize(args);
 		
-		WindowCampaign w = new WindowCampaign();
+		WindowCampaign w = new WindowCampaign(1);
 		w.show();
 		QApplication.exec();
 	}

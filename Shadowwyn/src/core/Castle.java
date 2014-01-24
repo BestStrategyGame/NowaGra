@@ -236,6 +236,17 @@ public class Castle implements WorldMapObject
 		}
 	}
 	
+	public int inCityDefenseBonus(Hero hero)
+	{
+		if (buildings.contains(CastleBuilding.CASTLE)) {
+			return 12;
+		} else if (buildings.contains(CastleBuilding.CITADEL)) {
+			return 8;
+		} else if (buildings.contains(CastleBuilding.FORT)) {
+			return 4;
+		}
+		return 0;
+	}
 	
 	public void dailyBonus(Player player)
 	{

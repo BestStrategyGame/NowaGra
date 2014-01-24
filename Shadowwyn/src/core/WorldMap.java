@@ -159,10 +159,12 @@ public class WorldMap
 				for (int j=0; j<width; ++j) {
 					r = sc.nextInt();
 					g = sc.nextInt();
-					b = sc.nextInt();				
+					b = sc.nextInt();
+					
 					
 					ResourceType rt = ResourceType.fromRGB(r, g, b);
 					if (rt != null) {
+						System.out.println(rt.name);
 						addObject(j, i, new Resource(rt));
 						continue;
 					}
@@ -267,9 +269,16 @@ public class WorldMap
 		hero.setPosition(x, y);
 	}
 	
+	public void addObject(int x, int y, IndependentUnits hero)
+	{
+		System.out.println("add hero");
+		p2h.put(x, y, hero);
+		hero.setPosition(x, y);
+	}
+	
 	public void removeHero(Hero hero)
 	{
-		System.out.println("remove hero "+hero);
+		System.out.println("remove hero "+hero+" "+hero.getX()+" "+hero.getY());
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(hero.stackLevel(), null);
 		mapWidget.objectAt(hero.getY(), hero.getX()).setLayer(4, null);
 		WorldMapObject o = p2o.get(hero.getX(), hero.getY());
@@ -278,7 +287,7 @@ public class WorldMap
 		} else {
 			mapWidget.objectAt(hero.getY(), hero.getX()).setToolTip("");
 		}
-		p2h.remove(hero);
+		p2h.remove(hero.getX(), hero.getY());
 		
 		Player activePlayer = Mission.getLastInstance().getActivePlayer();
 		if (hero.getColor() != activePlayer.getColor()) {
@@ -382,7 +391,9 @@ public class WorldMap
 		QApplication.processEvents();
 		
 		if (px == -1) {
-			return;
+			if (object instanceof Castle) {
+				hero.setInCastle((Castle)object);
+			}
 		}
 		
 		if (object != null) if (object.stand(hero, player)) {

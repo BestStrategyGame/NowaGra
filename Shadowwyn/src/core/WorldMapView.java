@@ -44,7 +44,7 @@ public class WorldMapView
 	public WorldMapView()
 	{
 		System.out.println("start");
-		mission = new MissionC1();
+		mission = new MissionC1v1();
 		mission.init("foo");
 		window = new gui.WindowMap();
 		gui.WidgetMap map = mission.getMapWidget();

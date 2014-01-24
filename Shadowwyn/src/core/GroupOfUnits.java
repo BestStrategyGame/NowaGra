@@ -81,13 +81,13 @@ public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 	public int getAttack()
 	{
 		return type.attack +
-			owner.getAttack()*type.level/4;
+			owner.getAttack()*type.level;
 	}
 	
 	public int getDefense()
 	{
 		return type.defense +
-			owner.getDefense()*type.level/4;
+			owner.getDefense()*type.level;
 	}
 	
 	public int getSpeed()
@@ -116,7 +116,13 @@ public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 		target.totalHP -= number*getAttack()*type.damageRatio(target.type)*target.type.receivedDamageRation(type)*1.0/3.0;
 		target.number = java.lang.Math.max(0, (int)java.lang.Math.ceil((float)target.totalHP/target.getDefense()));
 		number = number+c;
-		return target.totalHP <= 0;
+		totalHP += getDefense()*c;
+		
+		if (target.totalHP <= 0) {
+			target.getOwner().getUnits().remove(target);
+			return true;
+		}
+		return false;
 	}
 
 

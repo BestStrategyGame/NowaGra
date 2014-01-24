@@ -19,9 +19,9 @@ public enum CastleBuilding
 			player.addResource(ResourceType.GOLD, 2000);
 		}
 	},
-	FORT(0, "Fort", "+5 do obrony bohatera podczas oblężenia", null, new Cost(1500, 20, 10)),
-	CITADEL(0, "Cytadela", "+10 do obrony bohatera podczas oblężenia", null, new Cost(2500, 5, 15), FORT),
-	CASTLE(0, "Zamek", "+20 do obrony bohatera podczas oblężenia", null, new Cost(5000, 5, 25), CITADEL),
+	FORT(0, "Fort", "+4 do obrony bohatera podczas oblężenia", null, new Cost(1500, 20, 10)),
+	CITADEL(0, "Cytadela", "+8 do obrony bohatera podczas oblężenia", null, new Cost(2500, 5, 15), FORT),
+	CASTLE(0, "Zamek", "+12 do obrony bohatera podczas oblężenia", null, new Cost(5000, 5, 25), CITADEL),
 	// Zamek ludzi
 	HUMAN_CASTLE_TIER1(1, "Baraki", "Pozwala rekrutować jednostki Wojak",  CastleType.HUMAN_CASTLE, new Cost(500, 5, 5)) {
 		public void weeklyBonus(Player player, Castle castle)
