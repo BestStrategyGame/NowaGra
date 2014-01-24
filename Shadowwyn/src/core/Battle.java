@@ -99,9 +99,14 @@ public class Battle extends QObject
 		return LAST_INSTANCE;
 	}
 	
+	int initSkeletons1 = 0;
+	int initSkeletons2 = 0;
+	
 	public Battle(core.Player p1, core.Player p2, core.Hero h1, core.Hero h2, core.Terrain t, Castle c)
 	{
 		super();
+		
+		
 		
 		cursor = QApplication.overrideCursor();
 		if (p1 instanceof PlayerHuman || p2 instanceof PlayerHuman) {
@@ -199,6 +204,21 @@ public class Battle extends QObject
 			default:
 		}
 		
+		for (GroupOfUnits u: h1.getUnits()) {
+			if (u.type == UnitType.SZKIELET) {
+				initSkeletons1 = u.getNumber();
+				break;
+			}
+		}
+		for (GroupOfUnits u: h2.getUnits()) {
+			if (u.type == UnitType.SZKIELET) {
+				initSkeletons2 = u.getNumber();
+				break;
+			}
+		}
+		
+		System.out.println("INIT SKELETONS: "+initSkeletons1 +" "+initSkeletons2);
+		
 		LAST_INSTANCE = this;
 		
 		initRoute();
@@ -248,6 +268,47 @@ public class Battle extends QObject
 	
 	public void finishBattle()
 	{
+		System.out.println("FINISH BATTLE "+currentUnit.getOwner().getColor());
+		int currentSkeletons = 0;
+		if (currentUnit.getOwner().getColor() == player1.getColor() && initSkeletons1 > 1) {
+			System.out.println("SKELETONS 1");
+			for (GroupOfUnits u: hero1.getUnits()) {
+				if (u.type == UnitType.SZKIELET) {
+					currentSkeletons = u.getNumber();
+					if (currentSkeletons > 0) {
+						u.setNumber(u.getNumber() + (int)(initSkeletons2-currentSkeletons)/2);
+					}
+					break;
+				}
+			}
+			if (currentSkeletons == 0) {
+				hero1.getUnits().add(new GroupOfUnits(UnitType.SZKIELET, hero1, (int)initSkeletons1/2));
+			}
+		}
+		
+		if (currentUnit.getOwner().getColor() == player2.getColor() && initSkeletons2 > 1) {
+			System.out.println("SKELETONS 1");
+			for (GroupOfUnits u: hero2.getUnits()) {
+				if (u.type == UnitType.SZKIELET) {
+					currentSkeletons = u.getNumber();
+					if (currentSkeletons > 0) {
+						u.setNumber(u.getNumber() + (int)(initSkeletons2-currentSkeletons)/2);
+					}
+					break;
+				}
+			}
+			if (currentSkeletons == 0) {
+				hero1.getUnits().add(new GroupOfUnits(UnitType.SZKIELET, hero2, (int)initSkeletons2/2));
+			}
+		}
+		
+		for (GroupOfUnits u: hero2.getUnits()) {
+			System.out.println(u.type +" : "+u.getNumber());
+		}
+		System.out.println("");
+		for (GroupOfUnits u: hero1.getUnits()) {
+			System.out.println(u.type +" : "+u.getNumber());
+		}
 		
 		if (player1 instanceof PlayerHuman || player2 instanceof PlayerHuman) {
 			
