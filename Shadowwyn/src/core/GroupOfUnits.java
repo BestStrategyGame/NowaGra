@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Random;
+
 public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 {
 	public final UnitType type;
@@ -108,8 +110,12 @@ public class GroupOfUnits implements java.lang.Comparable<GroupOfUnits>
 	*/
 	public boolean hit(GroupOfUnits target)
 	{
-		target.totalHP -= number*getAttack()*type.damageRatio(target.type)*target.type.receivedDamageRation(type);
+		int c = 0;
+		if(type.name.equals("Wąpierz") && new Random().nextInt(10) > 6)
+			c = new Random().nextInt(1) + 1;
+		target.totalHP -= number*getAttack()*type.damageRatio(target.type)*target.type.receivedDamageRation(type)*1.0/3.0;
 		target.number = java.lang.Math.max(0, (int)java.lang.Math.ceil((float)target.totalHP/target.getDefense()));
+		number = number+c;
 		return target.totalHP <= 0;
 	}
 

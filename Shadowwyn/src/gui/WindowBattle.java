@@ -48,6 +48,7 @@ public class WindowBattle extends QWidget
 	private QLabel uhp = new QLabel();
 	private QLabel ushooting = new QLabel();
 	private QLabel umagic = new QLabel();
+	private QLabel uspecial = new QLabel();
 	
 	
 	public WindowBattle(core.Battle b, core.Player p1, core.Player p2, core.Hero h1, core.Hero h2)
@@ -73,6 +74,7 @@ public class WindowBattle extends QWidget
 		layoutStats.addRow("  Punkty życia:", uhp);
 		layoutStats.addRow("  Strzela:", ushooting);
 		layoutStats.addRow("  Czaruje:", umagic);
+		layoutStats.addRow(uspecial);
 		layoutStats.setMargin(5);
 		
 		//layout.addWidget(wait, 1, 1);
@@ -159,6 +161,7 @@ public class WindowBattle extends QWidget
 			uhp.setText(""+unit.getHP());
 			ushooting.setText(unit.type.shooting ? "Tak" : "Nie");
 			umagic.setText(unit.type.magic ? "Tak" : "Nie");
+			uspecial.setText("Opis" + unit.type.name);
 			
 		}
 	}
