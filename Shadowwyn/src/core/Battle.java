@@ -1,5 +1,6 @@
 package core;
 
+import gui.WidgetImage;
 import gui.WindowStack;
 
 import java.util.*;
@@ -63,6 +64,7 @@ public class Battle extends QObject
 	
 	private Point[][] route; 
 	private Position2Object<GroupOfUnits> p2u = new Position2Object<GroupOfUnits>();
+	private Set<core.Point> obstacles = new HashSet<core.Point>();
 	private QThread thread;
 	private gui.WidgetMap mapWidget;
 	
@@ -105,9 +107,6 @@ public class Battle extends QObject
 	public Battle(core.Player p1, core.Player p2, core.Hero h1, core.Hero h2, core.Terrain t, Castle c)
 	{
 		super();
-		
-		
-		
 		
 		if (p1 instanceof PlayerHuman || p2 instanceof PlayerHuman) {
 			cursor = QApplication.overrideCursor();
@@ -567,6 +566,15 @@ public class Battle extends QObject
 	
 	public void populateMapWidget()
 	{
+		Random ran = new Random();
+		for (int i=0; i<6; ++i) {
+			core.Point p = new core.Point(ran.nextInt(getWidth()-6)+3, ran.nextInt(getHeight()));
+			MapObject o = ran.nextBoolean() ? MapObject.TREE : MapObject.MOUNTAINS;
+			obstacles.add(p);
+			mapWidget.objectAt(p.y, p.x).setLayer(2, new gui.WidgetImage(o.file));
+		}
+		
+		
 		for (int i=0; i<getHeight(); ++i) {
 			for (int j=0; j<getWidth(); ++j) {
 				mapWidget.objectAt(i, j).setLayer(0, new gui.WidgetImage(terrain.file, 64));
@@ -594,6 +602,9 @@ public class Battle extends QObject
 	{
 		GroupOfUnits from = p2u.get(fromx, fromy);
 		GroupOfUnits to = p2u.get(tox, toy);
+		if (obstacles.contains(new core.Point(tox, toy))) {
+			return 200000f;
+		}
 		if (to != null && to != unit) {
 			return 500000f;
 		}

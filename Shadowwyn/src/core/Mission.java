@@ -36,7 +36,7 @@ public abstract class Mission extends QObject
 	private Player activePlayer;
 	private static Player ai = new PlayerCPU("Sztuczna inteligencja", Color.NONE);
 	
-	private List<Color> allies;
+	private List<Color> allies = new ArrayList<Color>();
 	public void setAlliance(Color ... c)
 	{
 		allies = Arrays.asList(c);
@@ -44,7 +44,7 @@ public abstract class Mission extends QObject
 	
 	public boolean isAlly(Color c1, Color c2)
 	{
-		return allies.contains(c1) && allies.contains(c2);
+		return allies != null && allies.contains(c1) && allies.contains(c2);
 	}
 	
 	public Player getPlayer(Color c)
