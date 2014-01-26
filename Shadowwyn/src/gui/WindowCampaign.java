@@ -20,6 +20,7 @@ public class WindowCampaign extends QWidget
 	
 	private WidgetImage background = new WidgetImage("image/menu/campaign.png");
 	private WidgetImage logo = new WidgetImage("image/menu/logo.png");
+	private core.Mission[] missions = new core.Mission[5];
 	
 	Thread thread;
 	
@@ -61,13 +62,21 @@ public class WindowCampaign extends QWidget
 		objective.setReadOnly(true);
 		description.setReadOnly(true);
 		
-		core.Mission m;
+		
 		if (variant == 1) {
-			m =  new core.MissionC1v1();
-			mission.addItem(m.getName(), m);
+			missions[0] =  new core.MissionC1v1();
+			mission.addItem(missions[0].getName(), null);
+			missions[1] =  new core.MissionC2v1();
+			mission.addItem(missions[1].getName(), null);
+			missions[2] =  new core.MissionC3v1();
+			mission.addItem(missions[2].getName(), null);
 		} else if (variant == 2) {
-			m =  new core.MissionC1v2();
-			mission.addItem(m.getName(), m);
+			missions[0] =  new core.MissionC2v2();
+			mission.addItem(missions[0].getName(), null);
+			missions[1] =  new core.MissionC2v2();
+			mission.addItem(missions[1].getName(), null);
+			missions[2] =  new core.MissionC3v2();
+			mission.addItem(missions[2].getName(), null);
 		}
 		
 		mission.currentIndexChanged.connect(this, "missionChanged(int)");
@@ -80,7 +89,7 @@ public class WindowCampaign extends QWidget
 	
 	private void missionChanged(int index)
 	{
-		core.Mission m = (core.Mission)mission.itemData(index);
+		core.Mission m = missions[index];
 		description.setText(m.getDescription());
 		objective.setText(m.getObjective());
 	}
@@ -102,7 +111,7 @@ public class WindowCampaign extends QWidget
 		
 		QApplication.processEvents();
 		if (ws != null) {
-			core.Mission mission = (core.Mission)this.mission.itemData(this.mission.currentIndex());
+			core.Mission mission = missions[this.mission.currentIndex()];
 			mission.init(name.text());
 			
 			QApplication.processEvents();

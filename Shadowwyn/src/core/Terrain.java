@@ -4,7 +4,7 @@ import java.util.*;
 public enum Terrain {
 	GRASS("Trawa", true, 6,118,0, 1.5f, "image/terrain/grass.png"),
 	LAVA("Lawa", true, 164, 164, 164, 2f, "image/terrain/lava.jpg"),
-	SWAMP("Bagna", true, 7, 255, 71, 2.5f, "image/terrain/swamp.jpg"),
+	SWAMP("Bagna", true, 140, 130, 80, 2.5f, "image/terrain/swamp.jpg"),
 	PATH("Ścieżka", false, 103, 103, 78, 1f, "image/terrain/path.png"),
 	MOUNTAINS("Góry", false, 255, 255, 255, 5000000f, "image/objects/mountains.png"),
 	TREE("Drzewo", false, 150, 200, 150, 5000000f, "image/objects/tree.png"),

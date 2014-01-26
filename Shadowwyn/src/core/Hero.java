@@ -69,7 +69,7 @@ public class Hero implements WorldMapObject
 		} else if (hero.getUnits().size() == 0){
 			m.battleFinished(getColor(), player, cp, hero, this, 0, 0, null);
 		} else {
-			Battle b = new Battle(player, cp, hero, this, Terrain.GRASS, null);
+			Battle b = new Battle(player, cp, hero, this, WorldMap.getLastInstance().getTerrainAt(getY(), getX()), null);
 			b.createMapWidget();
 			b.populateMapWidget();;
 			
@@ -274,7 +274,27 @@ public class Hero implements WorldMapObject
 	
 	public int getLevel()
 	{
-		return experience/1000 + 1;
+		if (experience < 250) {
+			return 1;
+		} else if (experience < 750) {
+			return 2;
+		} else if (experience < 1250) {
+			return 3;
+		} else if (experience < 2000) {
+			return 4;
+		} else if (experience < 3250) {
+			return 5;
+		} else if (experience < 5500) {
+			return 6;
+		} else if (experience < 10000) {
+			return 7;
+		} else if (experience < 18000) {
+			return 8;
+		} else if (experience < 32000) {
+			return 9;
+		} else {
+			return 10;
+		}
 	}
 	
 	public int getBaseAttack()
@@ -322,15 +342,22 @@ public class Hero implements WorldMapObject
 	public int getStrenght()
 	{
 		int strenght = 0;
+		int pomoc = 0;
 		for (GroupOfUnits u: units) {
-			strenght += u.getNumber()*(
-				4*u.getAttack() +
-				2*u.getDefense() +
-				u.getSpeed()
+			pomoc = u.getNumber()*(
+				2*u.getAttack() +
+				2*u.getDefense()
 			);
+			pomoc *= (u.type.level+1)*0.5f;
+			if (u.type.shooting) {
+				pomoc *= 1.3f;
+			}
+			strenght += pomoc;
 		}
 		return strenght;
 	}
+	
+	
 
 	@Override
 	public int willingnessToMoveHere(Hero hero, Player player, float distance,

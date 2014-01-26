@@ -423,7 +423,12 @@ public class Battle extends QObject
 	
 	public void hit(GroupOfUnits target)
 	{
-		int no = target.getNumber();
+		int no = 0;
+		try {
+			no = target.getNumber();
+		} catch (NullPointerException e) {
+			return;
+		}
 		
 		if (humanPlaying()) {
 			if (currentUnit.type.shooting) {

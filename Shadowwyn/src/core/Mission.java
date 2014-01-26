@@ -27,6 +27,13 @@ public abstract class Mission extends QObject
 	protected Player[] players = new Player[maxPlayers];
 	protected int playersNo = 0;
 	private int day = 1;
+	
+	public int getDay()
+	{
+		return day;
+	}
+
+
 	protected WorldMap wmap;
 	
 	public Signal1<Player> updateWindow;
@@ -163,12 +170,13 @@ public abstract class Mission extends QObject
 	
 	public Mission()
 	{
-		LAST_INSTANCE = this;
+		//LAST_INSTANCE = this;
 	}
 	
 	public void init(String ... names)
 	{
 		 updateWindow = new Signal1<Player>();
+		 LAST_INSTANCE = this;
 	}
 	public abstract String getName();
 	public abstract String getDescription();
@@ -327,11 +335,11 @@ public abstract class Mission extends QObject
 		//}
 		
 		boolean mdead = isMainHeroDead();
-		if (mdead || endCondition()) {
+		if (wonColor != null || mdead || endCondition()) {
 			QApplication.restoreOverrideCursor();
 			QApplication.processEvents();
 			System.out.println("!!END!!!");
-			if (won() && !mdead) {
+			if ((wonColor == playerColor() || won()) && !mdead) {
 				gui.Sound.play("sound/winc.wav");
 				QMessageBox.about(WindowStack.getLastInstance(), "Wygrana", "Gratulacje! Udało Ci się przejść misję.");
 			} else {
@@ -444,5 +452,11 @@ public abstract class Mission extends QObject
 		} else {
 			wmap.getMapWidget().objectAt(y, x).setToolTip(hero.getTooltip());
 		}
+	}
+
+	private Color wonColor = null;
+	public void setWon(Color color)
+	{
+		wonColor = color;
 	}
 }

@@ -1,4 +1,9 @@
 package core;
+
+import gui.WindowStack;
+
+import com.trolltech.qt.gui.QMessageBox;
+
 public class Resource implements WorldMapObject
 {
 	private ResourceType type;
@@ -18,7 +23,14 @@ public class Resource implements WorldMapObject
 	public boolean stand(Hero hero, Player player)
 	{
 		System.out.println("resource stand");
-		player.addResource(type, amount);
+		if (type == ResourceType.ARTIFACT) {
+			Mission.getLastInstance().setWon(hero.getColor());
+			if (player instanceof PlayerHuman) {
+				QMessageBox.about(WindowStack.getLastInstance(), "Artefakt", "Zdobyłeś poszukiwany artefakt!");
+			}
+		} else {
+			player.addResource(type, amount);
+		}
 		return true;
 	}
 	

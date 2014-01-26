@@ -4,7 +4,7 @@ import java.util.*;
 public enum Artifact implements WorldMapObject
 {
 	DUMMY(0, "Brak", null, 0, 0, 0, "image/dummy.png"),
-	MIECZ_PRZEZNACZENIA(1, "Miecz przeznaczenia", ArtifactType.SWORD, 4, 5, 3, "image/dummy.png");
+	ARTIFACT(1, "Artefakt", ArtifactType.SWORD, 4, 5, 3, "image/artifact.png");
 	
 	public final int id;
 	public final String name;
@@ -41,6 +41,7 @@ public enum Artifact implements WorldMapObject
 	
 	public boolean stand(Hero hero, Player player)
 	{
+		Mission.getLastInstance().setWon(hero.getColor());
 		return false;
 	}
 	
@@ -51,7 +52,7 @@ public enum Artifact implements WorldMapObject
 	
 	public int stackLevel()
 	{
-		return 1;
+		return 2;
 	}
 	
 	public void dailyBonus(Player player)
@@ -106,8 +107,9 @@ public enum Artifact implements WorldMapObject
 	}
 
 	@Override
-	public String getTooltip() {
+	public String getTooltip()
+	{
 		// TODO Auto-generated method stub
-		return null;
+		return "Artefakt";
 	}
  } 

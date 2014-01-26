@@ -5,6 +5,7 @@ package core;
  {
 	MOUNTAINS("Góry", 205, 205, 205, "image/objects/mountains.png"),
 	TREE("Drzewo", 255, 0, 236, "image/objects/tree.png"),
+	ARTIFACT("Artefakt", 0, 0, 0, "image/objects/artifact.png"),
 	DUMMY("Dummy", 0, 0, 0, "");
 	
 	public final String name;

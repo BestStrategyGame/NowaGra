@@ -87,18 +87,23 @@ public class WorldMap
 	
 	public Terrain getTerrainAt(int x, int y)
 	{
-		try {
-			if (tmap[x][y].ground) {
-				return tmap[x][y];
-			}
-			for (int i=x-1; i<=x+1; ++i) {
-				for (int j=y-1; j<=y+1; ++j) {
+		System.out.println("TERRAIN AT "+x+" "+y+" "+tmap[x][y]);
+	
+		if (tmap[x][y].ground) {
+			return tmap[x][y];
+		}
+		for (int i=x-1; i<=x+1; ++i) {
+			
+			for (int j=y-1; j<=y+1; ++j) {
+				System.out.println("TERRAIN AT "+i+" "+j+" "+tmap[i][j]);
+				try {
 					if (tmap[i][j].ground) {
 						return tmap[i][j];
 					}
-				}
+				} catch (Exception e) {}
 			}
-		} catch (Exception e) {}
+		}
+		
 		return Terrain.GRASS;
 	}
 	
@@ -230,6 +235,7 @@ public class WorldMap
 		for (core.Point pos: p2o.points()) {
 			QApplication.processEvents();
 			o = p2o.get(pos);
+			System.out.println(o);
 			if (o != null) {
 				if (o.getImageFile() != null) {
 					System.out.println(o.getImageFile());
@@ -275,7 +281,7 @@ public class WorldMap
 	
 	public void addObject(int x, int y, WorldMapObject o)
 	{
-		System.out.println("add object "+x+" "+y);
+		System.out.println("add object "+x+" "+y+" "+o);
 		p2o.put(x, y, o);
 	}
 	

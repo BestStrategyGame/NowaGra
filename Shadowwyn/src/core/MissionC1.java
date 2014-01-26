@@ -36,6 +36,8 @@ public abstract class MissionC1 extends Mission
 		wmap.addObject(28, 30, h1);
 		wmap.addObject(3, 4, h2);		
 		
+		wmap.addObject(29, 31, h1);
+		
 		List<GroupOfUnits> u1 = new ArrayList<GroupOfUnits>();
 		List<GroupOfUnits> u2 = new ArrayList<GroupOfUnits>();
 		u1.add(new GroupOfUnits(core.UnitType.WOJAK, null, 10));

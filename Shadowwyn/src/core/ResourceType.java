@@ -10,7 +10,8 @@ public enum ResourceType
 		}
 	},
 	ORE("Kamień", 1f, 200, 255, 255, "image/resource/ore.png"),
-	WOOD("Drewno", 2f, 255, 200, 200, "image/resource/wood.png");
+	WOOD("Drewno", 2f, 255, 200, 200, "image/resource/wood.png"),
+	ARTIFACT("Artefakt", 1f, 200, 200, 200, "image/objects/artifact.png");
 	
 	public final String name;
 	public final int rgb;

@@ -151,6 +151,7 @@ public class PlayerCPU extends Player
 			System.out.println("AI: FIND WHERE TO GO");
 			target = null;
 			Hero hero = null;
+			try {
 			for (Hero h: getHeroes()) {
 				System.out.println("AI: PATH FOR HERO "+h.getName()+" "+h.getMovePoints());
 				if (h.getMovePoints() > 0) {
@@ -210,6 +211,7 @@ public class PlayerCPU extends Player
 					
 				}
 			}
+			} catch (java.util.ConcurrentModificationException e) {}
 			
 			
 			
