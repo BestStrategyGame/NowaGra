@@ -38,14 +38,14 @@ public class MissionC1v2 extends Mission
 		List<GroupOfUnits> u2 = new ArrayList<GroupOfUnits>();
 		u1.add(new GroupOfUnits(core.UnitType.WOJAK, null, 10));
 		u1.add(new GroupOfUnits(core.UnitType.KUSZNIK, null, 5));
-		u2.add(new GroupOfUnits(core.UnitType.SZKIELET, null, 10 ));
-		u2.add(new GroupOfUnits(core.UnitType.POLNOCNICA, null, 5));
+		u2.add(new GroupOfUnits(core.UnitType.NIMFA, null, 10 ));
+		u2.add(new GroupOfUnits(core.UnitType.ELFI_SKRYTOBOJCA, null, 5));
 		
 		h1.setUnits(u1);
 		h2.setUnits(u2);
 		
-		Castle c1 = new Castle(CastleType.HUMAN_CASTLE, Names.castle());
-		Castle c2 = new Castle(CastleType.HUMAN_CASTLE, Names.castle());
+		Castle c1 = new Castle(CastleType.FOREST_ROOK, Names.castle());
+		Castle c2 = new Castle(CastleType.FOREST_ROOK, Names.castle());
 		Castle c3 = new Castle(CastleType.DEMONICAL_NECROPOLY , Names.castle());
 		Castle c4 = new Castle(CastleType.DEMONICAL_NECROPOLY, Names.castle());
 	
@@ -95,7 +95,7 @@ public class MissionC1v2 extends Mission
 	{
 		p1 = new PlayerCPU("Komputer", Color.BLUE);
 		p2 = new PlayerHuman(name, Color.RED);
-		h1 = new Hero(Names.name(), CastleType.HUMAN_CASTLE);
+		h1 = new Hero(Names.name(), CastleType.FOREST_ROOK);
 		h2 = new Hero(Names.name(), CastleType.DEMONICAL_NECROPOLY);
 		setMainHero(h2);
 		
