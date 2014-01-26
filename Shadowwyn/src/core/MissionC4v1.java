@@ -26,7 +26,7 @@ public class MissionC4v1 extends MissionC4
 	@Override
 	public String getName()
 	{
-		return "Akt IV. ";
+		return "Akt IV. Zguba";
 	}
 	
 	@Override

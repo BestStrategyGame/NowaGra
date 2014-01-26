@@ -26,19 +26,19 @@ public class MissionC4v2 extends MissionC4
 	@Override
 	public String getName()
 	{
-		return "Akt IV.";
+		return "Akt IV. Zguba";
 	}
 	
 	@Override
 	public String getDescription()
 	{
-		return "Zaraz po powrocie z niewoli królowej opowiada ci ona treść podsłuchanej rozmowy między dwoma oficerami kiedy była więziona w wieży. Wynika z niej, że oddział składający się ze diabłów – bardzo niebezpiecznych stworzeń, które zostały stworzone za pomocą bardzo złej magii – zbuntował się. Ukradły one władcy demonów artefakt, który nie pozwala wrogim wojskom wejść na zaklęty teren w pobliżu stolicy władcy demonów. Diabły mają zamiar zmienić moc artefaktu w ten sposób, by chronił on ich ziemie. Dzięki temu będą one zdolne pokonać ich byłego władcę, przejąć jego armię, a następnie podbić pozostałe królestwa. Zdobycie i zniszczenie tego artefaktu jest jedynym sposobem na pokonanie demonów dlatego decydujesz się zdobyć go za wszelką cenę";
+		return "Podczas, gdy Ty byłeś zajęty uwolnieniem generała, twój najbardziej niebezpieczny oddział zbuntował się. Oddział ten składał się z diabłów, które udało ci się przywołać bardzo dawno temu za pomocą czarnej magii. Niestety jak widać nie udało Ci się ich całkowicie podporządkować. Podczas dezercji ukradły one ze stolicy artefakt, który powodował, że żadna wroga armia nie mogła wejść na teren wokół twojej stolicy. Diabły zamierzają wykorzystać twój artefakt to swoich celów jakimi są podporządkowanie sobie mocy artefaktu, przejęcie twoich wojsk, a następnie zdobycie pozostałych krain. Musisz odebrać im ten przedmiot zanim uda im się przekierować moc artefaktu. Na dodatek o całej sprawie dowiedzieli się ludzie, którzy zobaczyli w tej sytuacji okazję do zniszczenia artefaktu i ostatecznego pokonania twoich wojsk. Dlatego w pośpiechu wysyłasz swoją armię na teren, gdzie prawdopodobnie ukryły się diabły z zamiarem jak najszybszego odebrania im artefaktu.";
 	}
 
 	@Override
 	public String getObjective()
 	{
-		return "Twoim celem jest zdobycie artefaktu zanim zrobi to władca demonów, a także zanim uda siędiabłom użyć artefaktu dla własnych celów. W misji tej główny bohater nie może zginąć. ";
+		return "Twoim celem jest zdobycie artefaktu przed ludźmi, a także zanim uda się diabłom podporządkować moc tego artefaktu. W misji tej twój bohater nie może zginąć.";
 	}
 	
 	@Override

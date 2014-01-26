@@ -9,8 +9,8 @@ public class MissionC5v1 extends MissionC5
 	public void variant(String name)
 	{
 		p1 = new PlayerHuman(name, Color.BLUE);
-		p2 = new PlayerCPU("Komputer", Color.RED);
-		p3 = new PlayerCPU("Komputer2", Color.GREEN);
+		p2 = new PlayerCPU("Komputer", Color.GREEN);
+		p3 = new PlayerCPU("Komputer 2", Color.RED);
 		h1 = new Hero(Names.name(), CastleType.HUMAN_CASTLE);
 		h2 = new Hero(Names.name(), CastleType.FOREST_ROOK);
 		h3 = new Hero(Names.name(), CastleType.DEMONICAL_NECROPOLY);
@@ -29,19 +29,19 @@ public class MissionC5v1 extends MissionC5
 	@Override
 	public String getName()
 	{
-		return "Akt V. ";
+		return "Akt V. Na dwa fronty";
 	}
 	
 	@Override
 	public String getDescription()
 	{
-		return "Zaraz po powrocie z niewoli krĂłlowej opowiada ci ona treĹ›Ä‡ podsĹ‚uchanej rozmowy miÄ™dzy dwoma oficerami kiedy byĹ‚a wiÄ™ziona w wieĹĽy. Wynika z niej, ĹĽe oddziaĹ‚ skĹ‚adajÄ…cy siÄ™ ze diabĹ‚Ăłw â€“ bardzo niebezpiecznych stworzeĹ„, ktĂłre zostaĹ‚y stworzone za pomocÄ… bardzo zĹ‚ej magii â€“ zbuntowaĹ‚ siÄ™. UkradĹ‚y one wĹ‚adcy demonĂłw artefakt, ktĂłry nie pozwala wrogim wojskom wejĹ›Ä‡ na zaklÄ™ty teren w pobliĹĽu stolicy wĹ‚adcy demonĂłw. DiabĹ‚y majÄ… zamiar zmieniÄ‡ moc artefaktu w ten sposĂłb, by chroniĹ‚ on ich ziemie. DziÄ™ki temu bÄ™dÄ… one zdolne pokonaÄ‡ ich byĹ‚ego wĹ‚adcÄ™, przejÄ…Ä‡ jego armiÄ™, a nastÄ™pnie podbiÄ‡ pozostaĹ‚e krĂłlestwa. Zdobycie i zniszczenie tego artefaktu jest jedynym sposobem na pokonanie demonĂłw dlatego decydujesz siÄ™ zdobyÄ‡ go za wszelkÄ… cenÄ™";
+		return "Dzięki zdobytemu artefaktowi twoje wojska w końcu mogą wkroczyć na ziemie w pobliżu siedziby Gothmoga. Niestety podczas, gdy ty szukałeś zaczarowanego przedmiotu, władcy demonów skupił się na innym celu. Udało mu się przekupić króla elfów i namówić go do wspólnej wojny przeciwko tobie. Ich wojska już idą w stronę twoich granic, by podbić twe ziemie. Dlatego w drodze powrotnej do zamku zbierasz wszystkich ludzi zdolnych do walki. Musisz jak najszybciej obstawić granicę z elfami i przygotować się  na wojnę na dwóch frontach. Jedyną szansą na zwycięstwo jest pokonanie obu wrogów.";
 	}
 
 	@Override
 	public String getObjective()
 	{
-		return "Twoim celem jest zdobycie artefaktu zanim zrobi to wĹ‚adca demonĂłw, a takĹĽe zanim uda siÄ™diabĹ‚om uĹĽyÄ‡ artefaktu dla wĹ‚asnych celĂłw. W misji tej gĹ‚Ăłwny bohater nie moĹĽe zginÄ…Ä‡. ";
+		return "Misja ta jest ostatnią misją w kampanii. Żeby ją ukończyć musisz pokonać armie demonów i elfów, i całkowicie unicestwić władców obu krain. W misji tej twój bohater nie może zginąć.";
 	}
 	
 	@Override
