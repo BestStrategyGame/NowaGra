@@ -70,6 +70,10 @@ public class WindowCampaign extends QWidget
 			mission.addItem(missions[1].getName(), null);
 			missions[2] =  new core.MissionC3v1();
 			mission.addItem(missions[2].getName(), null);
+			missions[3] =  new core.MissionC4v1();
+			mission.addItem(missions[3].getName(), null);
+			missions[4] =  new core.MissionC5v1();
+			mission.addItem(missions[3].getName(), null);
 		} else if (variant == 2) {
 			missions[0] =  new core.MissionC2v2();
 			mission.addItem(missions[0].getName(), null);
@@ -77,6 +81,9 @@ public class WindowCampaign extends QWidget
 			mission.addItem(missions[1].getName(), null);
 			missions[2] =  new core.MissionC3v2();
 			mission.addItem(missions[2].getName(), null);
+			missions[3] =  new core.MissionC4v2();
+			mission.addItem(missions[3].getName(), null);
+			missions[4] =  new core.MissionC5v2();
 		}
 		
 		mission.currentIndexChanged.connect(this, "missionChanged(int)");
