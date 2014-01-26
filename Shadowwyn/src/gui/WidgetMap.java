@@ -45,7 +45,7 @@ public class WidgetMap extends WidgetStack
 	{
 		for (int r=0; r<rows; ++r) {
 			for (int c=0; c<cols; ++c) {
-				//grid.getImageStack(r, c).setLayer(5, new gui.WidgetImage("image/markers/shadow.png"));
+				grid.getImageStack(r, c).setLayer(5, new gui.WidgetImage("image/markers/shadow.png"));
 			}
 		}
 	}
@@ -54,13 +54,13 @@ public class WidgetMap extends WidgetStack
 	{
 		for (int r=0; r<rows; ++r) {
 			for (int c=0; c<cols; ++c) {
-				//grid.getImageStack(r, c).widgetAtLayer(5).show();
+				grid.getImageStack(r, c).widgetAtLayer(5).show();
 			}
 		}
 	}
 	
 	public void removeShadow(int row, int col)
 	{
-		//grid.getImageStack(row, col).widgetAtLayer(5).hide();
+		grid.getImageStack(row, col).widgetAtLayer(5).hide();
 	}
 }

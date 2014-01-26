@@ -95,7 +95,7 @@ public class WorldMap
 		for (int i=x-1; i<=x+1; ++i) {
 			
 			for (int j=y-1; j<=y+1; ++j) {
-				System.out.println("TERRAIN AT "+i+" "+j+" "+tmap[i][j]);
+				//System.out.println("TERRAIN AT "+i+" "+j+" "+tmap[i][j]);
 				try {
 					if (tmap[i][j].ground) {
 						return tmap[i][j];

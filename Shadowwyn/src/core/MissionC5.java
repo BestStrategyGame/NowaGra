@@ -54,7 +54,7 @@ public abstract class MissionC5 extends Mission
 		u1.add(new GroupOfUnits(core.UnitType.WOJAK, null, 10));
 		u1.add(new GroupOfUnits(core.UnitType.KUSZNIK, null, 5));
 		u2.add(new GroupOfUnits(core.UnitType.NIMFA, null, 10 ));
-		u2.add(new GroupOfUnits(core.UnitType.POLNOCNICA, null, 5));
+		u2.add(new GroupOfUnits(core.UnitType.ELFI_SKRYTOBOJCA, null, 5));
 		u3.add(new GroupOfUnits(core.UnitType.SZKIELET, null, 10 ));
 		u3.add(new GroupOfUnits(core.UnitType.POLNOCNICA, null, 5));
 		

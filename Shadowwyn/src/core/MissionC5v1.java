@@ -14,6 +14,7 @@ public class MissionC5v1 extends MissionC5
 		h1 = new Hero(Names.name(), CastleType.HUMAN_CASTLE);
 		h2 = new Hero(Names.name(), CastleType.FOREST_ROOK);
 		h3 = new Hero(Names.name(), CastleType.DEMONICAL_NECROPOLY);
+		setAlliance(Color.GREEN, Color.RED);
 		setMainHero(h1); 
 	}
 	

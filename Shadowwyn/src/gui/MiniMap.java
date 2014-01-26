@@ -44,10 +44,10 @@ public class MiniMap extends QFrame
 					continue;
 				}
 				core.WorldMapObject obj = wmap.getObjectAt(j, i);
-				/*if (!visible.contains(new core.Point(j, i))) {
+				if (!visible.contains(new core.Point(j, i))) {
 					image.setPixel(j, i, 0);
 					continue;
-				} else*/ if (obj != null && obj.getColor() != null) {
+				} else if (obj != null && obj.getColor() != null) {
 					image.setPixel(j, i, obj.getColor().rgb);
 				} else {
 					image.setPixel(j, i, tmap[i][j].rgb);

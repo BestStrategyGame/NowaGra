@@ -75,7 +75,7 @@ public class WindowCampaign extends QWidget
 			missions[4] =  new core.MissionC5v1();
 			mission.addItem(missions[4].getName(), null);
 		} else if (variant == 2) {
-			missions[0] =  new core.MissionC2v2();
+			missions[0] =  new core.MissionC1v2();
 			mission.addItem(missions[0].getName(), null);
 			missions[1] =  new core.MissionC2v2();
 			mission.addItem(missions[1].getName(), null);
